@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>render函数的使用</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <ele>
+        <h3>简易聊天窗口</h3>
+    </ele>
+</div>
+<script>
+    Vue.component('ele', {
+        data() {
+            return {
+                list: []
+            }
+        },
+        render(creatElement) {
+
+            let _this = this;
+            let nodeList = creatElement('p', '暂无相关内容');
+            let nodeSlotDefault =  this.$slots.default || '<h3>聊天内容</h3>';
+            if (this.list.length) {
+
+                nodeList = creatElement('ul', this.list.map(item => {
+
+                    return creatElement('li', item);
+                }));
+            }
+
+            return creatElement('div', [
+                nodeSlotDefault,
+                creatElement('input', {
+                    attrs: {
+                        placeholder: '添加聊天内容，按回车键发送'
+                    },
+                    style: {
+                        width: '300px'
+                    },
+                    on: {
+                        keyup(event) {
+
+                            if (13 !== event.keyCode) return;
+                            _this.list.push(event.target.value);
+                            event.target.value = '';
+                        }
+                    }
+                }),
+                nodeList
+            ]);
+        }
+    });
+    new Vue({
+        el: '#app'
+    });
+</script>
+</body>
+</html>
