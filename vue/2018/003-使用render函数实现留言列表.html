@@ -5,215 +5,259 @@
     <title>使用render函数实现可排序的表格组件</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.js"></script>
     <style>
+        body {
+            color: #333;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         [v-cloak] {
             display: none;
+        }
+        #app {
+            width: 600px;
+            margin: 20px auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form, .list {
+            width: 600px;
+            padding: 15px 20px;
+            border: 1px solid #0085d0;
+            border-radius: 5px;
+        }
+        .clearfix::after, .clearfix::before {
+            display: block;
+            content: ' ';
+        }
+        .clearfix::after {
+            clear: both;
+        }
+        .label, .btn {
+            display: inline-block;
+        }
+        .label {
+            width: 80px;
+            text-align: right;
+            vertical-align: top;
+        }
+        .textarea {
+            width: 478px;
+            height: 70px;
+            margin-top: 10px;
+            resize: none;
+        }
+        .btn {
+            float: right;
+        }
+        .list {
+            margin-top: 15px;
+        }
+        .list-item {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .list-item span {
+            width: 80px;
+            color: #0085d0;
+            text-align: right;
+            word-break: break-all;
+        }
+        .list-msg {
+            flex: 1;
+            color: #666;
         }
     </style>
 </head>
 <body>
 <div id="app" v-cloak>
-    <button type="button" @click.once="addNewData">添加数据</button>
-    <el-table :data="data" :columns="columns"></el-table>
+    <h2>聊天室</h2>
+    <div class="form clearfix">
+        <el-input v-model="username"></el-input>
+        <el-textarea v-model="message" ref="message"></el-textarea>
+        <button class="btn" type="button" @click="sendMsg" style="margin-top: 10px;">发布</button>
+    </div>
+    <el-list :list="list" @reply="replyMsg"></el-list>
 </div>
 <script>
-    console.log(JSON.parse('{"age": 2}'));
-    console.log(JSON.stringify({age: 2}    ));
-    Vue.component('el-table', {
+    Vue.component('el-input', {
         props: {
-            columns: {
-                type: Array,
-                default() {
-
-                    return [];
-                }
-            },
-            data: {
-                type: Array,
-                default: []
-            }
-        },
-        data() {
-            return {
-                curColumns: [],
-                curData: []
+            value: {
+                type: [String, Number],
+                default: ''
             }
         },
         render(h) {
 
             let _this = this;
-            let ths = [];
+            return h('div', [
+                h('span', {
+                    class: {
+                        label: true
+                    }
+                }, '昵称：'),
+                h('input', {
+                    attrs: {
+                        type: 'text'
+                    },
+                    domProps: {
+                        value: this.value
+                    },
+                    on: {
+                        input(event) {
 
-            this.curColumns.forEach((col, index) => {
-
-                if (col.sortable) {
-
-                    ths.push(h('th', {
-                        class: {
-                            sort: true,
-                            sort__asc: 'asc' === col._sortType,
-                            sort__desc: 'desc' === col._sortType,
-                        },
-                        on: {
-                            click() {
-
-                                let sortType;
-                                switch (col._sortType) {
-                                    case 'normal':
-                                        sortType = 'asc';
-                                        break;
-                                    case 'asc':
-                                        sortType = 'desc';
-                                        break;
-                                    case 'desc':
-                                        sortType = 'asc';
-                                        break;
-                                }
-                                col._sortType = sortType;
-                                _this.sort(index, col._sortType);
-                            }
+                            _this.value = event.target.value;
+                            _this.$emit('input', _this.value);
                         }
-                    }, col.title));
-                } else {
+                    }
+                })
+            ]);
+        }
+    });
+    Vue.component('el-textarea', {
+        props: {
+            value: {
+                type: String,
+                default: ''
+            }
+        },
+        render(h) {
 
-                    ths.push(h('th', col.title));
-                }
-            });
+            let _this = this;
+            return h('div', [
+                h('span', {
+                    class: {
+                        label: true
+                    }
+                }, '留言内容：'),
+                h('textarea', {
+                    attrs: {
+                        placeholder: '请输入留言内容',
+                        class: 'textarea'
+                    },
+                    domProps: {
+                        value: this.value
+                    },
+                    ref: 'message',
+                    on: {
+                        input(event) {
 
-            let trs = [];
-            this.curData.forEach(row => {
-
-                let tds = [];
-                for (let key in row) {
-
-                    // 忽略掉私有属性
-                    !/_/.test(key) && tds.push(h('td', row[key]));
-                }
-                trs.push(h('tr', tds));
-            });
-
-            return h('table', {
-                attrs: {
-                    border: 1
-                }
-            }, [
-                h('thead', [
-                    h('tr', ths)
-                ]),
-                h('tbody', trs)
+                            _this.value = event.target.value;
+                            _this.$emit('input', _this.value);
+                        }
+                    }
+                })
             ]);
         },
-        watch: {
-            data() {
+        methods: {
+            focus() {
 
-                this.makeData();
-                let sortIndex = this.curColumns.findIndex(col => {
-
-                    return col.sortable && 'normal' !== col._sortType;
-                });
-                -1 !==sortIndex && this.sort(sortIndex, this.curColumns[sortIndex]._sortType);
+                this.$refs.message.focus();
             }
+        }
+    });
+    Vue.component('el-list', {
+        props: {
+            list: {
+                type: Array,
+                default: []
+            }
+        },
+        render(h) {
+
+            let _this = this;
+            let list = [];
+
+            console.log(JSON.stringify(this.list));
+
+            this.list.forEach((msg, index) => {
+
+                let node = h('div', {
+                    attrs: {
+                        class: 'list-item clearfix'
+                    }
+                }, [
+                    h('span', msg.name + '：'),
+                    h('div', {
+                        attrs: {
+                            class: 'list-msg'
+                        }
+                    }, [
+                        h('p', msg.msg),
+                        h('button', {
+                            attrs: {
+                                type: 'button',
+                                class: 'btn'
+                            },
+                            on: {
+                                click() {
+
+                                    _this.replyMsg(index);
+                                }
+                            }
+                        }, '回复')
+                    ])
+                ]);
+                list.push(node);
+            });
+
+            return h('div', {
+                attrs: {
+                    class: 'list'
+                }
+            }, [
+                h('h3', '留言列表：'),
+                this.list.length ? list : h('p', {
+                    attrs: {
+                        style: 'margin-top: 10px;'
+                    }
+                }, '留言列表为空')
+            ]);
         },
         methods: {
-            makeColumns() {
+            replyMsg(index) {
 
-                this.curColumns = this.columns.map((col, index) => {
-
-                   col._index = index;
-                   col._sortType = 'normal';
-                   return col;
-                });
-            },
-            makeData() {
-
-                this.curData = this.data.map((row, index) => {
-
-                   row._index = index;
-                   return row;
-                });
-            },
-            sort(index, type) {
-
-                let key = this.curColumns[index].key;
-                this.curColumns.forEach(col => {
-
-                    col._sortType = 'normal';
-                });
-                this.curColumns[index]._sortType = type;
-                this.curData.sort((a, b) => {
-
-                    if ('asc' === type) {
-
-                        return a[key] > b[key] ? 1 : -1;
-                    }
-                    return a[key] < b[key] ? 1 : -1;
-                });
+                this.$emit('reply', index);
             }
-        },
-        mounted() {
-
-            this.makeColumns();
-            this.makeData();
         }
     });
     new Vue({
         el: '#app',
         data: {
-            columns: [
-                {
-                    title: '姓名',
-                    key: 'name'
-                },
-                {
-                    title: '年龄',
-                    key: 'age',
-                    sortable: true
-                },
-                {
-                    title: '地址',
-                    key: 'addr'
-                },
-                {
-                    title: '高考总分',
-                    key: 'score',
-                    sortable: true
-                }
-            ],
-            data: [
-                {
-                    name: '张正义',
-                    age: 20,
-                    addr: '成都市',
-                    score: 567
-                },
-                {
-                    name: '李德全',
-                    age: 19,
-                    addr: '南充市',
-                    score: 517
-                },
-                {
-                    name: '王思琪',
-                    age: 22,
-                    addr: '北京市',
-                    score: 588
-                },
-                {
-                    name: '周甜甜',
-                    age: 15,
-                    addr: '贵阳市',
-                    score: 507
-                },
-            ]
+            username: '',
+            message: '',
+            list: []
         },
         methods: {
-            addNewData() {
+           sendMsg() {
 
-                this.data.push({
-                    name: '李国兴',
-                    age: 19,
-                    addr: '青海市',
-                    score: 566
-                });
+               if ('' === this.username.trim()) {
+
+                   alert('昵称不能为空');
+                   return;
+               }
+               if ('' === this.message.trim()) {
+
+                   alert('消息不能为空');
+                   return;
+               }
+
+               this.list.push({
+                   name: this.username,
+                   msg: this.message
+               });
+               this.message = '';
+           },
+            replyMsg(index) {
+
+                this.message = `回复@${this.list[index].name}：`;
+                this.$refs.message.focus();
             }
         }
     });
