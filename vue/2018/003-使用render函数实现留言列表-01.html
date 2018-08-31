@@ -55,6 +55,13 @@
         .btn {
             float: right;
         }
+        .btn + .btn {
+            margin-right: 10px;
+        }
+        .btn-del {
+            background-color: red;
+            color: white;
+        }
         .list {
             margin-top: 15px;
         }
@@ -83,7 +90,7 @@
         <el-textarea v-model="message" ref="message"></el-textarea>
         <button class="btn" type="button" @click="sendMsg" style="margin-top: 10px;">发布</button>
     </div>
-    <el-list :list="list" @reply="replyMsg"></el-list>
+    <el-list :list="list" @reply="replyMsg" @del="delMsg"></el-list>
 </div>
 <script>
     Vue.component('el-input', {
@@ -193,6 +200,18 @@
                         h('button', {
                             attrs: {
                                 type: 'button',
+                                class: 'btn btn-del'
+                            },
+                            on: {
+                                click() {
+
+                                    _this.delMsg(index);
+                                }
+                            }
+                        }, '删除'),
+                        h('button', {
+                            attrs: {
+                                type: 'button',
                                 class: 'btn'
                             },
                             on: {
@@ -224,6 +243,10 @@
             replyMsg(index) {
 
                 this.$emit('reply', index);
+            },
+            delMsg(index) {
+
+                this.$emit('del', index);
             }
         }
     });
@@ -258,6 +281,10 @@
 
                 this.message = `回复@${this.list[index].name}：`;
                 this.$refs.message.focus();
+            },
+            delMsg(index) {
+
+                this.list.splice(index, 1);
             }
         }
     });

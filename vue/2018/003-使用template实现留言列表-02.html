@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>使用template实现可排序的表格组件</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.js"></script>
+    <style>
+        body {
+            color: #333;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        [v-cloak] {
+            display: none;
+        }
+        #app {
+            width: 600px;
+            margin: 20px auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form, .list {
+            width: 600px;
+            padding: 15px 20px;
+            border: 1px solid #0085d0;
+            border-radius: 5px;
+        }
+        .clearfix::after, .clearfix::before {
+            display: block;
+            content: ' ';
+        }
+        .clearfix::after {
+            clear: both;
+        }
+        .label, .btn {
+            display: inline-block;
+        }
+        .label {
+            width: 80px;
+            text-align: right;
+            vertical-align: top;
+        }
+        .textarea {
+            width: 473px;
+            height: 70px;
+            margin-top: 10px;
+            resize: none;
+        }
+        .btn {
+            float: right;
+        }
+        .btn + .btn {
+            margin-right: 10px;
+        }
+        .btn-del {
+            background-color: red;
+            color: white;
+        }
+        .list {
+            margin-top: 15px;
+        }
+        .list-item {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .list-item span {
+            width: 80px;
+            color: #0085d0;
+            text-align: right;
+            word-break: break-all;
+        }
+        .list-msg {
+            flex: 1;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <h2>聊天室</h2>
+    <div class="form clearfix">
+        <div>
+            <span class="label">昵称：</span>
+            <input type="text" v-model="username">
+        </div>
+        <el-textarea v-model="message" ref="message"></el-textarea>
+        <button class="btn" type="button" @click="sendMsg" style="margin-top: 10px;">发布</button>
+    </div>
+    <el-list :list="list" @reply="replyMsg" @del="delMsg"></el-list>
+</div>
+<script id="el-list" type="text/x-template">
+    <div class="list">
+        <h3>留言列表</h3>
+        <template v-if="list.length">
+            <div v-for="(item, index) in list" class="list-item clearfix">
+                <span>{{item.name}}：</span>
+                <div class="list-msg">
+                    <p>{{item.msg}}</p>
+                    <button class="btn btn-del" type="button" @click="$emit('del', index)">删除</button>
+                    <button class="btn" type="button" @click="replyMsg(index)">回复</button>
+                </div>
+            </div>
+        </template>
+        <p v-else style="margin-top: 10px;">留言列表为空</p>
+    </div>
+</script>
+<script>
+    Vue.component('el-textarea', {
+        props: {
+            value: {
+                type: String,
+                default: ''
+            }
+        },
+        template: `
+                <div>
+                    <span class="label">留言内容：</span>
+                    <textarea class="textarea" placeholder="请输入留言内容" ref="message"
+                              :value='value' @input="$emit('input', $event.target.value)"></textarea>
+                </div>`,
+        methods: {
+            focus() {
+
+                this.$refs.message.focus();
+            }
+        }
+    });
+    Vue.component('el-list', {
+        props: {
+            list: {
+                type: Array,
+                default: []
+            }
+        },
+        template: '#el-list',
+        methods: {
+            replyMsg(index) {
+
+                this.$emit('reply', index);
+            }
+        }
+    });
+    new Vue({
+        el: '#app',
+        data: {
+            username: '',
+            message: '',
+            list: []
+        },
+        methods: {
+           sendMsg() {
+
+               if ('' === this.username.trim()) {
+
+                   alert('昵称不能为空');
+                   return;
+               }
+               if ('' === this.message.trim()) {
+
+                   alert('消息不能为空');
+                   return;
+               }
+
+               this.list.push({
+                   name: this.username,
+                   msg: this.message
+               });
+               this.message = '';
+           },
+            replyMsg(index) {
+
+                this.message = `回复@${this.list[index].name}：`;
+                this.$refs.message.focus();
+            },
+            delMsg(index) {
+
+               this.list.splice(index, 1);
+            }
+        }
+    });
+</script>
+</body>
+</html>
