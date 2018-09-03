@@ -22,6 +22,7 @@ module.exports = merge(webpackDevConfig, {
                 NODE_ENV: '"production"' // 定义当前node环境为生产环境
             }
         }),
+
         new webpack.optimize.UglifyJsPlugin({
             compress: false // 压缩js
         }),
