@@ -1,9 +1,7 @@
 <template>
     <div class="container">
         <el-header></el-header>
-        <div class="main">
-            <router-view></router-view>
-        </div>
+        <router-view></router-view>
         <el-footer></el-footer>
     </div>
 </template>
@@ -35,6 +33,7 @@
     }
     .main {
         flex: 1;
+        padding: 20px;
         background-color: #00C1DE;
     }
 </style>

@@ -9,12 +9,14 @@ webpackDevConfig.plugins = [];
 
 module.exports = merge(webpackDevConfig, {
     output: {
-        filename: '[name].[hash].js', // 将出口文件重命名 为了解决 浏览器缓存问题，提升用户体验
-        publicPath: ''
-    },
+        path: path.resolve(__dirname, '../dist'),
+        filename: 'js/[name].[chunkhash].js', // 将出口文件重命名 为了解决 浏览器缓存问题，提升用户体验
+        publicPath: './',
+        chunkFilename: 'js/[id].[chunkhash].js'
+},
     plugins: [
         new ExtractTextPlugin({
-            filename: '[name].[hash].css',
+            filename: 'css/[name].[contenthash].css',
             allChunks: true
         }),
         new webpack.DefinePlugin({
@@ -26,7 +28,7 @@ module.exports = merge(webpackDevConfig, {
             compress: false // 压缩js
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../index-prod.html'),
+            template: path.resolve(__dirname, '../index.html'),
             filename: path.resolve(__dirname, '../dist/index.html'),
             inject: true
         })

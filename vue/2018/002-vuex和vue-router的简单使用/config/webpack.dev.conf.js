@@ -12,15 +12,13 @@ let config = {
         main: './src/main.js'
     },
     output: {
-        path: path.resolve(__dirname, '../dist'), // 必须为绝对路径
-        filename: '[name].js',
-        publicPath: '/dist/',
-        chunkFilename: '[name].chunk.js'
+        filename: '[name].[hash].js', // 将出口文件重命名 为了解决 浏览器缓存问题，提升用户体验
+        publicPath: ''
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'], // webpack可以解析不带后缀名的.js .vue .json文件
         alias: {
-            'vue$': 'vue/dist/vue.esm.js', // vue/dist/vue.common.js 运行事构建和独立构建
+            'vue$': 'vue/dist/vue.esm.js', // vue/dist/vue.common.js 运行时构建和独立构建
             '@': resolve('src')
         }
     },
@@ -59,7 +57,7 @@ let config = {
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../index.html'),
-            filename: path.resolve(__dirname, '../dist/index.html'),
+            filename: path.resolve(__dirname, '../index.html'),
             inject: true
         })
     ]
