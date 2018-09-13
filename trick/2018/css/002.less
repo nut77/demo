@@ -1,0 +1,160 @@
+@import "reset";
+html, body {
+  background-color: #1f1f1f;
+  font-size: 10px;
+}
+.container {
+  width: 900px;
+  margin: 20px auto;
+}
+figure {
+  position: relative;
+  float: left;
+  width: 48%;
+  height: 280px;
+  overflow: hidden;
+  margin: 10px 1%;
+  cursor: pointer;
+}
+img {
+  position: relative;
+  display: block;
+  min-height: 100%;
+  max-width: 100%;
+  opacity: 0.8;
+}
+figcaption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  color: #fff;
+  &::before, &::after {
+    pointer-events: none; // 设置或检索在何时成为属性事件的target。-永不
+  }
+}
+label {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 80px;
+  background-color: #8c442b;
+  font-size: 1.5rem;
+  text-align: center;
+  line-height: 25px;
+}
+h2 {
+  font-size: 2.8rem;
+  font-weight: 300;
+  span {
+    font-weight: 800;
+  }
+}
+p {
+  font-size: 1.6rem;
+}
+
+/*样式1*/
+.figure1 {
+  h2 {
+    position: relative;
+    padding: 1rem 0;
+  }
+  img {
+    transition: opacity 1s, transform 1s;
+  }
+  p {
+    margin-top: 0.8rem;
+    padding: 0.8rem 1rem;
+    background: rgba(255,255,255,0.9);
+    color: #2f3238;
+    font-weight: 500;
+    transition: opacity 0.35s, transform 0.35s;
+    transform: translateX(-450px);
+  }
+  p:first-child {
+    transition-delay: 0.15s;
+  }
+  p:nth-of-type(2) {
+    transition-delay: 0.1s;
+  }
+  p:nth-of-type(3) {
+    transition-delay: 0.05s;
+  }
+  p:nth-of-type(4) {
+    transition-delay: 0s;
+  }
+}
+.figure1:hover {
+  img {
+    opacity: 0.4;
+    transform: scale(1.1, 1.1);
+  }
+  p {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  p:first-child {
+    transition-delay: 0s;
+  }
+  p:nth-of-type(2) {
+    transition-delay: 0.05s;
+  }
+  p:nth-of-type(3) {
+    transition-delay: 0.1s;
+  }
+  p:nth-of-type(4) {
+    -webkit-transition-delay: 0.15s;
+    transition-delay: 0.15s;
+  }
+}
+
+/*样式2*/
+.figure2 {
+  background: #df4e4e;
+  img,
+  h2 {
+    -webkit-transition: -webkit-transform 0.35s;
+    transition: transform 0.35s;
+  }
+
+  img {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  h2, p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 30px;
+  }
+
+   p {
+    text-transform: none;
+    font-size: 90%;
+    opacity: 0;
+    -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+    transition: opacity 0.35s, transform 0.35s;
+    -webkit-transform: translate3d(0,50px,0);
+    transform: translate3d(0,50px,0);
+  }
+
+  &:hover img {
+    -webkit-transform: translate3d(0,-80px,0);
+    transform: translate3d(0,-80px,0);
+  }
+
+  &:hover h2 {
+    -webkit-transform: translate3d(0,-100px,0);
+    transform: translate3d(0,-100px,0);
+  }
+
+  &:hover p {
+    opacity: 1;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+}
