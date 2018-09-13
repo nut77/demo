@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>轮播框左右箭头动效</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        html, body {
+            height: 100%;
+        }
+        .box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #0d4973;
+        }
+        .prev {
+            left: 0;
+        }
+        .next {
+            right: 0;
+        }
+        span {
+            position: absolute;
+            top: 50%;
+            z-index: 1000;
+            width: 100px;
+            height: 100px;
+            text-align: left;
+            cursor: pointer;
+            transform: translateY(-50%); /*类似于margin-top: -50%;的效果 实现盒子垂直居中的效果*/
+        }
+        i {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        span::before,
+        span::after {
+            position: absolute;
+            left: 50%;
+            width: 3px;
+            height: 50%;
+            background: palevioletred;
+            content: '';
+            transition: transform 0.3s;
+            backface-visibility: hidden; /*定义当元素不面向屏幕时是否可见-只是不可见 但是还会有占位 [可写可不写]*/
+        }
+        i::before,
+        i::after {
+            position: absolute;
+            left: 50%;
+            z-index: 100;
+            width: 3px;
+            height: 0;
+            content: '';
+            background: #fff;
+            transition: height 0.3s, transform 0.3s; /*设置多个过渡效果*/
+        }
+        span:hover i::before,
+        span:hover i::after {
+            height: 50%;
+        }
+
+        .prev::before,
+        .prev i::before {
+            top: 50%;
+            transform: translateX(-50%) rotate(-135deg);
+            transform-origin: 50% 0;
+        }
+        .prev::after,
+        .prev i::after {
+            top: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+            transform-origin: 0 0;
+        }
+        .prev:hover::before,
+        .prev:hover i::before {
+            transform: translateX(-50%) rotate(-125deg);
+        }
+        .prev:hover::after,
+        .prev:hover i::after {
+            transform: translateX(-50%) rotate(-55deg);
+        }
+
+        .next::before,
+        .next i::before {
+            top: 50%;
+            transform: translateX(-50%) rotate(135deg);
+            transform-origin: 50% 0;
+        }
+        .next::after,
+        .next i::after {
+            top: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            transform-origin: 100% 0;
+        }
+        .next:hover::before,
+        .next:hover i::before {
+            transform: translateX(-50%) rotate(125deg);
+        }
+        .next:hover::after,
+        .next:hover i::after {
+            transform: translateX(-50%) rotate(55deg);
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <nav>
+        <span class="prev"><i></i></span>
+        <span class="next"><i></i></span>
+    </nav>
+</div>
+</body>
+</html>
