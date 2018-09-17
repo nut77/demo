@@ -207,3 +207,266 @@ p {
     transform: translate(0, 0);
   }
 }
+
+/*样式4*/
+.figure4 {
+  background: #162633;
+  text-align: left;
+  img {
+    transition: opacity 0.45s;
+  }
+  h2 {
+    transition: transform 0.35s;
+    transform: translateY(20px);
+  }
+  figcaption::before {
+    position: absolute;
+    top: -47px;
+    left: -20px;
+    width: calc(~"100% + 40px");
+    height: calc(~"100% + 40px");
+    background: url(../img/triangle.svg) no-repeat center center;
+    background-size: 100% 100%;
+    content: '';
+    transition: opacity 0.45s, transform 0.45s;
+    transform: rotate(45deg);
+    transform-origin: 0 100%;
+  }
+  p {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0 1.5rem 1.5rem 0;
+  }
+  a {
+    margin: 0 10px;
+    color: #5d504f;
+    font-size: 170%;
+    &:hover, &:focus {
+      color: #cc6055;
+    }
+  }
+  i {
+    opacity: 0;
+    transition: opacity 0.35s, transform 0.35s;
+    transform: translateY(50px);
+  }
+  &:hover {
+    img {
+      opacity: 0.6;
+    }
+    h2 {
+      transform: translateY(0);
+    }
+    figcaption::before {
+      opacity: 0.7;
+      transform: rotate(23deg);
+    }
+    i {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    a:nth-child(3) i {
+      transition-delay: 0.05s;
+    }
+    a:nth-child(2) i {
+      transition-delay: 0.1s;
+    }
+    a:first-child i {
+      transition-delay: 0.15s;
+    }
+  }
+}
+
+/*样式5*/
+.figure5 {
+  background: #fff;
+  text-align: center;
+  img {
+    opacity: 0.95;
+    transition: transform 0.35s;
+  }
+  h2 {
+    transition: transform 0.35s;
+    transform: translate3d(0, 20px, 0);
+  }
+  p {
+    opacity: 0;
+    transition: opacity 0.35s, transform 0.35s;
+    transform: rotate3d(1, 0, 0, 90deg); // 以x轴旋转 有翻转的效果
+    transform-origin: 50% 0;
+  }
+  &:hover {
+    img {
+      transform: scale(0.95, 0.95);
+    }
+    h2 {
+      transform: translate3d(0, 0, 0);
+    }
+    p {
+      opacity: 1;
+      transform: rotate3d(1, 0, 0, 0);
+    }
+  }
+}
+
+/*样式6*/
+.figure6 {
+  background: #34495e;
+  figcaption {
+    padding: 1em;
+    &::before, &::after {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-style: solid;
+      border-color: #101010;
+      content: '';
+      transition: transform 0.35s;
+    }
+    &::before {
+      right: 0;
+      bottom: 0;
+      border-width: 0 60px 50px 0;
+      transform: translate3d(60px, 50px, 0);
+    }
+    &::after {
+      top: 0;
+      left: 0;
+      border-width: 15px 0 0 15px;
+      transform: translate3d(-15px, -15px, 0);
+    }
+  }
+  img, a {
+    transition: opacity 0.35s, transform 0.35s;
+  }
+  h2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 0.4em 20px;
+    transition: transform 0.35s;
+    transform: translate3d(100%, 0, 0);
+  }
+  p {
+    float: right;
+    clear: both;
+    font-size: 2rem;
+  }
+  a {
+    display: block;
+    margin-bottom: 1em;
+    margin-right: 5px;
+    color: #fff;
+    opacity: 0;
+    transform: translate3d(90px, 0, 0);
+    &:hover, &:focus {
+      color: #f3cf3f;
+    }
+  }
+  &:hover {
+    figcaption::before, figcaption::after, h2, a {
+      transform: translate3d(0, 0, 0);
+    }
+    img {
+      opacity: 0.6;
+    }
+    a {
+      opacity: 1;
+    }
+    a:first-child {
+      transition-delay: 0.025s;
+    }
+    a:nth-child(2) {
+      transition-delay: 0.05s;
+    }
+    a:nth-child(3) {
+      transition-delay: 0.075s;
+    }
+    a:nth-child(4) {
+      transition-delay: 0.1s;
+    }
+  }
+}
+
+/*样式7*/
+.figure7 {
+  background: #675983;
+}
+
+.figure7 img {
+  opacity: 0.85;
+  -webkit-transition: opacity 0.35s;
+  transition: opacity 0.35s;
+}
+
+.figure7:hover img {
+  opacity: 0.6;
+}
+
+.figure7 figcaption::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(../img/triangle2.svg) no-repeat center center;
+  background-size: 100% 100%;
+  content: '';
+  -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+  transition: opacity 0.35s, transform 0.35s;
+  -webkit-transform: scale3d(5,2.5,1);
+  transform: scale3d(5,2.5,1);
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+}
+
+.figure7:hover figcaption::before {
+  opacity: 0.6;
+  -webkit-transform: scale3d(1,1,1);
+  transform: scale3d(1,1,1);
+}
+
+.figure7 h2 {
+  margin-top: 1em;
+  -webkit-transition: transform 0.35s;
+  transition: transform 0.35s;
+  -webkit-transform: translate3d(0,40px,0);
+  transform: translate3d(0,40px,0);
+}
+
+.figure7:hover h2 {
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+}
+
+.figure7 p a {
+  color: #fff;
+  font-size: 140%;
+  opacity: 0;
+  position: relative;
+  display: inline-block;
+  -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+  transition: opacity 0.35s, transform 0.35s;
+}
+
+.figure7 p a:first-child {
+  -webkit-transform: translate3d(-60px,-60px,0);
+  transform: translate3d(-60px,-60px,0);
+}
+
+.figure7 p a:nth-child(2) {
+  -webkit-transform: translate3d(0,60px,0);
+  transform: translate3d(0,60px,0);
+}
+
+.figure7 p a:nth-child(3) {
+  -webkit-transform: translate3d(60px,-60px,0);
+  transform: translate3d(60px,-60px,0);
+}
+
+.figure7:hover p a {
+  opacity: 1;
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+}
