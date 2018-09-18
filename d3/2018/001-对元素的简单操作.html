@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>对元素的简单操作</title>
-    <script src="https://cdn.jsdelivr.net/npm/d3@latest/dist/d3.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
 </head>
 <body>
 <ul>
@@ -15,6 +15,8 @@
 <script>
     // 选择所有的li元素
     let listItems = d3.selectAll('li');
+
+    // 绑定和使用数据
     listItems.data(['hello', 'd3', '~', '~']);
     listItems.text((data, i) => {
 

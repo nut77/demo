@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>完整的柱状图</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+</head>
+<body>
+<h3>完整的柱状图</h3>
+<script>
+    // 画布大小
+    const width = 400;
+    const height = 400;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    // 画布周边的空白
+    const padding = {
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 20
+    };
+
+    // 柱状图的相关数据
+    // d3.range(yData.length) d3.range 得到一个数组 [0, ..., 7]
+    const xData = ['10-01', '10-02', '10-03', '10-04', '10-05', '10-06', '10-07', '10-08'];
+    const yData = [10, 20, 30, 40, 33, 24, 12, 5];
+
+    // x轴的比例尺
+    let xScale = d3.scaleBand()
+        .domain(xData)
+        .rangeRound([0, width - padding.left - padding.right]);
+
+    // y轴的比例尺
+    let yScale = d3.scaleLinear()
+        .domain([0, d3.max(yData)])
+        .range([height - padding.top - padding.bottom, 0]); // y轴是坐标是负值
+
+    // 定义x轴-坐标轴
+    let xAxis = d3.axisBottom(xScale);
+
+    // 定义y轴-坐标轴
+    let yAxis = d3.axisLeft(yScale);
+
+    // 柱状矩形块之间的空白
+    const rectPadding = 4;
+
+    // 添加矩形元素
+    let rects = svg.selectAll('.rect')
+        .data(yData)
+        .enter()
+        .append('rect')
+        .attr('class', 'rect')
+        .attr('transform', `translate(${padding.left}, ${padding.top})`)
+        .attr('x', (data, i) => {
+
+            return xScale(xData[i]) + rectPadding / 2;
+        })
+        .attr('y', (data) => {
+
+            return yScale(data);
+        })
+        .attr('width', xScale.bandwidth() - rectPadding) // bandwidth() 获取分段的宽度
+        .attr('height', data => { // yScale(data)只是当前的y坐标 从最左上角开始算
+
+            return height - padding.top - padding.bottom - yScale(data);
+        })
+        .attr('fill', '#0085d0');
+
+    // 添加文字元素
+    // x,y当前文字的坐标  dx dy 相对x,y的位置 起到改变文字的作用
+    let texts = svg.selectAll('.text')
+        .data(yData)
+        .enter()
+        .append('text')
+        .attr('class', 'text')
+        .attr('transform', `translate(${padding.left}, ${padding.top})`)
+        .attr('x', (data, i) => {
+
+            return xScale(xData[i]) + rectPadding / 2;
+        })
+        .attr('y', (data) => {
+
+            return yScale(data) - 5;
+        })
+        .attr('dx', (data, i) => {
+
+            return (xScale.bandwidth() - rectPadding) / 2;
+        })
+        .text(data => data);
+
+    // 添加x轴
+    svg.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('transform', `translate(${padding.left}, ${height - padding.bottom})`)
+        .call(xAxis);
+
+    // 添加y轴
+    svg.append('g')
+        .attr('class', 'axis axis--y')
+        .attr('transform', `translate(${padding.left}, ${padding.top})`)
+        .call(yAxis);
+
+</script>
+</body>
+</html>
