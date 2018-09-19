@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>实现简单的动画效果</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+</head>
+<body>
+<h3>实现简单的动画效果</h3>
+<script>
+    // 画布大小
+    const width = document.body.scrollWidth;
+    const height = 800;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    // 添加三个圆圈
+    let circles = {};
+    for (let i = 0; i < 3; i++) {
+
+        circles[`circle${i + 1}`] = svg.append('circle')
+            .attr('cx', 100)
+            .attr('cy', 100 * (i + 1))
+            .attr('r', 45)
+            .style('fill', 'green');
+    }
+
+    // 第一个圆圈的动画
+    circles.circle1
+        .transition()
+        .duration(1000)
+        .attr('cx', 300);
+
+    // 第二个圆圈的动画
+    circles.circle2
+        .transition()
+        .duration(1500)
+        .attr('cx', 300)
+        .style('fill', 'blue');
+
+    // 第三个圆圈的动画
+    circles.circle3
+        .transition()
+        .duration(2000)
+        .ease(d3.easeBounce)
+        .attr('cx', 200)
+        .style('fill', '#0085d0')
+        .attr('r', 30);
+</script>
+</body>
+</html>

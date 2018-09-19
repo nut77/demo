@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>理解Update、Enter、Exit</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+</head>
+<body>
+<h3>理解Update、Enter、Exit-用来处理当前选择集和数据的数量关系不确定的情况</h3>
+http://wiki.jikexueyuan.com/project/d3wiki/enterexit.html
+<hr/>
+<div>
+    假设现在有相关数据集
+    <p><b>update：</b>有选择集中元素与数据对应的部分，update()对应有数据绑定的元素</p>
+    <p><b>enter：</b>数据集长度>选择集元素长度，会建立多余的空的元素与之对应,enter()对应新增的空的元素</p>
+    <p><b>exit：</b>数据集长度&lt;选择集元素长度，会有多余的元素没有绑定数据，exit()对应没有绑定数据的部分</p>
+</div>
+<script>
+    // 画布大小
+    const width = document.body.scrollWidth;
+    const height = 800;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+</script>
+</body>
+</html>
