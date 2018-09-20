@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>力导向图</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+</head>
+<body>
+<h3>力导向图</h3>
+
+<script>
+    // 画布大小
+    const width = 400;
+    const height = 400;
+
+    let nodes = [
+        {id: '成都'},
+        {id: '北京'},
+        {id: '上海'},
+        {id: '深圳'},
+        {id: '广州'},
+        {id: '香港'},
+        {id: '福建'},
+        {id: '青岛'}
+    ];
+    let edges = [
+        {source: 0, target: 1},
+        {source: 0, target: 2},
+        {source: 0, target: 3},
+        {source: 3, target: 6},
+        {source: 3, target: 7},
+        {source: 5, target: 4},
+        {source: 6, target: 4},
+        {source: 7, target: 4}
+    ];
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let force = d3.forceSimulation()
+        .nodes(nodes)
+        .force('link', edges)
+        .force("charge", d3.forceManyBody())
+        .force("center", d3.forceCenter());
+
+    force.start();
+
+</script>
+</body>
+</html>

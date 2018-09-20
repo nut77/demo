@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基础饼状图</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+</head>
+<body>
+<h3>基础饼状图</h3>
+
+<script>
+    // 画布大小
+    const width = 400;
+    const height = 400;
+
+    const data = [89, 90, 23, 78, 10];
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let pie = d3.pie();
+    let pieData = pie(data);
+    console.log(pieData);
+
+    // 外半径和内半径
+    let outerRadius = 150;
+    let innerRadius = 100; // 设置为0 则为实心圆
+
+    // 弧生成器
+    let arc = d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius);
+
+    // 获取颜色
+    let color= d3.schemeAccent;
+    console.log(color);
+
+    // 圆弧
+    let arcs = svg.selectAll('g')
+        .data(pieData)
+        .enter()
+        .append('g')
+        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+    arcs.append('path')
+        .attr('fill', (d, i) => color[i])
+        .attr('d', d => arc(d));
+
+    arcs.append('text')
+        .attr('transform', d => `translate(${arc.centroid(d)})`)
+        .attr('text-anchor', 'middle')
+        .text(d => d.data);
+
+</script>
+</body>
+</html>

@@ -7,7 +7,6 @@
 </head>
 <body>
 <h3>理解Update、Enter、Exit-用来处理当前选择集和数据的数量关系不确定的情况</h3>
-http://wiki.jikexueyuan.com/project/d3wiki/enterexit.html
 <hr/>
 <div>
     假设现在有相关数据集
@@ -15,16 +14,55 @@ http://wiki.jikexueyuan.com/project/d3wiki/enterexit.html
     <p><b>enter：</b>数据集长度>选择集元素长度，会建立多余的空的元素与之对应,enter()对应新增的空的元素</p>
     <p><b>exit：</b>数据集长度&lt;选择集元素长度，会有多余的元素没有绑定数据，exit()对应没有绑定数据的部分</p>
 </div>
-<script>
-    // 画布大小
-    const width = document.body.scrollWidth;
-    const height = 800;
+<hr>
+<div class="demo1">
+    <p>demo1-1</p>
+    <p>demo1-2</p>
+    <p>demo1-3</p>
+</div>
+<hr>
+<div class="demo2">
+    <p>demo2-1</p>
+    <p>demo2-2</p>
+    <p>demo2-3</p>
+    <p>demo2-4</p>
+    <p>demo2-5</p>
+</div>
 
-    // 添加svg画布
-    let svg = d3.select('body')
-        .append('svg')
-        .attr('width', width)
-        .attr('height', height);
+<script>
+    // 1、数据集 > 元素
+    const data1 = ['段落1', '段落2', '段落3', '段落4', '段落5'];
+    let demo1P = d3.select('.demo1').selectAll('p');
+
+    let demo1Update = demo1P.data(data1);
+    demo1Update.text(d => {
+
+       return 'update-' +  d;
+    });
+
+    let demo1Enter = demo1P.data(data1).enter();
+    demo1Enter.append('p').text(d => {
+
+        return 'enter-' +  d;
+    });
+
+    // 2、数据集 < 元素
+    const data2 = ['段落1-1', '段落1-2', '段落1-3'];
+    let demo2P = d3.select('.demo2').selectAll('p');
+
+    let demo2Update = demo2P.data(data2);
+    demo2Update.text(d => {
+
+        return 'update-' +  d;
+    });
+
+    let demo2Exit = demo2P.data(data2).exit();
+    demo2Exit.text(d => {
+
+        return 'exit-' +  d;
+    });
+    // 实际情况中，多出来的元素会被移除掉
+    // demo2Exit.remove();
 </script>
 </body>
 </html>
