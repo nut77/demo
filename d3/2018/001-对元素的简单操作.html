@@ -17,7 +17,7 @@
     // 选择所有的li元素
     let listItems = d3.selectAll('li');
 
-    // 绑定和使用数据
+    // 绑定和使用数据 data绑定一组数据到所选元素上 datam绑定一个数据到所选元素上
     listItems.data(['hello', 'd3', '~', '~']);
     listItems.text((data, i) => {
 

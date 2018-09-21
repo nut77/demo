@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>初识canvas-绘制简单的矩形</title>
+    <style>
+        canvas {
+            background-color: #0d4973;
+        }
+    </style>
+</head>
+<body>
+<ol>
+    <li>canvas的宽高最好使用属性去设置，不要用css 不然可能会导致图形画的扭曲</li>
+    <li>渲染上下文 绘图时 得先填充颜色 再画图形</li>
+    <li></li>
+</ol>
+<canvas id="canvas" width="300" height="300"></canvas>
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    // 画一个矩形
+    ctx.fillStyle = 'rgba(255, 100, 23, 0.5)';
+    ctx.fillRect(20, 20, 50, 50);
+
+    ctx.fillStyle = 'rgba(255, 100, 230, 0.5)';
+    ctx.fillRect(40, 40, 50, 50);
+
+    ctx.fillStyle = 'rgb(255, 10, 130)';
+    ctx.fillRect(100, 100, 80, 80);
+    ctx.clearRect(110, 110, 60, 60);
+    ctx.strokeRect(105, 105, 70, 70);
+
+</script>
+</body>
+</html>
