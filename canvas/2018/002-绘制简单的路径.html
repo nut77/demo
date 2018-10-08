@@ -11,19 +11,88 @@
 </head>
 <body>
 <ol>
-    <li>canvas的宽高最好使用属性去设置，不要用css 不然可能会导致图形画的扭曲</li>
-    <li>渲染上下文 绘图时 得先填充颜色 再画图形</li>
-    <li></li>
+    <li>moveTo(x, y)：将笔触移动到指定的坐标x以及y上</li>
+    <li>lineTo(x, y)：绘制一条从当前位置到指定x以及y位置的直线。 </li>
+    <li>beginPath后一定要fill或者是stroke，否则会导致图形出不来</li>
 </ol>
-<canvas id="canvas" width="300" height="300"></canvas>
+<h3>绘制两个三角形</h3>
+<canvas id="canvas1" width="300" height="110"></canvas>
+
+<h3>画两张脸</h3>
+<canvas id="canvas2" width="300" height="150"></canvas>
+
+<h3>贝塞尔曲线-提示框</h3>
+<canvas id="canvas3" width="300" height="150"></canvas>
 <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
+    // 1、绘制两个个三角形
+    const canvas1 = document.getElementById('canvas1');
+    const ctx1 = canvas1.getContext('2d');
+    ctx1.fillStyle = 'red';
+    ctx1.strokeStyle = 'red';
 
-    // 画一个矩形
-    ctx.fillStyle = 'rgba(255, 100, 23, 0.5)';
-    ctx.fillRect(20, 20, 50, 50);
+    ctx1.beginPath();
+    ctx1.moveTo(75, 50);
+    ctx1.lineTo(100, 75);
+    ctx1.lineTo(100, 25);
+    ctx1.fill();
 
+    ctx1.beginPath();
+    ctx1.moveTo(120, 50);
+    ctx1.lineTo(120, 100);
+    ctx1.lineTo(155, 75);
+    ctx1.closePath();
+    ctx1.stroke(); // 执行该方法可以不用closePath
+
+    // 2、画两张脸
+    const canvas2 = document.getElementById('canvas2');
+    const ctx2 = canvas2.getContext('2d');
+    ctx2.strokeStyle = '#d1ff4d';
+
+    // 笑脸
+    ctx2.beginPath();
+    ctx2.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制大脸
+
+    ctx2.moveTo(110, 75);
+    ctx2.arc(75, 75, 35, 0, Math.PI, false);   // 口(顺时针),默认
+
+    ctx2.moveTo(65, 65);
+    ctx2.arc(60, 65, 5, 0, Math.PI*2, true);  // 左眼
+
+    ctx2.moveTo(95, 65);
+    ctx2.arc(90, 65, 5, 0, Math.PI*2, true);  // 右眼
+
+    // 丧脸
+    ctx2.moveTo(275, 75); // 起点x = 圆心x + 半径
+    ctx2.arc(225, 75, 50, 0, Math.PI * 2, true); // 绘制大脸
+
+    ctx2.moveTo(229, 70);
+    ctx2.arc(225, 70, 4, 0, Math.PI * 2, true); // 绘制鼻子
+
+    ctx2.moveTo(250, 110);
+    ctx2.arc(225, 110, 25, 0, Math.PI, true);   // 口
+
+    ctx2.moveTo(190, 55);
+    ctx2.lineTo(200, 55); // 左眼
+
+    ctx2.moveTo(250, 55);
+    ctx2.lineTo(260, 55); // 右眼
+
+    ctx2.stroke();
+
+    // 3、贝塞尔曲线-提示框
+    const canvas3 = document.getElementById('canvas3');
+    const ctx3 = canvas3.getContext('2d');
+    ctx3.strokeStyle = '#0085d0';
+
+    ctx3.beginPath();
+    ctx3.moveTo(75,25);
+    ctx3.quadrat icCurveTo(25,25,25,62.5);
+    ctx3.quadraticCurveTo(25,100,50,100);
+    ctx3.quadraticCurveTo(50,120,30,125);
+    ctx3.quadraticCurveTo(60,120,65,100);
+    ctx3.quadraticCurveTo(125,100,125,62.5);
+    ctx3.quadraticCurveTo(125,25,75,25);
+    ctx3.stroke();
 </script>
 </body>
 </html>
