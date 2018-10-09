@@ -21,8 +21,14 @@
 <h3>画两张脸</h3>
 <canvas id="canvas2" width="300" height="150"></canvas>
 
-<h3>贝塞尔曲线-提示框</h3>
-<canvas id="canvas3" width="300" height="150"></canvas>
+<h3>二次贝塞尔曲线-提示框</h3>
+<canvas id="canvas3" width="150" height="150"></canvas>
+
+<h3>三次贝塞尔曲线-心形</h3>
+<canvas id="canvas4" width="150" height="150"></canvas>
+
+<h3>矩形</h3>
+<canvas id="canvas5" width="300" height="150"></canvas>
 <script>
     // 1、绘制两个个三角形
     const canvas1 = document.getElementById('canvas1');
@@ -79,20 +85,46 @@
 
     ctx2.stroke();
 
-    // 3、贝塞尔曲线-提示框
+    // 3、二次贝塞尔曲线-提示框
     const canvas3 = document.getElementById('canvas3');
     const ctx3 = canvas3.getContext('2d');
     ctx3.strokeStyle = '#0085d0';
 
     ctx3.beginPath();
     ctx3.moveTo(75,25);
-    ctx3.quadrat icCurveTo(25,25,25,62.5);
-    ctx3.quadraticCurveTo(25,100,50,100);
-    ctx3.quadraticCurveTo(50,120,30,125);
-    ctx3.quadraticCurveTo(60,120,65,100);
-    ctx3.quadraticCurveTo(125,100,125,62.5);
-    ctx3.quadraticCurveTo(125,25,75,25);
+    ctx3.quadraticCurveTo(25, 25, 25, 62.5);
+    ctx3.quadraticCurveTo(25, 100, 50, 100);
+    ctx3.quadraticCurveTo(50, 120, 30, 125);
+    ctx3.quadraticCurveTo(60, 120, 65, 100);
+    ctx3.quadraticCurveTo(125, 100, 125, 62.5);
+    ctx3.quadraticCurveTo(125, 25, 75, 25);
     ctx3.stroke();
+
+    // 4、三次贝塞尔曲线-心形
+    const canvas4 = document.getElementById('canvas4');
+    const ctx4 = canvas4.getContext('2d');
+    ctx4.fillStyle = '#ff2032';
+
+    ctx4.beginPath();
+    ctx4.moveTo(75, 40);
+    ctx4.bezierCurveTo(75, 37, 70, 25, 50, 25);
+    ctx4.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+    ctx4.bezierCurveTo(20, 80, 40, 102, 75, 120);
+    ctx4.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+    ctx4.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+    ctx4.bezierCurveTo(85, 25, 75, 37, 75, 40);
+    ctx4.fill();
+
+    // 5、矩形
+    const canvas5 = document.getElementById('canvas5');
+    const ctx5 = canvas5.getContext('2d');
+
+    ctx5.fillStyle = '#ffefa3';
+    ctx5.rect(10, 30, 130, 90);
+    ctx5.fill();
+
+    ctx5.fillStyle = '#ff9462';
+    ctx5.fillRect(160, 30, 130, 90);
 </script>
 </body>
 </html>

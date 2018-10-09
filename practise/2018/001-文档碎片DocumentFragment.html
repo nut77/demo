@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文档碎片DocumentFragment</title>
+</head>
+<body>
+<ol>
+    <li>DocumentFragment接口表示一个没有父级文件的最小文档对象。不是真实DOM树的一部分，它的变化不会引起DOM树的重新渲染的操作(reflow)，且不会导致性能等问题。</li>
+    <li>模板元素在其HTMLTemplateElement.content属性中包含了一个DocumentFragment。</li>
+    <li>可以使用document.createDocumentFragment方法或者构造函数来创建一个空的DocumentFragment。</li>
+    <li>DocumentFragment其属性继承自Node，并补充了ParentNode接口接口中的属性。</li>
+</ol>
+<template>
+    <h1>123</h1>
+</template>
+</body>
+<script>
+    // 往body中动态插入文档碎片DocumentFragment
+    var docFragment = document.createDocumentFragment();
+
+    for (let i = 1; i < 10; i++) {
+
+        let node = document.createElement('p');
+        let node_text = document.createTextNode(i + '：你好呀~~');
+
+        node.appendChild(node_text);
+
+        docFragment.appendChild(node);
+    }
+
+    document.body.appendChild(docFragment);
+</script>
+</html>
