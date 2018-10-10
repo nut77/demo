@@ -3,8 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>shadow-dom</title>
+    <style>
+        h1 {
+            color: #db73ff !important;
+        }
+    </style>
 </head>
 <body>
+<ol>
+    <li>shadow-dom 和 主dom的样式互不影响。</li>
+    <li></li>
+    <li></li>
+</ol>
+<el-h1>
+    <h1>这是不支持shadow-dom的标题~</h1>
+</el-h1>
+<div id="host">
+    <h1 class="title">I am title</h1>
+    <p class="subtitle">I am subtitle</p>
+</div>
+<template id="temp">
+    <style>
+        span{
+            color: red;
+        }
+    </style>
+    <p>shadowDOM</p>
+    <span>I'm the span tag of template</span>
+    <!-- 绑定h1的内容 -->
+    <content select=".title"></content>
+    <!-- 如果需要渲染p的内容需要再写一个content并指定他的select属性 -->
+    <!-- <content select=".subtitle"></content> -->
+</template>
+<script>
+if (document.body.createShadowRoot) {
 
+    let host = document.querySelector('el-h1');
+    let root = host.createShadowRoot();
+    root.innerHTML = '<h1 style="background-color: #2cacff; color: white;">这是支持shadow-dom的标题~</h1>';
+}
+
+var host = document.querySelector('#host');
+var root = host.createShadowRoot();
+
+var temp = document.querySelector('#temp');
+var clone = document.importNode(temp.content, true);
+
+root.appendChild(clone);
+
+</script>
 </body>
 </html>

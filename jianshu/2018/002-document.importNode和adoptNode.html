@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>document.importNode和adoptNode</title>
+    <style>
+        iframe {
+            border: 3px solid #2185d1;
+        }
+    </style>
+</head>
+<body>
+<ol>
+    <li>document.importNode用法：<code>var node = document.importNode(externalNode, deep);</code></li>
+    <li>document.importNode用途：将外部文档的一个节点拷贝一份,然后可以把这个拷贝的节点插入到当前文档中。</li>
+    <li>document.adoptNode用法：<code>var node = document.adoptNode(externalNode);</code></li>
+    <li>document.adoptNode用途：从其他的document文档中获取一个节点。 该节点以及它的子树上的所有节点都会从原文档删除 (如果有这个节点的话), 并且它的ownerDocument 属性会变成当前的document文档。 之后你可以把这个节点插入到当前文档中。【该方法也同样适用 同一文档的不同元素切换】。</li>
+</ol>
+
+<iframe src="002-iframe.html" frameborder="0" width="600" height="200"></iframe>
+
+<script>
+    // 要等子页面加载完了再执行 否则获取到的iframeDocument不对
+    window.onload = function () {
+
+        const iframeDocument = document.querySelector("iframe").contentDocument;
+        const cloneNodeH1 = iframeDocument.querySelector('h1');
+        const cloneNodeH2 = iframeDocument.querySelector('h2');
+
+        // document.importNode的用法
+        let importNode = document.importNode(cloneNodeH1, true); // 深拷贝
+        document.body.appendChild(importNode);
+        console.log(cloneNodeH1 === importNode); // false
+        console.log(importNode.ownerDocument); // 当前文档
+        console.log(cloneNodeH1.ownerDocument); // iframeDocument
+
+        // document.adoptNode的用法
+        let adoptNode = document.adoptNode(cloneNodeH2);
+        document.body.appendChild(adoptNode);
+        console.log(cloneNodeH2 === adoptNode); // true
+        console.log(adoptNode.ownerDocument); // 当前文档
+        console.log(cloneNodeH2.ownerDocument); // 当前文档
+    };
+</script>
+</body>
+</html>

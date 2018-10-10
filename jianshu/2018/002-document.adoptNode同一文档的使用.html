@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>document.adoptNode在同一文档的使用</title>
+    <style>
+        * {
+            margin: 0;
+        }
+        body, .box {
+            padding: 20px;
+        }
+        .box {
+            display: table;
+            bottom: 0;
+            border: 3px solid #2185d1;
+        }
+        ul, .btnGroup{
+            float: left;
+            margin: 20px 50px;
+        }
+        ul {
+            width: 60px;
+            height: 150px;
+            padding: 20px 50px;
+            border: 1px solid #155269;
+            border-radius: 5px;
+        }
+        .btnGroup {
+            margin-top: 90px;
+        }
+        button ~ button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h3>document.adoptNode同一文档下的应用</h3>
+    <ul>
+        <li>面包</li>
+        <li>包子</li>
+        <li>子不语</li>
+        <li>语言</li>
+    </ul>
+    <div class="btnGroup">
+        <button type="button" onclick="moveRight()">&gt;&gt;</button>
+        <br>
+        <button type="button" onclick="moveLeft()">&lt;&lt;</button>
+    </div>
+    <ul></ul>
+</div>
+<script>
+    const ul1 = document.getElementsByTagName('ul')[0];
+    const ul2 = document.getElementsByTagName('ul')[1];
+
+    function move(eleFrom, eleTo) {
+
+        let firshChild = eleFrom.firstElementChild;
+        if (null == firshChild) {
+
+            alert('列表为空，不能移动');
+            return false;
+        }
+        eleTo.append(document.adoptNode(firshChild));
+    }
+
+    function moveRight() {
+
+        move(ul1, ul2);
+    }
+
+    function moveLeft() {
+
+        move(ul2, ul1);
+    }
+</script>
+</body>
+</html>
