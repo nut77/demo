@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shadow-dom</title>
+    <style>
+        h1, p {
+            color: #db73ff !important;
+        }
+        #host {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+<div id="host">
+    <h1 class="title">I am title</h1>
+    <p class="subtitle">I am subtitle</p>
+</div>
+<template id="temp">
+    <style>
+        span {
+            color: red;
+        }
+        ::content * {
+            background-color: #60d9ff;
+        }
+        :host {
+            border: 2px solid #e0cbff;
+        }
+    </style>
+    <p onclick="alert('hello~');" pseudo="test">shadowDOM</p>
+    <span>I'm the span tag of template</span>
+    <!-- 绑定h1和p的内容 -->
+    <content></content>
+</template>
+<script>
+
+    var host = document.querySelector('#host');
+    var root = host.createShadowRoot();
+    var temp = document.querySelector('#temp');
+    var clone = document.importNode(temp.content, true);
+
+    root.appendChild(clone);
+    document.addEventListener('click', function(e) {
+
+        console.log(e.target.innerHTML + ' click!');
+    });
+
+</script>
+</body>
+</html>
