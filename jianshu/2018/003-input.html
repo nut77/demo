@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>input web component</title>
+</head>
+<body>
+<template>
+    <style>
+        :host * {
+            box-sizing: border-box;
+        }
+        .el-input {
+            display: inline-block;
+            width: 200px;
+            padding: 20px 30px;
+            border-radius: 3px;
+            background-color: #0085d0;
+            color: white;
+            box-shadow: 0 0 10px #666;
+        }
+        .el-input-label, .el-input-field {
+            display: block;
+            width: 100%;
+        }
+        .el-input-field {
+            padding: 5px;
+            margin-top: 10px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            color: #0085d0;
+        }
+    </style>
+    <div class="el-input">
+        <label class="el-input-label">你好</label>
+        <input type="text" class="el-input-field" placeholder="123">
+    </div>
+</template>
+<script>
+    (function (doc) {
+
+        // doc  有template的那个document
+        // document 当前显示的那个页面的document
+        let elInput = Object.create(HTMLElement.prototype, {
+            width: {
+                get() {
+                    return this._width;
+                },
+                set(width) {
+                    this._width = width;
+                }
+            }
+        });
+        elInput.createdCallback = function () {
+
+            let shadowRoot = this.createShadowRoot();
+            let template = doc.querySelector('template');
+            let node = document.importNode(template, true);
+            shadowRoot.append(node);
+        };
+
+        // 注册组件
+        document.registerElement('el-input', {prototype: elInput});
+
+    })(document.currentScript.ownerDocument);
+
+    // document.currentScript.ownerDocument
+    // 正在执行的当前脚本的<script>元素的Doc文档对象
+</script>
+</body>
+</html>

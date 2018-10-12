@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>shadow-dom</title>
+    <title>初探shadow-dom</title>
     <style>
         h1 {
             color: #db73ff !important;
@@ -25,29 +25,31 @@
 <ol>
     <li>shadow-dom 和 主dom的样式互不影响。</li>
     <li>可以通过element.createShadowRoot()来创建目标容器（shadow-host）对应deshadow-root</li>
-    <li></li>
 </ol>
+<hr>
+<input type="text" placeholder="请输入用户名" value="123">
+<hr>
 <el-h1>
     <h1>这是不支持shadow-dom的标题~</h1>
 </el-h1>
+<hr>
 <div id="host">
     <h1 class="title">I am title</h1>
     <p class="subtitle">I am subtitle</p>
 </div>
-<input type="text" placeholder="请输入用户名" value="123">
 <template id="temp">
     <style>
-        span{
+        span {
             color: red;
         }
         ::content * {
             background-color: #60d9ff;
         }
         :host {
-            border: 2px solid #e0cbff;
+            border: 2px solid #12ff32;
         }
     </style>
-    <p onclick="alert('hello~');" pseudo="test">shadowDOM</p>
+    <p onclick="alert('hello~');" pseudo="test">template - 点我吧~~</p>
     <span>I'm the span tag of template</span>
     <!-- 绑定h1和p的内容 -->
     <content></content>
