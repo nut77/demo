@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css实现三行布局</title>
+    <style>
+        .cont1, .cont2, .cont3, .cont4, .cont5, .cont6, .cont7 {
+            height: 200px;
+        }
+        .cont-top {
+            height: 50px;
+            background-color: red;
+        }
+        .cont-middle {
+            background-color: #2b67ff;
+        }
+        .cont-bottom {
+            height: 30px;
+            background-color: blueviolet;
+        }
+        /*display：flex*/
+        .cont1 {
+            display: flex;
+            flex-direction: column;
+        }
+        .cont1 .cont-middle {
+            flex-grow: 1;
+        }
+        /*display：flex*/
+        .cont2 {
+            position: relative;
+        }
+        .cont2 .cont-middle {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50px;
+            bottom: 30px;
+        }
+        .cont2 .cont-bottom {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        /*使用margin*/
+        .cont3 {
+            box-sizing: border-box;
+            padding: 50px 0 30px 0;
+        }
+        .cont3 .cont-middle {
+            height: 100%;
+        }
+        .cont3 .cont-top {
+            margin-top: -50px;
+        }
+        .cont3 .cont-bottom {
+            margin-bottom: -30px;
+        }
+        /*利用table特性*/
+        .cont4 {
+            display: table;
+            width: 100%;
+        }
+        .cont4 .cont-middle, .cont4 .cont-top, .cont4 .cont-bottom {
+            display: table-row;
+        }
+    </style>
+</head>
+<body>
+<h3>1、使用 display：flex实现上下固定中间自适应的三行布局</h3>
+<div class="cont1">
+    <div class="cont-top"></div>
+    <div class="cont-middle"></div>
+    <div class="cont-bottom"></div>
+</div>
+
+<h3>2、使用绝对定位</h3>
+<div class="cont2">
+    <div class="cont-top"></div>
+    <div class="cont-middle"></div>
+    <div class="cont-bottom"></div>
+</div>
+
+<h3>3、利用圣杯布局的思想</h3>
+<div class="cont3">
+    <div class="cont-top"></div>
+    <div class="cont-middle"></div>
+    <div class="cont-bottom"></div>
+</div>
+
+<h3>4、利用table特性-【利用display: table;和display: table-row; row里面必须有内容才可以】</h3>
+<ol>
+    <li>tr元素里面必须包含td如果是其它元素那么显示会有问题-层级关系不对。td在table中可以不被tr包裹，查看元素时层级也不会错</li>
+    <li>tr td 等表单元素都不能独立table而存在。</li>
+</ol>
+<div class="cont4">
+    <div class="cont-top">1</div>
+    <div class="cont-middle">2</div>
+    <div class="cont-bottom">3</div>
+</div>
+</body>
+</html>

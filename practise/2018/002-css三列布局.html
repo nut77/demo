@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css实现三列布局</title>
+    <style>
+        .cont1, .cont2, .cont3, .cont4, .cont5, .cont6, .cont7 {
+            height: 200px;
+        }
+        .cont-left {
+            width: 100px;
+            height: 100%;
+            background-color: red;
+        }
+        .cont-right {
+            width: 150px;
+            height: 100%;
+            background-color: #2b67ff;
+        }
+        .cont-center {
+            background-color: blueviolet;
+        }
+        /*flex布局*/
+        .cont1 {
+            display: flex;
+        }
+        .cont1 .cont-center {
+            flex-grow: 1;
+        }
+        /*利用计算属性*/
+        .cont2 .cont-left, .cont2 .cont-right, .cont2 .cont-center {
+            float: left;
+        }
+        .cont2 .cont-center {
+            width: calc(100% - 250px);
+            height: 100%;
+        }
+        /*绝对定位*/
+        .cont3 {
+            position: relative;
+        }
+        .cont3 .cont-left {
+            position: absolute;
+            left: 0;
+        }
+        .cont3 .cont-right {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        .cont3 .cont-center {
+            /*position: absolute;
+            left: 100px;
+            right: 150px;*/
+            margin: 0 150px 0 100px;
+            height: 100%;
+        }
+        /*利用浮动*/
+        .cont4 .cont-left {
+            float: left;
+        }
+        .cont4 .cont-right {
+            float: right;
+        }
+        .cont4 .cont-center {
+            margin: 0 150px 0 100px;
+            height: 100%;
+        }
+        /*圣杯布局*/
+        .cont5 {
+            padding: 0 150px 0 100px;
+        }
+        .cont5 .cont-left, .cont5 .cont-right, .cont5 .cont-center {
+            float: left;
+            height: 100%;
+        }
+        .cont5 .cont-center {
+            width: 100%;
+        }
+        .cont5 .cont-left {
+            position: relative;
+            left: -100px;
+            margin-left: -100%;
+        }
+        .cont5 .cont-right {
+            position: relative;
+            right: -150px;
+            margin-left: -150px;
+        }
+        /*双飞翼布局*/
+        .cont6 .cont-left, .cont6 .cont-right, .cont6 .wrap-center {
+            float: left;
+            height: 100%;
+        }
+        .cont6 .wrap-center {
+            width: 100%;
+        }
+        .cont6 .cont-center {
+            margin: 0 150px 0 100px;
+            height: 100%;
+        }
+        .cont6 .cont-left {
+            margin-left: -100%;
+        }
+        .cont6 .cont-right {
+            margin-left: -150px;
+        }
+        /*利用表格特性*/
+        .cont7 {
+            display: table;
+            width: 100%;
+        }
+        .cont7 .cont-left, .cont7 .cont-right, .cont7 .cont-center {
+            display: table-cell;
+        }
+    </style>
+</head>
+<body>
+<h3>1、使用 display：flex实现左右固定中间自适应的三列布局</h3>
+<div class="cont1">
+    <div class="cont-left"></div>
+    <div class="cont-center"></div>
+    <div class="cont-right"></div>
+</div>
+
+<h3>2、使用计算属性实现左右固定中间自适应的三列布局 -- 使用计算属性如果固定宽度值改变 还要重新计算减项</h3>
+<p><b>在某些情况设置宽度后 会出现留白的情况 明明没有margin和padding 那是因为浏览器会把inline元素间的空白字符（空格、换行、Tab等）渲染成一个空格。解决办法如下：</b></p>
+<ol>
+    <li>设置浮动-【要考虑清除浮动】</li>
+    <li>将所有元素写在一行-【但是代码不美观】</li>
+    <li>将父元素的font-size设置为0-【针对设置宽度的元素 还要重新设置字体大小】</li>
+    <li>将父元素的letter-spacing设置为-5px-【针对设置宽度的元素 还要重新设置letter-spacing:normal;】</li>
+</ol>
+<div class="cont2">
+    <div class="cont-left"></div>
+    <div class="cont-center"></div>
+    <div class="cont-right"></div>
+</div>
+
+<h3>3、利用定位，利用定位实现有几种办法（1、全部都是绝对定位 利用定位属性控制中间区域宽度;2、左右绝对定位，但是要设置top不然位置不对，中间区域利用margin来控制宽度）-【子元素都要使用定位-css代码量会增多 且不好维护】</h3>
+<div class="cont3">
+    <div class="cont-left"></div>
+    <div class="cont-center"></div>
+    <div class="cont-right"></div>
+</div>
+
+<h3>4、利用浮动-【左右分别向左向右浮动，中间利用margin来设置宽度-需要先写左右模块在写中间模块因为浮动后脱离了文档流，如果先写中间会导致右侧模块到下一行】</h3>
+<div class="cont4">
+    <div class="cont-left"></div>
+    <div class="cont-right"></div>
+    <div class="cont-center"></div>
+</div>
+
+<h3>5、圣杯布局-【利用margin负边距-优先渲染中间模块】</h3>
+<ol>
+    <li>所有模块向左浮动，优先渲染中间模块，左右模块采用相对定位。</li>
+    <li>父模块（主包裹类）采用padding留出左右部分的宽度</li>
+</ol>
+<div class="cont5">
+    <div class="cont-center"></div>
+    <div class="cont-left"></div>
+    <div class="cont-right"></div>
+</div>
+
+<h3>6、双飞翼布局-【利用margin负边距-优先渲染被包裹的中间模块】</h3>
+<ol>
+    <li>所有模块向左浮动，优先渲染中间模块，左右模块采用margin负边距实现定位。</li>
+    <li>中间模块使用一个div包裹，该div宽度为100%，中间自适应模块通过margin实现左右边距 达到自适应效果</li>
+</ol>
+<div class="cont6">
+    <div class="wrap-center">
+        <div class="cont-center"></div>
+    </div>
+    <div class="cont-left"></div>
+    <div class="cont-right"></div>
+</div>
+
+<h3>7、利用表格特性-【display: table;和display: table-cell;属性相结合】</h3>
+<div class="cont7">
+    <div class="cont-left"></div>
+    <div class="cont-center"></div>
+    <div class="cont-right"></div>
+</div>
+</body>
+</html>
