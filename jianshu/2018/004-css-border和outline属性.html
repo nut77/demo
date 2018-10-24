@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>border和outline</title>
+    <style>
+        span {
+            display: inline-block;
+            box-sizing: border-box;
+            width: 120px;
+            margin: 10px 20px;
+            background-color: palevioletred;
+            color: white;
+            line-height: 25px;
+            text-align: center;
+        }
+        .btn-outline1 {
+            outline: 5px solid #00C1DE;
+        }
+        .btn-outline2 {
+            outline: 5px dotted #00C1DE;
+        }
+        .btn-outline3 {
+            outline: 5px dashed #00C1DE;
+        }
+        .btn-outline5 {
+            outline: 5px double #00C1DE;
+        }
+        .btn-outline4 {
+            outline: 5px groove #00C1DE;
+        }
+        .btn-outline6 {
+            outline: 5px ridge #00C1DE;
+        }
+        .btn-outline7 {
+            border-radius: 15px;
+            outline: 5px inset #00C1DE;
+        }
+        .btn-outline8 {
+            outline-color: #00C1DE;
+            outline-style: outset;
+            outline-width: 5px;
+        }
+
+        .btn-border1 {
+            border: 5px solid #126773;
+        }
+        .btn-border2 {
+            border: 5px dotted #126773;
+        }
+        .btn-border3 {
+            border: 5px dashed #126773;
+        }
+        .btn-border4 {
+            border: 5px double #126773;
+        }
+        .btn-border5 {
+            border: 5px groove #126773;
+        }
+        .btn-border6 {
+            border: 5px ridge #126773;
+        }
+        .btn-border7 {
+            border-radius: 15px;
+            border: 5px inset #126773;
+        }
+        .btn-border8 {
+            border-color: #126773;
+            border-width: 5px;
+            border-style: outset;
+        }
+        .btn-border9 {
+            border-style: solid double dashed double;
+            border-color: #e3ff14;
+        }
+
+    </style>
+</head>
+<body>
+<ol>
+    <li>outline：（轮廓）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用；</li>
+    <li>outline：轮廓线不会占据空间，也不一定是矩形；</li>
+    <li>outline：<code>outline-style</code>是必须要写的，且只能为一个值；</li>
+    <li>outline：<code>outline-color</code>没有时，outline-color取字体颜色；</li>
+    <li>outline：不显示<code>outline-style: none;</code>、<code>outline-color: transparent;</code>或<code>outline-width: 0;</code>。</li>
+</ol>
+<ol>
+    <li>border：简写属性在一个声明设置所有的边框属性；</li>
+    <li>border：会占据空间；</li>
+    <li>border：<code>border-style</code>是必须要写的，可以为多个值；</li>
+    <li>border：<code>border-color</code>没有时，border-color取字体颜色；</li>
+    <li>border：不显示<code>border-style: none/hidden;</code></li>
+</ol>
+
+<hr>
+<h3>outline的应用------outline-width: 5px;</h3>
+<span class>button</span>
+<span class="btn-outline1">button-solid</span>
+<span class="btn-outline2">button-dotted</span>
+<span class="btn-outline3">button-dashed</span>
+<span class="btn-outline5">button-double</span>
+<span class="btn-outline4">button-groove</span>
+<span class="btn-outline6">button-ridge</span>
+<span class="btn-outline7">button-inset</span>
+<span class="btn-outline8">button-outset</span>
+
+<hr>
+<h3>border的应用------border-width: 5px;box-sizing: border-box;</h3>
+<span class>button</span>
+<span class="btn-border1">button-solid</span>
+<span class="btn-border2">button-dotted</span>
+<span class="btn-border3">button-dashed</span>
+<span class="btn-border4">button-double</span>
+<span class="btn-border5">button-groove</span>
+<span class="btn-border6">button-ridge</span>
+<span class="btn-border7">button-inset</span>
+<span class="btn-border8">button-outset</span>
+<span class="btn-border9">button-多边框</span>
+
+<hr>
+<h3>border + outline的应用------border-width: 5px;outline-width: 5px;box-sizing: border-box;</h3>
+<span class="btn-border1 btn-outline1">button-solid</span>
+<span class="btn-border2 btn-outline2">button-dotted</span>
+<span class="btn-border3 btn-outline3">button-dashed</span>
+<span class="btn-border4 btn-outline4">button-double</span>
+</body>
+</html>

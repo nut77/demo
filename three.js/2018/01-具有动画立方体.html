@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>three.js入门</title>
-    <script src="../three-4.5.js"></script>
+    <title>具有动画立方体</title>
+    <script src="../static/three-4.5.js"></script>
     <style>
         html, body {
             width: 100%;
@@ -21,12 +21,11 @@
 
     // 相机
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
 
     // 渲染器
     var renderer = new THREE.WebGLRenderer();
-
     renderer.setSize(1000, 500);
-
     document.body.appendChild(renderer.domElement);
 
     // 添加物体在场景中
@@ -36,7 +35,6 @@
     scene.add(cube);
 
     // 渲染
-    camera.position.z = 5;
     function render() {
 
         requestAnimationFrame(render);
