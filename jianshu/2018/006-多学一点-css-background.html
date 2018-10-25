@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>多学一点-css-background</title>
+    <style>
+        .main {
+            display: flex;
+            margin: 30px;
+        }
+        .main-left {
+            flex: 1;
+        }
+        .main-center {
+            width: 400px;
+            height: 400px;
+            margin: 0 20px;
+            box-sizing: border-box;
+            border: 5px dotted #00ffff;
+        }
+        .main-right {
+            width: 300px;
+            border-left: 1px solid black;
+        }
+    </style>
+    <script src="js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+<ol>
+    <li>background 简写属性在一个声明中设置所有的背景属性。</li>
+    <li>background-color：规定要使用的背景颜色。	</li>
+    <li>background-position：规定背景图像的位置。</li>
+    <li>background-repeat：规定如何重复背景图像。</li>
+    <li>background-image：规定要使用的背景图像。</li>
+    <li>background-attachment：规定背景图像是否固定或者随着页面的其余部分滚动。</li>
+    <li>background-clip：规定背景的绘制区域。【css3】</li>
+    <li>background-size：规定背景图片的尺寸。【css3】</li>
+    <li>background-origin：规定背景图片的定位区域。【css3】</li>
+</ol>
+<div class="main">
+    <div class="main-left">
+        <div class="form-item">
+            <label>background-position：</label>
+        </div>
+    </div>
+    <div class="main-center"></div>
+    <div class="main-right"></div>
+</div>
+<script>
+    let initStyle = {
+        "width": "500px",
+        "height": "500px",
+        "margin": "0 20px",
+        "box-sizing": "border-box",
+        "border": "5px dotted #00ffff"
+    };
+</script>
+</body>
+</html>
