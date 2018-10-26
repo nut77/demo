@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js实现对象的拷贝</title>
+    <script src="js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+<script>
+    let originObj = {
+        name: 'Ada',
+        age: 23,
+        date: '2018-10-26',
+        hobby: ['烘焙', '定期观影', '一阵一阵的看书', '...'],
+        address: {
+            province: 'sichuang',
+            city: 'chengdu'
+        }
+    };
+    let originArr = [1, 2, 3, {
+        address: {
+            province: 'sichuang',
+            city: 'chengdu'
+        }
+    }];
+
+    // 什么判断是不是对象这些就不写了 就是一个很简单的打印函数
+    function printDeepCopyResult(deepCopyObj) {
+
+        console.log(deepCopyObj);
+        // 如果是数组
+        if (Array === deepCopyObj.constructor) {
+
+            console.log(deepCopyObj[3] == originArr[3]);
+        }
+        // 如果是对象
+        if (Object === deepCopyObj.constructor) {
+
+            console.log(deepCopyObj.hobby == originObj.hobby);
+        }
+    }
+
+    // 1、基本方式 循环+递归处理
+    function deepCopy1(origin) {
+
+        let isArray = Array === origin.constructor;
+        let copy = isArray ? [] : {}; // new origin.constructor;
+
+        for (let key in origin) {
+
+            if (origin.hasOwnProperty(key)) { // 过滤掉继承的可枚举的属性
+
+                copy[key] = 'object' == typeof origin[key] ? deepCopy1(origin[key]) : origin[key];
+                // copy[key] = 'object' == typeof origin[key] ? arguments.callee(origin[key]) : origin[key];
+            }
+        }
+
+        return copy;
+    }
+    let deepCopyObj1 = deepCopy1(originObj);
+    let deepCopyArr1 = deepCopy1(originArr);
+    printDeepCopyResult(deepCopyObj1);
+    printDeepCopyResult(deepCopyArr1);
+
+    // 2、利用JSON.stringify 和 JSON.parse
+    function deepCopy2(origin) {
+
+        return JSON.parse(JSON.stringify(origin));
+    }
+
+    let deepCopyObj2 = deepCopy2(originObj);
+    let deepCopyArr2 = deepCopy2(originArr);
+    printDeepCopyResult(deepCopyObj2);
+    printDeepCopyResult(deepCopyArr2);
+
+    // 3、jquery extend静态方法
+    let deepCopyObj3 = $.extend(true, {}, originObj);
+    let deepCopyArr3 = $.extend(true, [], originArr);
+    printDeepCopyResult(deepCopyObj3);
+    printDeepCopyResult(deepCopyArr3);
+
+    console.log($.extend({}, originArr));
+    console.log($.extend({}, originObj));
+    console.log(Object.assign({}, originArr) == originArr);
+    console.log(Object.assign({}, originObj) == originObj);
+    // 1、利用es6语法 扩展运算符...
+    // 如果对象或数组属性值是基本数据类型，用该方法就可以了，如果不是则需要循环判断
+</script>
+</body>
+</html>

@@ -10,17 +10,14 @@
         }
         .main-left {
             flex: 1;
-        }
-        .main-center {
-            width: 400px;
-            height: 400px;
-            margin: 0 20px;
-            box-sizing: border-box;
-            border: 5px dotted #00ffff;
+            border-right: 1px solid black;
         }
         .main-right {
-            width: 300px;
+            width: 400px;
             border-left: 1px solid black;
+        }
+        .form-item {
+            margin-top: 20px;
         }
     </style>
     <script src="js/jquery-1.7.2.min.js"></script>
@@ -40,20 +37,68 @@
 <div class="main">
     <div class="main-left">
         <div class="form-item">
+            <label>background-origin：</label>
+            <br>
+            <input type="radio" name="background-origin" value="border-box">border-box
+            <input type="radio" name="background-origin" value="padding-box" checked>padding-box
+            <input type="radio" name="background-origin" value="content-box">content-box
+        </div>
+        <div class="form-item">
             <label>background-position：</label>
+            <br>
+            <input type="radio" name="background-position" value="0% 0%" checked>0% 0%
+            <input type="radio" name="background-position" value="0%">0%
+            <input type="radio" name="background-position" value="center">center
+            <input type="radio" name="background-position" value="100% center">100% center
+            <input type="radio" name="background-position" value="10px 20px">10px 20px
+        </div>
+        <div class="form-item">
+            <label>background-clip：</label>
+            <br>
+            <input type="radio" name="background-clip" value="border-box" checked>border-box
+            <input type="radio" name="background-clip" value="padding-box">padding-box
+            <input type="radio" name="background-clip" value="content-box">content-box
+        </div>
+        <div class="form-item">
+            <label>background-size：</label>
+            <br>
+            <input type="radio" name="background-size" value="auto" checked>auto
+            <input type="radio" name="background-size" value="100% 100%">100% 100%
+            <input type="radio" name="background-size" value="50% 100%">50% 100%
+            <input type="radio" name="background-size" value="cover">cover
+            <input type="radio" name="background-size" value="contain">contain
         </div>
     </div>
     <div class="main-center"></div>
     <div class="main-right"></div>
 </div>
 <script>
-    let initStyle = {
-        "width": "500px",
-        "height": "500px",
+    let style = {
+        "width": "400px",
+        "height": "400px",
+        "padding": "20px",
         "margin": "0 20px",
         "box-sizing": "border-box",
-        "border": "5px dotted #00ffff"
+        "border": "5px dotted red",
+        "background-color": "#51ffe0",
+        "background-image": "url(\"img/img-01.jpg\")",
+        "background-repeat": "no-repeat",
+        "background-origin": "padding-box",
+        "background-clip": "border-box",
+        "background-position": "0% 0%",
+        "background-size": "auto"
     };
+    changeStyle(style);
+    function changeStyle(style) {
+
+        $(".main-center").css(style);
+        $(".main-right").html(`<pre>${JSON.stringify(style, null, 4)}</pre>`);
+    }
+    $(":radio").click(function () {
+
+        style[this.name] = this.value;
+        changeStyle(style);
+    });
 </script>
 </body>
 </html>
