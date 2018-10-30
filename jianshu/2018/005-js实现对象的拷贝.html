@@ -10,11 +10,16 @@
     let originObj = {
         name: 'Ada',
         age: 23,
-        date: '2018-10-26',
         hobby: ['烘焙', '定期观影', '一阵一阵的看书', '...'],
         address: {
             province: 'sichuang',
             city: 'chengdu'
+        },
+        date: new Date(),
+        reg: /123/,
+        print: function (name) {
+
+            console.log('hello~~' + name);
         }
     };
     let originArr = [1, 2, 3, {
@@ -24,34 +29,61 @@
         }
     }];
 
-    // 什么判断是不是对象这些就不写了 就是一个很简单的打印函数
-    function printDeepCopyResult(deepCopyObj) {
+    // 判断深拷贝是否成功
+    function printDeepCopyResult(origin, deepCopy) {
 
-        console.log(deepCopyObj);
-        // 如果是数组
-        if (Array === deepCopyObj.constructor) {
+        let copyFailArr = [];
+        let copySuccessArr = [];
+        for (let key in deepCopy) {
 
-            console.log(deepCopyObj[3] == originArr[3]);
+            if (!deepCopy.hasOwnProperty(key)) return;
+
+            if (origin[key] instanceof Object) {
+
+                // 判断引用类型的数据指向地址是否相同
+                deepCopy[key] == origin[key] ? copyFailArr.push(key) : copySuccessArr.push(key);
+            } else {
+
+                // 判断基本数据类型值是否相同
+                deepCopy[key] === origin[key] ? copySuccessArr.push(key) : copyFailArr.push(key);
+            }
         }
-        // 如果是对象
-        if (Object === deepCopyObj.constructor) {
 
-            console.log(deepCopyObj.hobby == originObj.hobby);
-        }
+        // 拷贝结果输出
+        let result = copyFailArr.length ? copyFailArr.toString() : copySuccessArr.toString();
+        return console.log(`深拷贝${copyFailArr.length ? '不' : ''}成功----${result}`);
     }
 
     // 1、基本方式 循环+递归处理
     function deepCopy1(origin) {
 
-        let isArray = Array === origin.constructor;
+        let constructor = origin.constructor;
+        let isArray = Array === constructor; // origin instanceof Array
         let copy = isArray ? [] : {}; // new origin.constructor;
+
+        if (Function === constructor) {
+
+            // 1、利用eval实现拷贝函数体---缺点：不能用es6的对象简写，不然会报错（就规规矩矩的写属性值为函数的属性吧）
+            return eval(`(${origin.toString()})`);
+
+            // 2、利用apply，这么做其实只是变相的调用了origin的方法，并没有实现函数的复制
+            /*return function () {
+                return origin.apply(null, arguments);
+            };*/
+        }
+        if (RegExp === constructor) return new RegExp(origin);
+        if (Date === constructor) return new Date(origin);
 
         for (let key in origin) {
 
-            if (origin.hasOwnProperty(key)) { // 过滤掉继承的可枚举的属性
+            // 过滤掉继承的可枚举的属性
+            if (origin.hasOwnProperty(key)) {
 
-                copy[key] = 'object' == typeof origin[key] ? deepCopy1(origin[key]) : origin[key];
-                // copy[key] = 'object' == typeof origin[key] ? arguments.callee(origin[key]) : origin[key];
+                // 1、copy[key] = 'object' == typeof origin[key] ? deepCopy1(origin[key]) : origin[key];
+                // 2、copy[key] = 'object' == typeof origin[key] ? arguments.callee(origin[key]) : origin[key];
+
+                // 1和2只考虑了为数组或者是对象的情况，未考虑到是正则、函数和日期对象等的情况
+                copy[key] = origin[key] instanceof Object ? deepCopy1(origin[key]) : origin[key];
             }
         }
 
@@ -59,10 +91,11 @@
     }
     let deepCopyObj1 = deepCopy1(originObj);
     let deepCopyArr1 = deepCopy1(originArr);
-    printDeepCopyResult(deepCopyObj1);
-    printDeepCopyResult(deepCopyArr1);
+    printDeepCopyResult(originObj, deepCopyObj1);
+    printDeepCopyResult(originArr, deepCopyArr1);
+    deepCopyObj1.print('world');
 
-    // 2、利用JSON.stringify 和 JSON.parse
+    // 2、利用JSON.stringify 和 JSON.parse  - 【不会拷贝属性值为function的值】
     function deepCopy2(origin) {
 
         return JSON.parse(JSON.stringify(origin));
@@ -70,21 +103,14 @@
 
     let deepCopyObj2 = deepCopy2(originObj);
     let deepCopyArr2 = deepCopy2(originArr);
-    printDeepCopyResult(deepCopyObj2);
-    printDeepCopyResult(deepCopyArr2);
+    printDeepCopyResult(originObj, deepCopyObj2);
+    printDeepCopyResult(originArr, deepCopyArr2);
 
     // 3、jquery extend静态方法
     let deepCopyObj3 = $.extend(true, {}, originObj);
     let deepCopyArr3 = $.extend(true, [], originArr);
-    printDeepCopyResult(deepCopyObj3);
-    printDeepCopyResult(deepCopyArr3);
-
-    console.log($.extend({}, originArr));
-    console.log($.extend({}, originObj));
-    console.log(Object.assign({}, originArr) == originArr);
-    console.log(Object.assign({}, originObj) == originObj);
-    // 1、利用es6语法 扩展运算符...
-    // 如果对象或数组属性值是基本数据类型，用该方法就可以了，如果不是则需要循环判断
+    printDeepCopyResult(originObj, deepCopyObj3);
+    printDeepCopyResult(originArr, deepCopyArr3);
 </script>
 </body>
 </html>

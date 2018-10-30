@@ -40,17 +40,15 @@
     <content select="h1"></content>
 </template>
 <script>
+function deepCopy2(origin) {
 
-    var host = document.querySelector('#host');
-    var root = host.createShadowRoot();
-    var temp = document.querySelector('#temp');
-    var clone = document.importNode(temp.content, true);
+    return JSON.parse(JSON.stringify(origin));
+}
 
-    root.appendChild(clone);
-    document.addEventListener('click', function(e) {
-
-        console.log(e.target.innerHTML + ' click!');
-    });
+let deepCopyObj3 = $.extend(true, {}, originObj);
+let deepCopyArr3 = $.extend(true, [], originArr);
+printDeepCopyResult(originObj, deepCopyObj3);
+printDeepCopyResult(originArr, deepCopyArr3);
 </script>
 </body>
 </html>
