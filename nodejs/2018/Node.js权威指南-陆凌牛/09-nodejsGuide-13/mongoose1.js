@@ -1,3 +1,5 @@
+// 使用之前 需要先运行 cnpm install mongoose
+
 const mongoose = require('mongoose');
 
 const db = mongoose.connect("mongodb://127.0.0.1:27017/node-mongo-example");

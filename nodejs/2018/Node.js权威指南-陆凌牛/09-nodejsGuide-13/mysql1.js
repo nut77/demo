@@ -1,3 +1,5 @@
+// 使用之前 需要先运行 cnpm install mysql
+
 const mysql = require('mysql');
 const fs = require('fs');
 

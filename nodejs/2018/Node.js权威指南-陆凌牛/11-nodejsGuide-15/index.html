@@ -6,6 +6,7 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
+<h1>server.js</h1>
 <script>
     const socket = io.connect();
 
@@ -26,7 +27,7 @@
         console.log(data);
         fn('server~');
     });
-    socket.emit('serverEvent', {name: 'clicent'}, (data) => {
+    socket.emit('serverEvent', {name: 'client'}, (data) => {
 
        console.log(data);
     });

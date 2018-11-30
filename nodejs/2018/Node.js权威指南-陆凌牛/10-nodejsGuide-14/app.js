@@ -1,3 +1,6 @@
+// 使用之前 需要先运行 cnpm install express
+// 然后再运行 node appjs
+
 const express = require('express');
 const app = express();
 

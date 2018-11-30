@@ -1,3 +1,7 @@
+// 需要先运行 cnpm install socket.io - 下载socket.io模块
+// node server.js
+// 客户端（浏览器）访问 localhost：2000  即可看到相关操作
+
 const http = require('http');
 const socketIo = require('socket.io'); // ./socket.io
 const fs = require('fs');

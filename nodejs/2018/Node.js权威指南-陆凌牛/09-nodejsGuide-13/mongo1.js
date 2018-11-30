@@ -1,3 +1,6 @@
+// 使用之前 需要先运行 cnpm install mongodb
+// 然后再运行 node mongo1.js
+
 const mongo = require('mongodb');
 const MongoClient = mongo.MongoClient;
 
