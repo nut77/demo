@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<div>
+    <label for="name">
+        用户名：
+        <input type="text" id="name" placeholder="请输入用户名">
+    </label>
+    <button type="button">登录</button>
+</div>
+<div id="loginedUsers"></div>
+
+<script>
+    const socket = io.connect();
+
+    document.getElementsByTagName('button')[0].onclick = () => {
+
+      socket.emit('login', document.getElementById('name').value);
+        document.getElementById('name').value = '';
+    };
+
+    socket.on('login', (names) => {
+
+        let info = '';
+        for (let name of names) {
+
+            info += `<p>用户${name}已登录；</p>`;
+        }
+        document.getElementById('loginedUsers').innerHTML = info;
+    });
+</script>
+</body>
+</html>

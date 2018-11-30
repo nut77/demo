@@ -1,0 +1,14 @@
+id name age phoneNumber 
+1 Ada 23 12345678911 
+2 Bob 12  
+3 Echo 20 18352688547 
+4 Lulu 44 null 
+5 Lulu 44 null 
+6 Lulu 44 null 
+7 Lulu 44 null 
+8 Lulu 44 null 
+9 Lulu 44 null 
+10 Lulu 44 null 
+11 Lulu 44 null 
+12 Lulu 44 null 
+13 Lulu 44 null 

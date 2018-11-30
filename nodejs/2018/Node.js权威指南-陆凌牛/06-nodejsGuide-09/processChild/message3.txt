@@ -1,0 +1,5 @@
+test1 0：D:\开发软件\nodejs\node.exe
+test1 1：C:\Users\Administrator\Desktop\demo-web\demo-Node\06-nodejsGuide-09\processChild\test1-3.js
+test1 2：one
+test1 3：two
+test1 4：three

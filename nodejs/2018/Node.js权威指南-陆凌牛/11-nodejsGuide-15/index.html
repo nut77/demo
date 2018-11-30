@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<script>
+    const socket = io.connect();
+
+    socket.on('message', msg => {
+
+        console.log(`客户端：接收服务端消息-${msg}`);
+        socket.send(`消息客户端已收到。`);
+    });
+
+    socket.on('disconnect', () => {
+
+        console.log(`客户端：服务端断开连接。`);
+    });
+
+    socket.on('clientEvent', (data, fn) => {
+
+        console.log(`客户端：服务端触发事件。`);
+        console.log(data);
+        fn('server~');
+    });
+    socket.emit('serverEvent', {name: 'clicent'}, (data) => {
+
+       console.log(data);
+    });
+</script>
+</body>
+</html>

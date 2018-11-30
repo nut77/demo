@@ -1,10 +1,68 @@
+
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script>
+
+
+
+        $(document).ready(function(){
+
+            setInterval("jianru()",1500);
+
+        });
+
+        function jianru(){
+
+            $("#ulOne").children(":first").fadeOut("slow",function(){
+
+
+
+
+                var _html = $(this).html();
+
+
+
+
+                $("#ulOne").append($("<li>"+_html+"</li>")).fadeIn('slow');
+
+
+
+
+                $(this).remove();
+
+            });
+
+        }
+
+    </script>
+
 </head>
+
 <body>
-$END$
+
+<p>演示带有不同参数的 fadeTo()
+
+    方法。</p>
+
+<ul id="ulOne">
+
+    <li><b>186****0213</b>&nbsp;<b>充电宝</b>&nbsp;<b>2015-12-08</b></li>
+
+    <li><b>156****5687</b>&nbsp;<b>小米手环</b>&nbsp;<b>2015-12-09</b></li>
+
+    <li><b>157****8965</b>&nbsp;<b>华为4X</b>&nbsp;<b>2015-12-10</b></li>
+
+    <li><b>180****5632</b>&nbsp;<b>iphone6S</b>&nbsp;<b>2015-12-11</b></li>
+
+    <li><b>189****2145</b>&nbsp;<b>2元充值卡</b>&nbsp;<b>2015-12-12</b></li>
+
+</ul>
+
 </body>
+
 </html>
