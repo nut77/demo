@@ -12,9 +12,10 @@
     - 2018
 - practise
     - 2018
+        - action（js操作验证相关）
+        - layout（布局）
+        - trick（开发中的小技巧、样式和动画等）
 - three.js
-    - 2018
-- trick
     - 2018
 - vue
     - 2018
