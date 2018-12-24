@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js全屏相关操作</title>
+    <script src="js/002.js" type="module"></script>
+    <style>
+        :fullscreen {/*当前全屏的元素，当前文本指代的是 html元素*/
+            background-color: #00A8FF;
+        }
+        :fullscreen body {
+            background-color: #84ffe9;
+        }
+        :fullscreen h1,
+        :fullscreen h3,
+        :fullscreen a {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h1>js控制页面的全屏展示和退出全屏显示</h1>
+<h3>
+    <a href="https://github.com/rafrex/fscreen" target="_blank">fscreen js工具-github</a>
+</h3>
+<button type="button" id="btn-enterFullScreen">进入全屏</button>
+<button type="button" id="btn-exitFullScreen">退出全屏</button>
+</body>
+</html>
