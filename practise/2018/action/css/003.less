@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+@carouselWidth: 500px;
+@carouselHeight: 300px;
+.container {
+  box-sizing: content-box;
+  width: @carouselWidth;
+  height: @carouselHeight;
+  padding: 10px;
+  margin: 100px auto;
+  border: 1px solid #ccc;
+}
+.carousel {
+  width: @carouselWidth;
+  height: @carouselHeight;
+}
+.carousel-inner{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.carousel-img {
+  width: 100%;
+  height: 100%;
+  vertical-align: top
+}
+.carousel-indicators {
+  position: absolute;
+  height: 20px;
+  right: 20px;
+  bottom: 20px;
+  padding: 5px;
+  text-align: center;
+  li {
+    display: inline-block;
+    padding: 0 5px;
+    background-color: #fff;
+    margin: 5px;
+    cursor: pointer;
+    &.active {
+      background-color: red;
+      color: white;
+    }
+  }
+}
+
+[class*='carousel-ctrl'] {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #fff;
+  background: #fff;
+  color: #000;
+  opacity: 0.1;
+  font-family: '黑体';
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  line-height: 40px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
+  }
+}
+.carousel-ctrlPrev {
+  left: 5px;
+}
+.carousel-ctrlNext {
+  right: 5px;
+}
