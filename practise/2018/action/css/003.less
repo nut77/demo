@@ -13,19 +13,28 @@
   border: 1px solid #ccc;
 }
 .carousel {
+  position: relative;
   width: @carouselWidth;
   height: @carouselHeight;
+  overflow: hidden;
 }
 .carousel-inner{
-  position: relative;
-  width: 100%;
+  position: absolute;
+  width: 1000%;
   height: 100%;
-  overflow: hidden;
+}
+.carousel-item {
+  width: @carouselWidth;
+  height: @carouselHeight;
+  float: left;
+  transition: transform .6s ease, -webkit-transform .6s ease;
+  &.active {
+    display: block;
+  }
 }
 .carousel-img {
   width: 100%;
   height: 100%;
-  vertical-align: top
 }
 .carousel-indicators {
   position: absolute;
