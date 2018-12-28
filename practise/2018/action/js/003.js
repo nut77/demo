@@ -6,6 +6,8 @@ const Selector = {
     ACTIVE_ITEM: '.active.carousel-item',
     ITEM: '.carousel-item',
     ITEM_IMG: '.carousel-item img',
+    NEXT: '.carousel-item-next',
+    PREV: '.carousel-item-prev',
     NEXT_PREV: '.carousel-item-next, .carousel-item-prev',
     INDICATORS: '.carousel-indicators',
 };
@@ -16,56 +18,74 @@ const Box = {
     HEIGHT: $(Selector.BOX).height()
 };
 
-// 创建轮播图指示器
-for (let i = 0; i < $(Selector.ITEM).length; i++) {
+/*var timer = setInterval(() => {
 
-    $(Selector.INDICATORS).append(`<li class=${0 == i ? 'active' : ''} data-index='${i}'>${i + 1}</li>`)
-}
+    let $cur = $(Selector.ACTIVE_ITEM);
+    let $target = $cur.next(Selector.ITEM);
+    slide($cur, $target, 'next');
+}, 2000);
+console.log(timer);
+
+setTimeout(function () {
+
+    clearInterval(timer);
+    console.log(timer);
+}, 4000);*/
+
+// 创建轮播图指示器
 $(Selector.INDICATORS).on('mouseover', 'li', function () {
 
     // 清除所有按钮的样式
     $(this).addClass('active').siblings('li').removeClass('active');
 
-    // 切换到对应的图片
-    let curIndex = this.getAttribute('data-index');
+
 });
-
-// 获取指定item的序号  从0开始
-function getElementIndex(element) {
-
-    let items = element && element.parentNode
-        ? [].slice.call(element.parentNode.querySelectorAll(Selector.ITEM))
-        : [];
-    return items.indexOf(element);
-}
 
 // 下一页
 $(".carousel-ctrlNext").on('click', function () {
 
-    $(Selector.ACTIVE_ITEM).removeClass('active').next(Selector.ITEM).addClass('active');
-    slide($(Selector.INNER)[0].offsetLeft, -getElementIndex($(Selector.ACTIVE_ITEM)[0]) * Box.WIDTH);
+    let $cur = $(Selector.ACTIVE_ITEM);
+    let $target = $cur.next(Selector.ITEM);
+    slide($cur, $target, 'next');
+});
+
+// 把最后一张轮播图放在第一个
+$(Selector.INNER).find(Selector.ITEM).last().prependTo($(Selector.INNER));
+
+// 上一页
+$(".carousel-ctrlPrev").on('click', function () {
+
+    let $cur = $(Selector.ACTIVE_ITEM);
+    let $target = $cur.prev(Selector.ITEM);
+
+    slide($cur, $target, 'prev');
 });
 
 // 滚动到指定的轮播图 图片序号
-function slide(cur, target) {
+function slide($cur, $target, dir) {
 
     // 装轮播图片的盒子
     let $inner = $(Selector.INNER);
+    $target.addClass('active');
 
-    // 每次移动的距离
-    let step = cur - target > 0 ? 10 : -10;
+    if ('prev' == dir) {
+
+        $(Selector.INNER).find(Selector.ITEM).last().prependTo($(Selector.INNER));
+        $inner.css('left', -Box.WIDTH);
+    } else {
+
+        $(Selector.INNER).find(Selector.ITEM).first().appendTo($(Selector.INNER));
+    }
 
     // 切换轮播图的显示
-    let timer = setInterval(() => {
+    $inner.animate({
+        left: 'next' == dir ? -Box.WIDTH : 0
+    }, 600, 'linear',() => {
 
-        cur -= step;
-        if (Math.abs(cur - target) > Math.abs(step)) {
+        // 对应的指示器也要在一定的更改
 
-            $inner.css('left', cur);
-        } else {
 
-            $inner.css('left', target);
-            clearInterval(timer);
-        }
-    }, 10);
+        $cur.removeClass('active');
+        $inner.css('left', 0)
+    });
 }

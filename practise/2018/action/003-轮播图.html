@@ -11,41 +11,53 @@
     <div class="carousel">
         <!--轮播图-->
         <div class="carousel-inner">
-            <div class="carousel-item active">
+            <div class="carousel-item active" data-index="0">
                 <a href="#">
                     <img class="carousel-img" src="img/1.png" alt="">
                 </a>
+                <div class="carousel-caption">
+                    <h3>header 1~</h3>
+                </div>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item" data-index="1">
                 <a href="#">
                     <img class="carousel-img" src="img/2.png" alt="">
                 </a>
+                <div class="carousel-caption">
+                    <h3>header 2~</h3>
+                </div>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item" data-index="2">
                 <a href="#">
                     <img class="carousel-img" src="img/3.png" alt="">
                 </a>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item" data-index="3">
                 <a href="#">
                     <img class="carousel-img" src="img/4.png" alt="">
                 </a>
             </div>
-            <div class="carousel-item">
+            <div class="carousel-item" data-index="4">
                 <a href="#">
                     <img class="carousel-img" src="img/5.png" alt="">
                 </a>
             </div>
         </div>
 
-        <!--标记-->
-        <ul class="carousel-indicators"></ul>
+        <!--指示器-->
+        <ul class="carousel-indicators">
+            <li class="active" data-index="0">1</li>
+            <li data-index="1">2</li>
+            <li data-index="2">3</li>
+            <li data-index="3">4</li>
+            <li data-index="4">5</li>
+        </ul>
 
         <!--左右箭头-->
         <span class="carousel-ctrlPrev">&lt;</span>
         <span class="carousel-ctrlNext">&gt;</span>
     </div>
 </div>
-<script src="js/003.js"></script>
+<script src="js/003-1.js"></script>
 </body>
 </html>
