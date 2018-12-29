@@ -27,11 +27,18 @@ const Direction = {
     PREV: 'prev'
 };
 
+// 默认配置
+const Default = {
+    interval: 3000,
+    gap: 600
+};
+
 class Carousel {
     constructor(selector, config) {
 
         this._isPaused = false;
         this._interval = null;
+        this._enableClickAction = true;
         this._activeElement = $(Selector.ACTIVE_ITEM);
         this._targetElement = null;
         this._element = $(selector);
@@ -45,7 +52,6 @@ class Carousel {
 
         this._isPaused = true;
         clearInterval(this._interval);
-        this._inner.stop(true, true);
     }
 
     cycle() {
@@ -57,13 +63,11 @@ class Carousel {
             clearInterval(this._interval);
             this._interval = null;
         }
-        this._interval = setInterval(() => this._slide('next'), 2000);
+        // this._interval = setInterval(() => this._slide('next'), Default.interval);
     }
 
     _init() {
 
-        // 将最后一项放到第一项
-        this._inner.find(Selector.ITEM).last().prependTo(this._inner);
         this._addEventListeners();
         this.cycle();
     }
@@ -71,10 +75,10 @@ class Carousel {
     _addEventListeners() {
 
         // 下一页
-        $(Selector.NEXT).on('click', () => this._slide('next'));
+        $(Selector.NEXT).on('click', () => this._enableClickAction && this._slide('next'));
 
         // 上一页
-        $(Selector.PREV).on('click', () => this._slide('prev'));
+        $(Selector.PREV).on('click', () => this._enableClickAction && this._slide('prev'));
 
         // 鼠标移入轮播暂停
         $(Selector.BOX).on('mouseenter', () => this.pause());
@@ -82,8 +86,18 @@ class Carousel {
         // 鼠标移除轮播继续
         $(Selector.BOX).on('mouseleave', () => this.cycle());
 
+        // 轮播框框被点击切换时 阻止过快点击出现的问题
+        $(Selector.BOX).on('click', () => {
+
+            if (this._enableClickAction) {
+
+                this._enableClickAction = false;
+                setTimeout(() => this._enableClickAction = true, Default.gap);
+            }
+        });
+
         // 指示器点击时 切换到对应的图片
-        $(Selector.INDICATORS).on('click', 'li', event => this._slide('', $(event.target)));
+        $(Selector.INDICATORS).on('click', 'li', event => this._enableClickAction && this._slide('', $(event.target)));
     }
 
     _getActiveItemIndex() {
@@ -101,9 +115,17 @@ class Carousel {
             let itemsLength = $(Selector.ITEM).length;
             let index = Direction.NEXT == direction ? this._getActiveItemIndex() + 1 : this._getActiveItemIndex() - 1;
             itemsLength == index && (index = 0);
-            -1 == index && (index = 5);
+            -1 == index && (index = 4);
             return index;
         }
+    }
+
+    _isActiveItemOnEdge(direction) {
+
+        let $items = this._inner.find(Selector.ITEM);
+        return Direction.NEXT == direction
+            ? this._activeElement == $items.last()
+            : this._activeElement == $items.first();
     }
 
     _setActiveIndicatorElement() {
@@ -122,35 +144,34 @@ class Carousel {
         this._targetElement = this._inner.find(`${Selector.ITEM}[data-index='${this._getTargetItemIndex($indicator, direction)}']`);
 
         // 根据方向 将targetElement插入到对应的位置
-        direction = this._getTargetItemIndex($indicator) > this._getActiveItemIndex() ? 'next' : 'prev';
-        Direction.NEXT == direction
-            ? this._targetElement.insertAfter(this._activeElement)
-            : this._targetElement.insertBefore(this._activeElement);
+        $indicator && (direction =  this._getTargetItemIndex($indicator) > this._getActiveItemIndex() ? 'next' : 'prev');
 
         // 需要将目标项显示出来
         this._targetElement.addClass('active');
 
-        // prev和next分别操作不同的方向
-        if (Direction.NEXT == direction) {
+        // 根据不同的prev、next操作 判断是否需要改变列表排列顺序
+        let isActiveItemOnEdge = this._isActiveItemOnEdge(direction);
+        if (Direction.NEXT == direction && isActiveItemOnEdge) {
 
             // 将第一项放到最后一项
             this._inner.find(Selector.ITEM).first().appendTo(this._inner);
-        } else {
+        }
+        if (Direction.PREV == direction) {
 
             // 将最后一项放到第一项，原始的盒子inner的left需要修改
-            this._inner.find(Selector.ITEM).last().prependTo(this._inner);
+            isActiveItemOnEdge && this._inner.find(Selector.ITEM).last().prependTo(this._inner);
             this._inner.css('left', -Box.WIDTH);
         }
 
         // 切换轮播图的显示
         this._inner.animate({
             left: Direction.NEXT == direction ? -Box.WIDTH : 0
-        }, 600, 'linear',() => {
+        }, Default.gap, 'linear',() => {
 
             // 轮播图切换成功后的操作
             this._activeElement.removeClass('active');
             this._activeElement = this._targetElement;
-            this._inner.css('left', 0)
+            this._inner.css('left', 0);
 
             // 修改对应的指示器
             this._setActiveIndicatorElement();
