@@ -16,7 +16,7 @@
         - action（js操作验证相关）
         - layout（布局）
         - trick（开发中的小技巧、样式和动画等）
-    -2019
+    - 2019
         - action
         - layout
         - trick
