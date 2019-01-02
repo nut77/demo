@@ -33,19 +33,33 @@
     </style>
 </head>
 <body>
-<div class="test">
-    <div class="test2">122</div>
-</div>
-<div class="test3">33433</div>
-<script>
-    var index = -1;
-    do {
-        index++;
-        setTimeout(() => {
+<!--carousel 轮播容器-->
+<div class="carousel">
+    <!--carousel-inner 每一个轮播项内容-->
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-index="0">
+            <a href="#">
+                <img class="carousel-img" src="img/1.png" alt="">
+            </a>
+            <div class="carousel-caption">
+                <h3>HEADER 1~</h3>
+            </div>
+        </div>
+        ...
+    </div>
 
-            console.log(index);
-        }, 300);
-    } while (index < 3);
-</script>
+    <!--carousel-indicators 指示器，指示当前显示的是第几项 也可以点击切换当前的显示项-->
+    <ul class="carousel-indicators">
+        <li class="active" data-index="0">1</li>
+        <li data-index="1">2</li>
+        <li data-index="2">3</li>
+        <li data-index="3">4</li>
+        <li data-index="4">5</li>
+    </ul>
+
+    <!--carousel-ctrl* 左右箭头，可上下切换当前的显示项-->
+    <span class="carousel-ctrlPrev">&lt;</span>
+    <span class="carousel-ctrlNext">&gt;</span>
+</div>
 </body>
 </html>

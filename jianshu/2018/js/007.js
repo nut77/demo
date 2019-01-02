@@ -115,7 +115,7 @@ class Carousel {
             let itemsLength = $(Selector.ITEM).length;
             let index = Direction.NEXT == direction ? this._getActiveItemIndex() + 1 : this._getActiveItemIndex() - 1;
             itemsLength == index && (index = 0);
-            -1 == index && (index = 4);
+            -1 == index && (index = itemsLength - 1);
             return index;
         }
     }

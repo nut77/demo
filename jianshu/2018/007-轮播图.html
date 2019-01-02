@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
     <title>轮播图</title>
     <link href="css/007.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="js/007.js" defer></script>
 </head>
 <body>
 <div class="container">
+    <!--carousel 轮播容器-->
     <div class="carousel">
-        <!--轮播图-->
+        <!--carousel-inner 每一个轮播项内容-->
         <div class="carousel-inner">
             <div class="carousel-item active" data-index="0">
                 <a href="#">
@@ -53,7 +55,7 @@
             </div>
         </div>
 
-        <!--指示器-->
+        <!--carousel-indicators 指示器，指示当前显示的是第几项 也可以点击切换当前的显示项-->
         <ul class="carousel-indicators">
             <li class="active" data-index="0">1</li>
             <li data-index="1">2</li>
@@ -62,11 +64,10 @@
             <li data-index="4">5</li>
         </ul>
 
-        <!--左右箭头-->
+        <!--carousel-ctrl* 左右箭头，可上下切换当前的显示项-->
         <span class="carousel-ctrlPrev">&lt;</span>
         <span class="carousel-ctrlNext">&gt;</span>
     </div>
 </div>
-<script src="js/007.js"></script>
 </body>
 </html>
