@@ -17,10 +17,11 @@
   width: @carouselWidth;
   height: @carouselHeight;
   overflow: hidden;
+  color: #666;
 }
 .carousel-inner{
   position: absolute;
-  width: 1000%;
+  width: 200%;
   height: 100%;
 }
 .carousel-item {
@@ -33,26 +34,37 @@
     display: block;
   }
 }
+.carousel-caption {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  padding: 0 10px;
+  background: rgba(0, 0, 0, 0.2);
+  line-height: 50px;
+}
 .carousel-img {
   width: 100%;
   height: 100%;
 }
 .carousel-indicators {
   position: absolute;
-  height: 20px;
-  right: 20px;
-  bottom: 20px;
-  padding: 5px;
+  right: 10px;
+  bottom: 10px;
   text-align: center;
   li {
     display: inline-block;
-    padding: 0 5px;
-    background-color: #fff;
-    margin: 5px;
+    height: 20px;
+    width: 20px;
+    margin: 3px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+    font-size: 13px;
+    line-height: 20px;
     cursor: pointer;
     &.active {
-      background-color: red;
-      color: white;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: #bbb;
     }
   }
 }
