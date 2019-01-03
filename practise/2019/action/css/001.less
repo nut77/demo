@@ -1,0 +1,28 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.container {
+  overflow: hidden;
+  padding: 10px;
+  margin: 100px 50px;
+  border: 1px solid #ccc;
+  &::after {
+    display: block;
+    clear: both;
+    content: '';
+  }
+}
+.pagination {
+  float: right;
+  &::before, &::after {
+    display: table;
+  }
+}
+.pagination-numbers {
+
+}
+.pagination-number {
+  float: left;
+  list-style: none;
+}

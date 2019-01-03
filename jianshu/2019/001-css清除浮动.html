@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css清除浮动</title>
+    <style>
+        .box {
+            width: 400px;
+            border: 1px solid #ff721b;
+        }
+        [class*='pull-'] {
+            width: 100px;
+            height: 100px;
+            background-color: #00A8FF;
+        }
+        .pull-left {
+            float: left;
+        }
+        .pull-right {
+            float: right;
+        }
+
+        .clearfix1 {
+            overflow: auto; /*hidden也可以*/
+        }
+        .clearfix2 {
+            clear: both;
+        }
+        .clearfix3 {
+            float: left;
+        }
+        .clearfix4::after {
+            display: block; /*table、flex也可以*/
+            height: 0; /*可不写*/
+            visibility: hidden; /*可不写*/
+            content: '';
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+<p>当容器的高度为auto，且容器的内容中有浮动（float为left或right）的元素，
+    在这种情况下，容器的高度不会自动改变以包含浮动部分的高度，
+    使得浮动内容溢出到容器外面而影响（甚至破坏）布局的现象。
+    这个现象叫浮动溢出，为了防止这个现象的出现而进行的CSS处理，就叫CSS清除浮动。</p>
+
+<h3>1、通过设置<code>overflow: hidden/auto;</code>来清除浮动【可以清除包含块内子元素的浮动的影响。】</h3>
+<div class="box clearfix1">
+    <div class="pull-left"></div>
+    <div class="pull-right"></div>
+</div>
+<hr/>
+
+<h3>2、通过浮动元素后的块级元素设置<code>clear: both;</code>来清除当前元素之前的浮动</h3>
+<div class="box">
+    <div class="pull-left"></div>
+    <p class="clearfix2"></p>
+    <div class="pull-right"></div>
+    <p class="clearfix2"></p>
+</div>
+<br/>
+<div class="box">
+    <div class="pull-left"></div>
+    <div class="pull-right"></div>
+    <p class="clearfix2"></p>
+</div>
+<hr/>
+
+<h3>3、父盒子也设置浮动</h3>
+<div class="box clearfix3">
+    <div class="pull-left"></div>
+    <div class="pull-right"></div>
+</div>
+<p class="clearfix2"/>
+
+<h3>4、通过设置伪元素为块级元素再利用<code>clear: both;</code>来清除浮动，原理同方法2</h3>
+<div class="box clearfix4">
+    <div class="pull-left"></div>
+    <div class="pull-right"></div>
+</div>
+</body>
+</html>
