@@ -15,7 +15,8 @@ class Pagination {
     constructor(element, config) {
 
         this._length = config.length;
-        this._totalPage = Math.floor(config.total / config.length);
+        this._pageLength = config.length[0];
+        this._totalPage = Math.ceil(config.total / this._pageLength);
         this._total = config.total;
         this._currentPage = 1;
         this._firstPage = 1;
@@ -34,8 +35,10 @@ class Pagination {
         this._addEventListeners();
 
         // 需要用到的jq对象
-        this._jump = $(Selector.JUMP);
         this._numbers = $(Selector.NUMBERS);
+
+        // 设置上一页、下一页
+        this._setPrevAndNext();
     }
 
     _addEventListeners() {
@@ -56,23 +59,11 @@ class Pagination {
             let $this = $(this);
             let val = $this.val();
 
-            if (!/\d/.test(val)) {
+            if (!/^\d+$/g.test(val)) return alert('输入页码格式不对');
 
-                alert('输入页码格式不对');
-                return false;
-            }
+            if (parseInt(val) > _this._totalPage) return alert(`输入页码太大，请不要大于${_this._totalPage}`);
 
-            if (parseInt(val) > _this._totalPage) {
-
-                alert(`输入页码太大，请不要大于${_this._totalPage}`);
-                return false;
-            }
-
-            if (parseInt(val) < _this._firstPage) {
-
-                alert(`输入页码太小，请不要小于${_this._firstPage}`);
-                return false;
-            }
+            if (parseInt(val) < _this._firstPage) return alert(`输入页码太小，请不要小于${_this._firstPage}`);
 
             _this._currentPage = parseInt(val);
             _this._numbers.html(_this._setPaginateNumbers());
@@ -85,13 +76,25 @@ class Pagination {
             '<' == $(this).text() ? _this._currentPage-- : _this._currentPage++;
             _this._numbers.html(_this._setPaginateNumbers());
         });
+
+        // 更改分页大小
+        this._element.on('change', Selector.LENGTH, function () {
+
+            _this._pageLength = parseInt(this.value);
+            _this._totalPage = Math.ceil(_this._total / _this._pageLength);
+            _this._currentPage = _this._currentPage > _this._totalPage ? _this._totalPage : _this._currentPage;
+            _this._numbers.html(_this._setPaginateNumbers());
+        });
     }
 
+    // 分页组件模板
     _setPaginationTmpl() {
 
         this._element.append(`
             <span class="pagination-total">共 ${this._total} 条</span>
-            ${this._setPaginationLength()}
+            <select name="" id="" class="pagination-length">
+                ${this._setPaginationLength()}
+            </select>
             <div class="pagination-paginate">
                 <span class="pagination-prev">&lt;</span>
                 <ul class="pagination-numbers">
@@ -101,26 +104,25 @@ class Pagination {
             </div>
             <div class="pagination-jump">
                 前往
-                <input type="text" class="pagination-input" value="${this._currentPage}">
+                <input type="text" class="pagination-input" value="${this._currentPage}" min="${this._firstPage}" max="${this._totalPage}">
                 页
             </div>
         `);
-
-        this._setPrevAndNext();
     }
 
+    // 设置分页组件 分页大小
     _setPaginationLength() {
 
-        let html = '<select name="" id="" class="pagination-length">';
-        for (let i = 0; i < this._length; i++) {
+        let html = '';
+        for (let i = 0; i < this._length.length; i++) {
 
-            html += `<option value="${this._length[i]}">${this._length[i]}</option>`;
+            html += `<option value="${this._length[i]}">${this._length[i]} 条/页</option>`;
         }
-        html += '</select>';
 
         return html;
     }
 
+    // 设置分页组件 上一页和下一页的状态
     _setPrevAndNext() {
 
         // 上一页
@@ -130,36 +132,38 @@ class Pagination {
         this._totalPage == this._currentPage ? $(Selector.NEXT).addClass('disabled') : $(Selector.NEXT).removeClass('disabled');
     }
 
+    // 设置分页组件 页码
     _setPaginateNumbers() {
 
         this._setPrevAndNext();
         $(Selector.JUMP).val(this._currentPage);
 
-        // 页数 <= 7 时
+        // 总页数 <= 7 时
         if (this._totalPage <= 7) {
 
             return this._setPaginateNumbersTmpl(this._totalPage);
         }
 
-        // 页数 > 8 且能在最中间显示的
+        // 总页数 > 8 且能在最中间显示的
         if (this._currentPage - this._firstPage >= 4 && this._totalPage - this._currentPage >= 4) {
 
             return this._setPaginateNumbersTmpl(this._setPages('center'));
         }
 
-        // 页数 > 7 且在最左边显示
+        // 总页数 > 7 且在最左边显示
         if (this._currentPage - this._firstPage < 4) {
 
             return this._setPaginateNumbersTmpl(this._setPages('left'));
         }
 
-        // 页数 > 7 且在最右边显示
+        // 总页数 > 7 且在最右边显示
         if (this._totalPage - this._currentPage < 4) {
 
             return this._setPaginateNumbersTmpl(this._setPages('right'));
         }
     }
 
+    // 通过当前页的显示位置 确定最终显示的页码
     _setPages(site) {
 
         // 中
@@ -181,10 +185,11 @@ class Pagination {
         }
     }
 
+    // 通过具体要显示的页码数组 组合成最终显示的页面模板（html）
     _setPaginateNumbersTmpl(pages) {
 
         let tmpl = '';
-        // 页码固定没有其它干扰项
+        // 页码固定没有其它干扰项（总页数 <= 7）
         if ('number' == typeof pages) {
 
             for (let i = 0; i < pages; i++) {
@@ -207,6 +212,7 @@ class Pagination {
         return tmpl;
     }
 
+    // 分页组件的jquery接口
     static _jQueryInterface(config) {
 
         return new Pagination(this, config);

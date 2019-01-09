@@ -13,6 +13,12 @@ input, select {
   color: #666;
   outline: none;
 }
+// 隐藏 input(text=number)的上下数值改变箭头
+::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
 .hide {
   display: none !important;
 }
@@ -54,12 +60,6 @@ input, select {
 // 每页长度
 .pagination-length {
   margin-left: 10px;
-  option {
-    -moz-appearance: none; /* Firefox */
-    -webkit-appearance: none; /* Safari 和 Chrome */
-    appearance: none;
-    background-color: red;
-  }
 }
 
 // 分页相关
@@ -104,4 +104,5 @@ input, select {
 .pagination-input {
   width: 32px;
   margin: 0 5px;
+  text-align: center;
 }
