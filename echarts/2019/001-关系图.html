@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>关系图</title>
+    <script src="../js/echarts-4.2.0.js"></script>
+    <style>
+        .chart {
+            height: 600px;
+            margin: 50px 100px 0 100px;
+            border: 1px solid #999999;
+        }
+    </style>
+</head>
+<body>
+<div class="chart"></div>
+<script>
+    let chart = echarts.init(document.querySelector('.chart'));
+
+    //定义抠图方法
+    function getImgData(imgSrc, radius, center = {
+        x: 0,
+        y: 0
+    }) {
+        return new Promise((resolve) => {
+            const canvas = document.createElement('canvas');
+            const contex = canvas.getContext('2d');
+            const img = new Image();
+            img.crossOrigin = '';
+            const diameter = 2 * radius;
+            img.onload = function () {
+                canvas.width = diameter;
+                canvas.height = diameter;
+                contex.clearRect(0, 0, diameter, diameter);
+                contex.save();
+                contex.beginPath();
+                contex.arc(radius, radius, radius, 0, 2 * Math.PI); //画出圆
+                contex.clip(); //裁剪上面的圆形
+                contex.drawImage(img, center.x - radius, center.y - radius, diameter, diameter, 0, 0, diameter, diameter); // 在刚刚裁剪的园上画图
+                contex.restore(); // 还原状态
+                resolve(canvas.toDataURL('image/png', 1))
+            };
+            img.src = imgSrc;
+        })
+    }
+
+    let p1 = getImgData('https://i.loli.net/2018/12/11/5c0f26233b7c9.jpeg', 60, {
+        x: 150,
+        y: 80
+    });
+    let p2 = getImgData('https://i.loli.net/2018/12/11/5c0f5d927472d.jpeg', 300, {
+        x: 400,
+        y: 500
+    });
+    //当处理的图片数据量比较大时，可由后端来处理这个过程
+    Promise.all([p1, p2]).then((images) => {
+
+        chart.setOption({
+            legend: {
+                textStyle: {
+                    color: '#666'
+                },
+                icon: 'circle',
+                data: [
+                    {name: '核心节点'},
+                    {name: '二级关系节点'},
+                    {name: '三级关系节点'}
+                ]
+            },
+            series: [
+                {
+                    type: 'graph',
+                    layout: 'force',
+                    force: {
+                        repulsion: 1000,
+                        edgeLength: 50
+                    },
+                    symbolSize: 35,
+                    roam: true,
+                    label: {
+                        show: true,
+                        position: 'right'
+                    },
+                    edgeSymbol: ['circle', 'arrow'],
+                    edgeSymbolSize: [10, 10],
+                    edgeLabel: {
+                        normal: {
+                            show: true,
+                            textStyle: {
+                                fontSize: 13
+                            },
+                            formatter: "{c}"
+                        }
+                    },
+                    links: [
+                        {
+                            source: '阿姨',
+                            target: '燕青',
+                            value: '案件ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#e0f55a' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#639564' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            }
+
+                        },
+                        {
+                            source: '赖子',
+                            target: '燕青',
+                            value: '案件ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#e0f55a' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#639564' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            }
+
+                        },
+                        {
+                            source: '刘大',
+                            target: '李逵',
+                            value: '案件ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#e0f55a' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#639564' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            }
+
+                        },
+                        {
+                            source: '阿姨',
+                            target: '卢俊义',
+                            value: 'DNA',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#eda553' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#7c785b' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            },
+                        },
+                        {
+                            source: '阿姨',
+                            target: '张三',
+                            value: 'DNA',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#eda553' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#7c785b' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            },
+                        },
+                        {
+                            source: '阿姨',
+                            target: '李四',
+                            value: '案件ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#e0f55a' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#639564' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            source: '阿姨',
+                            target: '张三'
+                        },
+                        {
+                            source: '燕青',
+                            target: '张三2',
+                            value: '案件ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#e0f55a' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#639564' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            source: '燕青',
+                            target: '李逵',
+                            value: '案件ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#e0f55a' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#639564' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            }
+
+                        },
+                        {
+                            source: '李四',
+                            target: '赖子',
+                            value: '案件ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#e0f55a' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#639564' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            source: '李四',
+                            target: '王五',
+                            value: '身份证ID',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#df6f30' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#915034' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            },
+                        },
+                        {
+                            source: '王五',
+                            target: '刘大',
+                            value: 'DNA',
+                            lineStyle: {
+                                normal: {
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0,
+                                            color: '#eda553' // 0% 处的颜色
+                                        }, {
+                                            offset: 1,
+                                            color: '#7c785b' // 100% 处的颜色
+                                        }],
+                                        globalCoord: false // 缺省为 false
+                                    }
+                                }
+                            },
+                        }
+                    ],
+                    lineStyle: {
+                        normal: {
+                            opacity: 0.9,
+                            width: 5,
+                            curveness: 0
+                        }
+                    },
+                    categories: [{
+                        name: '核心节点'
+                    },
+                        {
+                            name: '二级关系节点'
+                        },
+                        {
+                            name: '三级关系节点'
+                        }
+                    ],
+                    data: [{
+                        name: '阿姨',
+                        symbol: `image://${images[0]}`,
+                        symbolSize: 100,
+                        draggable: true,
+                        category: 1,
+                        itemStyle: {
+                            normal: {
+                                borderColor: '#04f2a7',
+                                borderWidth: 6,
+                                shadowBlur: 20,
+                                shadowColor: '#04f2a7',
+                                color: '#001c43',
+                            }
+                        }
+                    },
+                        {
+                            name: '燕青',
+                            symbolSize: 70,
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#04f2a7',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43',
+                                }
+                            },
+                            category: 1,
+
+                        },
+                        {
+                            name: '卢俊义',
+                            symbolSize: 70,
+                            category: 1,
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#04f2a7',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43',
+                                }
+                            },
+
+                        },
+                        {
+                            name: '张三',
+                            symbolSize: 70,
+                            category: 0,
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#82dffe',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43',
+                                }
+                            },
+
+                        },
+                        {
+                            name: '李四',
+                            symbol: `image://${images[1]}`,
+                            symbolSize: 70,
+                            category: 0,
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#82dffe',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43',
+                                }
+                            },
+
+                        },
+                        {
+                            name: '张三2',
+                            category: 0,
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#82dffe',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43',
+                                }
+                            },
+
+                        },
+                        {
+                            name: '李逵',
+                            category: 2,
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#b457ff',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#b457ff',
+                                    color: '#001c43'
+                                }
+                            },
+
+                        },
+                        {
+                            name: '赖子',
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#82dffe',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43'
+
+                                }
+                            },
+                            category: 0,
+
+                        },
+                        {
+                            name: '王五',
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#82dffe',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43'
+                                }
+                            },
+                            category: 0,
+
+                        },
+                        {
+                            name: '刘大',
+                            category: 0,
+                            itemStyle: {
+                                normal: {
+                                    borderColor: '#82dffe',
+                                    borderWidth: 4,
+                                    shadowBlur: 10,
+                                    shadowColor: '#04f2a7',
+                                    color: '#001c43'
+                                }
+                            },
+
+                        }
+                    ]
+                }]
+        })
+    })
+</script>
+</body>
+</html>
