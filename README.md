@@ -6,6 +6,8 @@
     - 2018
 - d3
     - 2018
+- echarts
+    - 2019
 - jianshu（[简书](https://www.jianshu.com/u/acb01dde7ec7)）
     - 2018
     - 2019
