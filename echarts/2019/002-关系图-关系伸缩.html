@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>关系图-关系伸缩</title>
+    <script src="../js/echarts-4.2.0.js"></script>
+    <style>
+        .chart {
+            height: 600px;
+            margin: 50px 100px 0 100px;
+            border: 1px solid #999999;
+        }
+    </style>
+</head>
+<body>
+<div class="chart"></div>
+<script>
+    let chart = echarts.init(document.querySelector('.chart'));
+
+    // 初始时只有一个点
+    let categories = [
+        {name: '0'}
+    ];
+    let option = {
+        legend: {
+            textStyle: {
+                color: '#666'
+            },
+            icon: 'circle',
+            data: categories
+        },
+        series: [
+            {
+                type: 'graph',
+                layout: 'force',
+                force: {
+                    repulsion: 500,
+                    edgeLength: 30,
+                    initLayout: 'circular',
+                    layoutAnimation: false
+                },
+                edgeSymbol: ['', 'arrow'],
+                edgeSymbolSize: [0, 7],
+                roam: true,
+                label: {
+                    show: true,
+                    position: 'right'
+                },
+                focusNodeAdjacency: true,
+                categories,
+                data: [
+                    {
+                        name: '0',
+                        symbolSize: 35
+                    }
+                ],
+                links: []
+            }
+        ]
+    };
+
+    chart.setOption(option);
+
+    chart.on("click", function(parentNode) {
+
+        let option = chart.getOption();
+        let [data, links, categories] = [option.series[0].data, option.series[0].links, option.series[0].categories];
+
+        // 判断当前节点是否已经有子节点
+        let hasChild = links.findIndex(item => item.source == parentNode.name) != -1;
+
+        if (!hasChild) {
+
+            let category = `${categories.length}`;
+            categories.push({name: category});
+            option.legend[0].data.push({name: category});
+
+            let newNodeLength = (Math.random() * 10) % 4 + 1;
+            for (let i = 0; i < newNodeLength; i++) {
+
+                data.push({
+                    name: `${category}-${i + 1}`,
+                    category,
+                    symbolSize: 30 - category * 3 < 10 ? 10 : 30 - category * 3,
+                });
+                links.push({
+                    source: parentNode.name,
+                    target: `${category}-${i + 1}`
+                });
+            }
+
+            chart.clear();
+            chart.setOption(option, true);
+        } else {
+
+            // 删除当前节点
+            let index = data.findIndex(item => item.name ==  parentNode.data.name);
+            data.splice(index, 1);
+
+            chart.clear();
+            chart.setOption(option, true);
+        }
+    });
+
+    function filter(data, links, node) {
+
+        // 删除连线
+        for (let i = 0; i < 10; i++) {
+
+            if (links[i].source == node.name) {
+
+                // 删除当前节点为source的连线
+                links.splice(i, 1);
+
+                // 删除父节点
+                let indexNode = data.findIndex(item => item.name ==  node.name);
+                data.splice(indexNode, 1);
+            }
+        }
+    }
+
+    let arr = [1, 2, 2, 3, 4, 2, 4];
+    for (let i = 0; i < arr.length; i++) {
+
+        if (2 == arr[i]) arr.splice(i, 1);
+    }
+    console.log(arr);
+</script>
+</body>
+</html>
