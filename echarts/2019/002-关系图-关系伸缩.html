@@ -71,21 +71,31 @@
 
         if (!hasChild) {
 
-            let category = `${categories.length}`;
-            categories.push({name: category});
-            option.legend[0].data.push({name: category});
+            // 新增的子节点的所属类型 （为当前父节点所属类型 + 1）
+            let category = parseInt(parentNode.name.split('-')[0]) + 1;
 
+            // 不存在对应的category
+            if (undefined == categories[category]) {
+
+                categories.push({name: category, value: 0});
+                option.legend[0].data.push({name: category});
+            }
+
+            // 需要增加的子节点的个数
             let newNodeLength = (Math.random() * 10) % 4 + 1;
+
+            // 增加子节点
             for (let i = 0; i < newNodeLength; i++) {
 
+                let index = ++categories[category].value;
                 data.push({
-                    name: `${category}-${i + 1}`,
+                    name: `${category}-${index}`,
                     category,
                     symbolSize: 30 - category * 3 < 10 ? 10 : 30 - category * 3,
                 });
                 links.push({
                     source: parentNode.name,
-                    target: `${category}-${i + 1}`
+                    target: `${category}-${index}`
                 });
             }
 
@@ -93,38 +103,40 @@
             chart.setOption(option, true);
         } else {
 
-            // 删除当前节点
-            let index = data.findIndex(item => item.name ==  parentNode.data.name);
-            data.splice(index, 1);
+            // 删除当前节点相关数据
+            filter(option.series[0].data, option.series[0].links, parentNode);
 
             chart.clear();
             chart.setOption(option, true);
         }
     });
 
-    function filter(data, links, node) {
+    function filter(data, links, node, isDelNode = true) {
 
-        // 删除连线
-        for (let i = 0; i < 10; i++) {
+        // 删除目标节点(要先删除节点，不然递归的时候会出问题，节点一直存在造成死循环)
+        let [nodeName, category] = [{...node}.name, null];
+        if (isDelNode) {
 
-            if (links[i].source == node.name) {
+            //categories.splice(categories.findIndex(item => item.category == category), 1);
+            data.splice(data.findIndex(item => item.name ==  node.name), 1);
+        }
 
-                // 删除当前节点为source的连线
-                links.splice(i, 1);
+        // 遍历节点连线
+        for (let i = 0; i < links.length; i++) {
 
-                // 删除父节点
-                let indexNode = data.findIndex(item => item.name ==  node.name);
-                data.splice(indexNode, 1);
+            // 向下的连线(不仅要删除线还要删除target那个点)、向上的连线(只删除线)
+            if (links[i].source == nodeName || links[i].target == nodeName) {
+
+                let temp = Object.assign({}, links[i]);
+
+                filter(data
+                    , links.splice(i, 1)
+                    , data.find(item => item.name ==  temp.target)
+                    , temp.source == nodeName);
+                i--;
             }
         }
     }
-
-    let arr = [1, 2, 2, 3, 4, 2, 4];
-    for (let i = 0; i < arr.length; i++) {
-
-        if (2 == arr[i]) arr.splice(i, 1);
-    }
-    console.log(arr);
 </script>
 </body>
 </html>
