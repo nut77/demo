@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>关系图-关系伸缩(右键)</title>
+    <script src="../js/echarts-4.2.0.js"></script>
+    <style>
+        .chart {
+            height: 600px;
+            margin: 50px 100px 0 100px;
+            border: 1px solid #999999;
+        }
+        .menu {
+            position: absolute;
+        }
+        .menu-item {
+            width: 120px;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            background-color: rgba(29, 120, 203, 0.8);
+            color: white;
+            font-size: 15px;
+            list-style: none;
+            cursor: pointer;
+        }
+        .menu-item:hover {
+            background-color: rgba(29, 120, 203, 1);
+        }
+    </style>
+</head>
+<body>
+<div class="chart"></div>
+<ul class="menu">
+    <li class="menu-item">新增子节点</li>
+    <li class="menu-item">删除节点</li>
+</ul>
+<script>
+    let chart = echarts.init(document.querySelector('.chart'));
+
+    // 初始时只有一个点
+    let categories = [
+        {name: '0', index: 1, total: 1}
+    ];
+    let option = {
+        legend: {
+            textStyle: {
+                color: '#666'
+            },
+            icon: 'circle',
+            data: categories,
+            orient: 'vertical',
+            left: 20,
+            top: 20,
+            formatter(name) {
+
+                return `类型${name}：${categories.find(item => item.name == name).total}（个）`;
+            }
+        },
+        series: [
+            {
+                type: 'graph',
+                layout: 'force',
+                force: {
+                    repulsion: 500,
+                    edgeLength: 30,
+                    initLayout: 'circular',
+                    layoutAnimation: false
+                },
+                edgeSymbol: ['', 'arrow'],
+                edgeSymbolSize: [0, 7],
+                roam: true,
+                label: {
+                    show: true,
+                    position: 'right'
+                },
+                focusNodeAdjacency: true,
+                categories,
+                data: [
+                    {
+                        name: '0',
+                        category: 0,
+                        symbolSize: 35
+                    }
+                ],
+                links: []
+            }
+        ]
+    };
+
+    chart.setOption(option);
+
+    chart.on("click", function(parentNode) {
+
+        let option = chart.getOption();
+        let [data, links] = [option.series[0].data, option.series[0].links];
+
+        // 判断当前节点是否已经有子节点
+        let hasChild = links.findIndex(item => item.source == parentNode.name) != -1;
+
+        if (!hasChild) {
+
+            // 新增的子节点的所属类型 （为当前父节点所属类型 + 1）
+            let category = parseInt(parentNode.name.split('-')[0]) + 1;
+
+            // 不存在对应的category
+            undefined == categories[category] && categories.push({name: category, index: 0, total: 0});
+
+            // 需要增加的子节点的个数
+            let newNodeLength = (Math.random() * 10) % 4 + 1;
+
+            // 增加子节点
+            for (let i = 0; i < newNodeLength; i++) {
+
+                let index = ++categories[category].index;
+                categories[category].total += 1;
+
+                data.push({
+                    name: `${category}-${index}`,
+                    category,
+                    symbolSize: 30 - category * 3 < 10 ? 10 : 30 - category * 3,
+                });
+                links.push({
+                    source: parentNode.name,
+                    target: `${category}-${index}`
+                });
+            }
+        } else {
+
+            // 如果是根节点：给予相关提示
+            if (0 == parentNode.data.category) {
+
+                alert('不能新增啦~~~');
+                return false;
+            }
+
+            // 删除当前节点相关数据
+            filter(option.series[0].data, option.series[0].links, parentNode, categories);
+        }
+
+        // 更新关系图
+        chart.clear();
+        option.series[0].categories = option.legend[0].data = categories;
+        chart.setOption(option, true);
+    });
+
+    // 删除当前节点
+    function filter(data, links, node, categories) {
+
+        // 节点不存在，则退出函数
+        if (!node) return false;
+
+        // 删除目标节点(要先删除节点，不然递归的时候会出问题，节点一直存在造成死循环)
+        data.splice(data.findIndex(item => item.name ==  node.name), 1);
+
+        // 更新category数量
+        let category = node.category || node.data.category;
+        for (let [i, item] of categories.entries()) {
+
+            if (item.name == category) {
+
+                item.total -= 1;
+                0 == item.total && categories.splice(i, 1);
+                break;
+            }
+        }
+
+        // 遍历节点连线
+        for (let i = 0; i < links.length; i++) {
+
+            // 向下的连线(不仅要删除线还要删除target那个点)、向上的连线(只删除线)
+            if (links[i].source == node.name || links[i].target == node.name) {
+
+                let temp = links.splice(i, 1)[0];
+                i--; // 删除连线后，当前循环需要再向前移一位
+
+                // 递归遍历 删除子节点和相关连线(如果是向上的连线就不需要遍历了)
+                temp.source == node.name && filter(data, links, data.find(item => item.name ==  temp.target), categories);
+            }
+        }
+    }
+</script>
+</body>
+</html>

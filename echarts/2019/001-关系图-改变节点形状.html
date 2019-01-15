@@ -17,10 +17,10 @@
 <script>
     let chart = echarts.init(document.querySelector('.chart'));
 
-    let iconFemaleUrl = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=655610933,3515882656&fm=26&gp=0.jpg';
-    let iconMaleUrl = 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1969188108,3204626925&fm=15&gp=0.jpg';
-    let img1 = getImgData(iconFemaleUrl, 60, {x: 85, y: 75});
-    let img2 = getImgData(iconMaleUrl, 80, {x: 80, y: 80});
+    let iconFemaleUrl = 'http://img0.imgtn.bdimg.com/it/u=2379597090,4285707784&fm=214&gp=0.jpg';
+    let iconMaleUrl = 'http://img2.imgtn.bdimg.com/it/u=580118792,1402085360&fm=214&gp=0.jpg';
+    let img1 = getImgData(iconFemaleUrl, 100, {x: 100, y: 100});
+    let img2 = getImgData(iconMaleUrl, 100, {x: 100, y: 100});
 
     // 当处理的图片数据量比较大时，可由后端来处理这个过程
     Promise.all([img1, img2]).then((images) => {
