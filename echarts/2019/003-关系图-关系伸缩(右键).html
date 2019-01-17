@@ -12,28 +12,33 @@
         }
         .menu {
             position: absolute;
+            padding: 0;
+            margin: 0;
+            top: -200px;
+            left: -200px;
         }
         .menu-item {
             width: 120px;
             padding: 10px;
             border-bottom: 1px solid #ccc;
-            background-color: rgba(29, 120, 203, 0.8);
+            background-color: rgb(37, 123, 203);
             color: white;
             font-size: 15px;
             list-style: none;
             cursor: pointer;
         }
         .menu-item:hover {
-            background-color: rgba(29, 120, 203, 1);
+            background-color: rgb(2, 106, 203);
         }
     </style>
 </head>
 <body>
 <div class="chart"></div>
 <ul class="menu">
-    <li class="menu-item">新增子节点</li>
-    <li class="menu-item">删除节点</li>
+    <li class="menu-item" data-target="add">新增子节点</li>
+    <li class="menu-item" data-target="del">删除节点</li>
 </ul>
+<canvas width="100" height="100"></canvas>
 <script>
     let chart = echarts.init(document.querySelector('.chart'));
 
@@ -86,18 +91,45 @@
             }
         ]
     };
-
     chart.setOption(option);
 
-    chart.on("click", function(parentNode) {
+    // 右键菜单相关属性
+    const rightMenuElement = {
+        menu: document.querySelector('.menu'),
+        add: document.querySelector('[data-target="add"]'),
+        del: document.querySelector('[data-target="del"]'),
+        target: null,
+        changeMenuPosition(x, y) {
 
-        let option = chart.getOption();
+            rightMenuElement.menu.style.left = `${x}px`;
+            rightMenuElement.menu.style.top = `${y}px`;
+        }
+    };
+
+    // 图表右键操作
+    chart.on("contextmenu", function(parentNode) {
+
+        let event = parentNode.event.event;
+
+        rightMenuElement.changeMenuPosition(event.pageX + 20, event.pageY);
+        rightMenuElement.target = parentNode;
+
+        // 如果是根节点：隐藏删除节点按钮
+        rightMenuElement.del.style.display = 0 == parentNode.data.category ? 'none' : 'block';
+
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    });
+
+    // 新增、删除节点操作
+    rightMenuElement.menu.addEventListener('click', function (event) {
+
+        let [option, parentNode] = [chart.getOption(), rightMenuElement.target];
         let [data, links] = [option.series[0].data, option.series[0].links];
 
-        // 判断当前节点是否已经有子节点
-        let hasChild = links.findIndex(item => item.source == parentNode.name) != -1;
-
-        if (!hasChild) {
+        // 新增节点
+        if (event.target == rightMenuElement.add) {
 
             // 新增的子节点的所属类型 （为当前父节点所属类型 + 1）
             let category = parseInt(parentNode.name.split('-')[0]) + 1;
@@ -124,16 +156,11 @@
                     target: `${category}-${index}`
                 });
             }
-        } else {
+        }
 
-            // 如果是根节点：给予相关提示
-            if (0 == parentNode.data.category) {
+        // 删除节点，删除当前节点相关数据
+        if (event.target == rightMenuElement.del) {
 
-                alert('不能新增啦~~~');
-                return false;
-            }
-
-            // 删除当前节点相关数据
             filter(option.series[0].data, option.series[0].links, parentNode, categories);
         }
 
@@ -178,6 +205,16 @@
             }
         }
     }
+
+    // 右键菜单隐藏操作
+    document.addEventListener('click', () => {
+
+        rightMenuElement.changeMenuPosition(-200, -200);
+    });
+    document.addEventListener('contextmenu', () => {
+
+        rightMenuElement.changeMenuPosition(-200, -200);
+    });
 </script>
 </body>
 </html>
