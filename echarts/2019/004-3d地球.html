@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>3d地球</title>
     <script src="../js/echarts-4.2.0.js"></script>
+    <script src="../js/echarts-gl-1.1.1-.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <style>
         .chart {
             height: 600px;
@@ -17,6 +19,118 @@
 
 <script>
     let chart = echarts.init(document.querySelector('.chart'));
+
+    $.getJSON('../data/001.json', function(data) {
+
+        data = data.filter(dataItem => dataItem[2] > 0).map(dataItem => [dataItem[0], dataItem[1], Math.sqrt(dataItem[2])]);
+
+        data = [[116.4551, 40.2539, 1]];
+        let airDatas = [
+            {
+                coords: [[-97, 38], [116.4551, 40.2539]]
+            }
+        ];
+        for (let i = 0; i < 10; i++) {
+
+            // airDatas = airDatas.concat(randomLine());
+        }
+
+        function randomLine() {
+
+            let name = '随机点' + Math.random().toFixed(5) * 100000;
+            let longitude = Math.random() * 360;
+            let longitude2 = Math.random() * 360 - 180;
+            let latitude = Math.random() * 360;
+            let latitude2 = Math.random() * 180 - 90;
+            return {
+                coords: [
+                    [longitude2, latitude2],
+                    [longitude, latitude]
+                ],
+                value: (Math.random() * 3000).toFixed(2)
+            }
+        }
+
+        chart.setOption({
+            backgroundColor: 'transparent',
+            visualMap: [
+                {
+                    type: 'piecewise',
+                    show: false,
+                    min: 0,
+                    max: 60,
+                    inRange: {
+                        symbolSize: [1.0, 10.0]
+                    }
+                }
+            ],
+            tooltip: {
+                show: true,
+                formatter(item) {
+                  console.log(1);
+                }
+            },
+            globe: {
+                baseTexture: '../img/001.jpg',
+                heightTexture: '../img/002.jpg',
+                environment: '../img/003.jpg',
+                displacementScale: 0, // 设置地球定点位移为0，才能显示连线
+                shading: 'realistic',
+                realisticMaterial: {
+                    roughness: 0.9
+                },
+                postEffect: {
+                    enable: true
+                },
+                viewControl: {
+                    autoRotate: true,
+                    distance: 250,
+                    autoRotateSpeed: 2,
+                    targetCoord: [116.46, 39.92]
+                },
+                light: {
+                    main: {
+                        intensity: 0.6
+                    },
+                    ambient: {
+                        intensity: 0.4
+                    }
+                }
+            },
+            series: [
+                {
+                    type: 'scatter3D',
+                    coordinateSystem: 'globe',
+                    blendMode: 'lighter',
+                    symbolSize: 2,
+                    silent: true,
+                    itemStyle: {
+                        color: '#0276f3',
+                        opacity: 1
+                    },
+                    data: data
+                },
+                {
+                    type: "lines3D",
+                    effect: {
+                        show: true,
+                        period: 2,
+                        trailWidth: 3,
+                        trailLength: 0.5,
+                        trailOpacity: 1,
+                        trailColor: "#aefbaf"
+                    },
+                    lineStyle: {
+                        width: 2,
+                        color: "#aefbaf",
+                        opacity: 0.2
+                    },
+                    blendMode: "lighter",
+                    data: airDatas
+                }
+            ]
+        });
+    });
 </script>
 </body>
 </html>
