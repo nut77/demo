@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>3d地球+连线</title>
     <script src="../js/echarts-4.2.0.js"></script>
-    <script src="../js/echarts-gl-1.1.1-.min.js"></script>
+    <script src="../js/echarts-gl-1.2.1.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <style>
         .chart {
@@ -15,6 +15,7 @@
     </style>
 </head>
 <body>
+<h3>用echarts-gl-1.2.1版本才有scatter3D的tooltip，lines 3d还没有tooltip</h3>
 <div class="chart"></div>
 
 <script>
@@ -23,6 +24,7 @@
     // 显示3d地球+连线
     $.getJSON('../data/001.json', function(data) {
 
+        // 如果把3d散点图的 最后一项如果全都设为 > 0 的其它数字，那么会导致飞线不显示，< 0 飞线显示不对， = 0(也可以不为数组第三项赋值) 散点贴在地球表面
         data = data.filter(dataItem => dataItem[2] > 0).map(dataItem => [dataItem[0], dataItem[1], Math.sqrt(dataItem[2])]);
 
         chart.setOption({
@@ -39,7 +41,7 @@
                 }
             ],
             tooltip: {
-                show: true
+                formatter: param => param.data[2]
             },
             globe: {
                 baseTexture: '../img/001.jpg',
@@ -75,10 +77,15 @@
                     coordinateSystem: 'globe',
                     blendMode: 'lighter',
                     symbolSize: 2,
-                    silent: true,
+                    // silent: true, 不响应鼠标事件
                     itemStyle: {
                         color: '#0276f3',
                         opacity: 1
+                    },
+                    emphasis: {
+                        label: {
+                            show: false // 关闭默认的label显示
+                        }
                     },
                     data
                 },
