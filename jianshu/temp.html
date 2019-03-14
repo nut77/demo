@@ -8,5 +8,12 @@
 .clearfix1 {
     overflow: auto; /*hidden也可以*/
 }
+<script>
+    let arr1 = [23, [34]];
+    let arr2 = [];
+    let arr3 = arr2.concat(arr1);
+
+    console.log(arr3[1] == arr1[1]);
+</script>
 </body>
 </html>
