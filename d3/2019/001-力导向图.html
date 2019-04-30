@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>力导向图</title>
-    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>-->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
 <h3>力导向图</h3>
@@ -74,7 +75,6 @@
     function dragsubject() {
         return simulation.find(d3.event.x, d3.event.y);
     }
-    });
 
     function dragstarted() {
         if (!d3.event.active) simulation.alphaTarget(0.3).restart();
@@ -102,7 +102,6 @@
         context.moveTo(d.x + 3, d.y);
         context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
     }
-
 </script>
 </body>
 </html>

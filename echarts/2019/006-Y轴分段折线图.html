@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Y轴分段折线图</title>
+    <script src="../js/echarts-4.2.0.js"></script>
+    <style>
+        .chart {
+            height: 600px;
+            margin: 50px 100px 0 100px;
+            border: 1px solid #999999;
+        }
+    </style>
+</head>
+<body>
+<div class="chart"></div>
+<script>
+    let chart = echarts.init(document.querySelector('.chart'));
+
+    chart.setOption({
+        backgroundColor: "#fff",
+        tooltip: {
+            trigger: 'axis',
+            formatter(params) {
+
+                let param = params[0];
+                return `${param.seriesName}<br/>${param.data[0]}：${param.data[1]}`;
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        dataZoom: [
+            {
+                type: 'slider',
+                show: true,
+                height: 20,
+                left: 100,
+                right: '4%',
+                bottom: '0',
+                start: 0,
+                end: 100,
+                textStyle: {
+                    color: '#d4ffff',
+                    fontSize: 11,
+                },
+            },
+            {
+                type: 'inside'
+            }
+        ],
+        xAxis: {
+            type: 'category',
+            name: '登录时间',
+            boundaryGap: false,
+            axisLine: {
+                show: true
+            },
+            axisTick: {
+                show: true
+            },
+        },
+        yAxis: {
+            type: 'category',
+            name: '登录地区',
+            data: ['四川', '北京', '上海', '', '美国', '马来西亚', '立陶宛'],
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#9895A1'
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: 'rgba(143,153,161,0.73)'
+                },
+                //interval: 0
+            }
+        },
+        series: [
+            {
+                name: '登录趋势',
+                type: 'line',
+                data: [
+                    ['2016-02-02', '四川'],
+                    ['2016-02-03', '北京'],
+                    ['2016-02-04', '四川'],
+                    ['2016-02-06', '四川'],
+                    ['2016-02-07', '美国'],
+                    ['2016-02-08', '美国'],
+                    ['2016-02-09', '上海'],
+                ],
+                symbolSize: 10,
+                symbol: 'circle',
+                lineStyle: {
+                    normal: {
+                        color: 'rgb(86,167,69)'
+                    }
+                },
+                itemStyle: {
+                    // 径向渐变，前三个参数分别是圆心 x, y 和半径，取值同线性渐变
+                    color: {
+                        type: 'radial',
+                        x: 0.5,
+                        y: 0.4,
+                        r: 0.5,
+                        colorStops: [{
+                            offset: 0,
+                            color: 'rgba(0,0,0,0)' // 0% 处的颜色
+                        }, {
+                            offset: 1,
+                            color: '#f60' // 100% 处的颜色
+                        }],
+                        globalCoord: false // 缺省为 false
+                    }
+                }
+            },
+            {
+                name: '',
+                type: 'line',
+                data: [
+                    ['2016-02-02', ''],
+                    ['2016-02-03', ''],
+                    ['2016-02-04', ''],
+                    ['2016-02-06', ''],
+                    ['2016-02-07', ''],
+                    ['2016-02-08', ''],
+                    ['2016-02-09', ''],
+                ],
+                symbolSize: 0,
+                lineStyle: {
+                    color: 'rgb(25,163,167)',
+                    type: 'dashed'
+                }
+            }
+        ]
+    });
+</script>
+</body>
+</html>
