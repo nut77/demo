@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>力导向图-右键展开收缩节点</title>
+    <title>力导向图-右键展开收缩悬停聚焦节点</title>
     <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
     <style>
         svg {
@@ -111,11 +111,7 @@
     let nodesData = transformDataToForceData(datas).nodesData;
     let linksData = transformDataToForceData(datas).linksData;
 
-    console.log(nodesData);
-    console.log(linksData);
-
     let simulation = d3.forceSimulation().nodes(nodesData);
-
     simulation
         .force('link', d3.forceLink())
         .force('charge', d3.forceManyBody())
@@ -158,6 +154,23 @@
             .on('start', started)
             .on('drag', dragged)
             .on('end', ended));
+
+    // 聚焦 相关操作
+    node
+        .on('mouseenter', function (d) {
+            /*if (draging) {
+                return;
+            }*/
+            toggleNode(node, d.name, true);
+            toggleLine(link, d.name, true);
+        })
+        .on('mouseleave', d => {
+            /*if (draging) {
+                return;
+            }*/
+            toggleNode(node, d.name, false);
+            toggleLine(link, d.name, false);
+        });
 
     simulation.nodes(nodesData)
         .on("tick", tickAction);
@@ -363,6 +376,52 @@
         return result;
     }
 
+    function getLinkNodes(links, nodeName) {
+
+        let linkNodes = [nodeName];
+        for (let i = 0; i < links.length; i++) {
+
+            let temp = links[i];
+            if (nodeName == temp.source.name) {
+
+                linkNodes.push(...getLinkNodes(links, temp.target.name));
+            }
+            if (nodeName == temp.target.name) {
+
+                linkNodes.push(temp.source.name);
+            }
+        }
+
+        return linkNodes;
+    }
+
+    function toggleNode(nodes, nodeName, isHover) {
+        if (isHover) {
+
+            let linkNodes = getLinkNodes(linksData, nodeName);
+            nodes
+                .style('opacity', .1)
+                .filter(d => linkNodes.includes(d.name))
+                .style('opacity', 1);
+        } else {
+            nodes.style('opacity', 1);
+        }
+    }
+
+    function toggleLine(links, nodeName, isHover) {
+        if (isHover) {
+            // 加重连线样式
+            links
+                .style('opacity', .1)
+                .filter(d => nodeName == d.target.name || nodeName == d.source.name)
+                .style('opacity', 1);
+        } else {
+            // 连线恢复样式
+            links
+                .style('opacity', 1);
+        }
+    }
+
     function started(d) {
       if (!d3.event.active) {
           simulation.alphaTarget(0.8).restart();
@@ -382,7 +441,6 @@
         d.fx = null;
         d.fy = null;
     }
-
     function tickAction () {
         node
             .attr('cx', (d) => { return d.x })
