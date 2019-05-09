@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>力导向图-定时增加隐藏节点.html</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+    <style>
+        svg {
+            border: 1px solid #ccc;
+        }
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h3>力导向图</h3>
+<script>
+    // 画布大小
+    const width = 900;
+    const height = 600;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let nodesData = [
+        { 'name': '123.12.12.13', 'type': 'ip' , 'level': 1},
+        { 'name': '123@qq.com', 'type': 'email', 'level': 2},
+        { 'name': '123123333333333', 'type': 'hash', 'level': 3},
+        { 'name': '123.test.com', 'type': 'domain', 'level': 2},
+        { 'name': '123.test11.com', 'type': 'domain', 'level': 1},
+    ]
+
+    // 添加连线，指定链接数据
+    let linksData = [
+        { 'source': 0, 'target': 1 },
+        { 'source': 0, 'target': 2 },
+        { 'source': 0, 'target': 3 },
+        { 'source': 1, 'target': 4 }
+    ]
+
+    // 使用节点数据设置模拟器
+    let simulation = d3.forceSimulation().nodes(nodesData);
+
+    // 添加定心力和充电力
+    simulation
+        .force('link', d3.forceLink())
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(width / 2, height / 2));
+
+    // 先画线（这样线才在最底层）
+    let link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(linksData)
+        .enter()
+        .append('line')
+        .attr('stroke-width', 1)
+        .style('stroke', '#6b9cde');
+
+    // 在svg元素中绘制圆圈
+    let node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('circle')
+        .data(nodesData)
+        .enter()
+        .append('circle')
+        .attr('r', 15)
+        .attr('fill', (d, i) => {
+
+            //创建圆形图片
+            let defs = svg.append("defs").attr("id", "imgdefs");
+            let img_w = 30;
+            let img_h = 30;
+            let radius = 15;
+
+            let catpattern = defs.append("pattern")
+                .attr("id", "catpattern" + i)
+                .attr("height", 1)
+                .attr("width", 1);
+
+            catpattern.append("image")
+                .attr("x", - (img_w / 2 - radius))
+                .attr("y", - (img_h / 2 - radius))
+                .attr("width", img_w)
+                .attr("height", img_h)
+                .attr("xlink:href", `./img/${d.type}.png`);
+
+            return "url(#catpattern" + i + ")";
+
+        })
+        .attr('stroke-width', 1)
+        .style('stroke', d => {
+
+            let color = '';
+            switch (d.level) {
+                case 1:
+                    color = '#7cffa2';
+                    break;
+                case 2:
+                    color = '#fb9045';
+                    break;
+                case 3:
+                    color = '#ff473c';
+                    break;
+            }
+            return color;
+        })
+        .on('mouseover', d => {
+
+            console.log(d);
+        })
+        .call(d3.drag()
+            .on('start', started)
+            .on('drag', dragged)
+            .on('end', ended));
+
+    simulation.nodes(nodesData)
+        .on("tick", tickAction);
+
+    simulation.force('link')
+        .links(linksData)
+        .distance(100);
+
+    // 新增节点
+    d3.timeout(function () {
+
+        let newNode = {name: "www.test.com", type: 'domian', level: 2};
+        let newLink = {source: 1, target: 5};
+
+        linksData.push(newLink);
+        nodesData.push(newNode);
+
+        simulation.nodes(nodesData);
+        simulation.force("link").links(linksData);
+
+        link = link
+            .data(linksData)
+            .enter()
+            .append("line")
+            .style("stroke", "#ccc")
+            .style("stroke-width", 3)
+            .merge(link);
+
+        console.log(link);
+
+        node = node
+            .data(nodesData, (d) => d.name)
+            .enter()
+            .append("circle")
+            .attr("r", 15)
+            .merge(node).call(d3.drag()
+                .on('start', started)
+                .on('drag', dragged)
+                .on('end', ended));
+
+        console.log(node);
+
+        simulation.alpha(1).restart();
+    }, 2000);
+
+    // 隐藏节点1 - 直接删除数组
+    /*d3.timeout(function () {
+
+        let delName = '123@qq.com';
+
+        filter(nodesData, linksData, delName);
+
+        simulation.nodes(nodesData);
+        simulation.force("link").links(linksData);
+
+        link = link
+            .data(linksData)
+            .exit()
+            .remove()
+            .merge(link);
+
+        node = node
+            .data(nodesData, (d) => d.name)
+            .attr("r", 15)
+            .exit()
+            .remove()
+            .merge(node).call(d3.drag()
+                .on('start', started)
+                .on('drag', dragged)
+                .on('end', ended));
+
+        simulation.alpha(1).restart();
+    }, 6000);*/
+
+    // 隐藏节点2 - 利用css属性 隐藏节点和连线
+    d3.timeout(function () {
+
+        let delName = '123@qq.com';
+
+        hideDataWithName(nodesData, linksData, delName);
+
+        console.log(nodesData);
+        console.log(linksData);
+
+        link = link
+            .attr('class', d => d.cls)
+            .merge(link);
+
+        node = node
+            .attr('class', d => d.cls)
+            .merge(node);
+
+        simulation.nodes(nodesData);
+        simulation.force("link").links(linksData);
+        simulation.alpha(1).restart();
+    }, 6000);
+
+    // 隐藏节点过滤数据方法
+    function hideDataWithName(nodes, links, delName) {
+
+        if (!delName) return false;
+
+        // 隐藏目标节点(要先删除节点，不然递归的时候会出问题，节点一直存在造成死循环)
+        nodes.find(item => item.name ==  delName).cls = 'hide';
+
+        // 遍历节点连线
+        for (let i = 0; i < links.length; i++) {
+
+            // 向下的连线(不仅要删除线还要删除target那个点)、向上的连线(只删除线)
+            if (links[i].source.name == delName || links[i].target.name == delName) {
+
+                links[i].cls = 'hide';
+                let temp = links[i];
+
+                // 递归遍历 删除子节点和相关连线(如果是向上的连线就不需要遍历了)
+                temp.source.name == delName && hideDataWithName(nodes, links, temp.target.name);
+            }
+        }
+    }
+
+    // 删除节点过滤数据方法
+    function filter(nodes, links, delName) {
+
+        if (!delName) return false;
+
+        // 删除目标节点(要先删除节点，不然递归的时候会出问题，节点一直存在造成死循环)
+        nodes.splice(nodes.findIndex(item => item.name ==  delName), 1);
+
+        // 遍历节点连线
+        for (let i = 0; i < links.length; i++) {
+
+            // 向下的连线(不仅要删除线还要删除target那个点)、向上的连线(只删除线)
+            if (links[i].source.name == delName || links[i].target.name == delName) {
+
+                let temp = links.splice(i, 1)[0];
+                i--; // 删除连线后，当前循环需要再向前移一位
+
+                // 递归遍历 删除子节点和相关连线(如果是向上的连线就不需要遍历了)
+                temp.source.name == delName && filter(nodes, links, temp.target.name);
+            }
+        }
+    }
+
+    function started(d) {
+      if (!d3.event.active) {
+          simulation.alphaTarget(0.8).restart();
+      }
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    function dragged(d) {
+
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+    function ended(d) {
+        if (!d3.event.active) {
+            simulation.alphaTarget(0);
+        }
+        d.fx = null;
+        d.fy = null;
+    }
+
+    function tickAction () {
+        node
+            .attr('cx', (d) => { return d.x })
+            .attr('cy', (d) => { return d.y })
+
+        link
+            .attr('x1', (d) => { return d.source.x })
+            .attr('y1', (d) => { return d.source.y })
+            .attr('x2', (d) => { return d.target.x })
+            .attr('y2', (d) => { return d.target.y })
+    }
+</script>
+</body>
+</html>

@@ -55608,7 +55608,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
 
     render: function (seriesModel, ecModel, api) {
         var particleSurface = this._particleSurface;
-        // Set particleType before set others.
+        // Set particleType before set otherDemo.
         particleSurface.setParticleType(seriesModel.get('particleType'));
         particleSurface.setSupersampling(seriesModel.get('supersampling'));
 

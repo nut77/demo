@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>力导向图-右键展开收缩节点</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+    <style>
+        svg {
+            border: 1px solid #ccc;
+        }
+        .hide {
+            display: none;
+        }
+        .show {
+            display: block;
+        }
+        .menu {
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            top: -200px;
+            left: -200px;
+        }
+        .menu-item {
+            width: 120px;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            background-color: rgb(37, 123, 203);
+            color: white;
+            font-size: 15px;
+            list-style: none;
+            cursor: pointer;
+        }
+        .menu-item:hover {
+            background-color: rgb(2, 106, 203);
+        }
+    </style>
+</head>
+<body>
+<h3>力导向图</h3>
+<ul class="menu">
+    <li class="menu-item" data-target="spread">展开</li>
+    <li class="menu-item" data-target="shrink">收缩</li>
+</ul>
+<script>
+    // 右键菜单相关属性
+    const rightMenuElement = {
+        menu: document.querySelector('.menu'),
+        spread: document.querySelector('[data-target="spread"]'),
+        shrink: document.querySelector('[data-target="shrink"]'),
+        target: null,
+        changeMenuPosition(x, y) {
+
+            rightMenuElement.menu.style.left = `${x}px`;
+            rightMenuElement.menu.style.top = `${y}px`;
+        }
+    };
+
+    // 画布大小
+    const width = 900;
+    const height = 600;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let datas = {
+        ip: [
+            {value: '123.12.12.13', level: 1},
+            {value: '12.1.123.113', level: 2}
+        ],
+        domian: [
+            {value: '123.test.com', level: 1},
+            {value: 'black.com', level: 3},
+        ],
+        hash: [
+            {
+                value: '123123333333333',
+                level: 2,
+                /*children: {
+                    ip: [
+                        {value: '127.0.0.1', level: 2},
+                        {value: '0.0.0.0', level: 2}
+                    ],
+                    domian: [
+                        {value: 'heike.com', level: 3},
+                    ]
+                }*/
+            }
+        ],
+        email: [
+            {value: '123@qq.com', level: 2},
+            {value: 'test@qq.com', level: 2},
+            {value: '6787662@qq.com', level: 1}
+        ]
+    };
+
+    let nodesColor = {
+        'ip': '#319aff',
+        'email': '#f1c1e2',
+        'hash': '#7cffa2',
+        'domain': '#fb9045',
+        'enterKey': '#0d1bff'
+    };
+
+    let nodesLevelColor = ['#d9dfff', '#a2fdea', '#ff0000'];
+
+
+    let nodesData = transformDataToForceData(datas).nodesData;
+    let linksData = transformDataToForceData(datas).linksData;
+
+    console.log(nodesData);
+    console.log(linksData);
+
+    let simulation = d3.forceSimulation().nodes(nodesData);
+
+    simulation
+        .force('link', d3.forceLink())
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(width / 2, height / 2));
+
+    // 创建链接力
+    let linkForce = d3.forceLink(linksData)
+        .id(d => d.name);
+
+    // 把链接力添加到模拟器中
+    simulation.force('links', linkForce)
+
+    let link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(linksData)
+        .enter()
+        .append('line')
+        .attr('stroke-width', 1)
+        .style('stroke', '#6b9cde');
+
+    let node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('circle')
+        .data(nodesData)
+        .enter()
+        .append('circle')
+        .attr('r', 15)
+        .attr('fill', d => {
+
+            if (undefined !== d.level) {
+
+                return nodesLevelColor[d.level - 1];
+            }
+            return 'enterKey' == d.type ? nodesColor[d.type] : 'green';
+        })
+        .attr('stroke-width', 1)
+        .on('contextmenu', nodeRightClick)
+        .call(d3.drag()
+            .on('start', started)
+            .on('drag', dragged)
+            .on('end', ended));
+
+    simulation.nodes(nodesData)
+        .on("tick", tickAction);
+
+    simulation.force('link')
+        .links(linksData)
+        .distance(100);
+
+    // 展开、隐藏节点操作
+    rightMenuElement.menu.addEventListener('click', function (event) {
+
+        let [parentNode] = [rightMenuElement.target];
+        let curNodeName = parentNode.name;
+
+        // 随机新增节点
+        if (event.target == rightMenuElement.spread) {
+
+            let total = parentNode.value;
+
+            // 新增
+            if (!total) {
+
+                // 需要增加的子节点的个数
+                let newNodeLength = (Math.random() * 10) % 4 + 1;
+
+                nodesData[parentNode.index].value = total + newNodeLength;
+
+                // 增加子节点
+                for (let i = 0; i < newNodeLength; i++) {
+
+                    nodesData.push({
+                        name: `${curNodeName}-${total + i + 1}`,
+                        type: 'ip',
+                        level: (i % 3) + 1,
+                        cls: `${curNodeName}-${total + i + 1}`
+                    });
+                    linksData.push({
+                        source: curNodeName,
+                        target: `${curNodeName}-${total + i + 1}`
+                    });
+                }
+
+                // 创建链接力
+                let linkForce = d3.forceLink(linksData)
+                    .id(d => d.name);
+
+                // 把链接力添加到模拟器中
+                simulation.force('links', linkForce)
+
+                link = link
+                    .data(linksData)
+                    .enter()
+                    .append("line")
+                    .style("stroke", "#ccc")
+                    .style("stroke-width", 3)
+                    .merge(link);
+
+                console.log(link);
+
+                node = node
+                    .data(nodesData, (d) => d.name)
+                    .enter()
+                    .append("circle")
+                    .attr("r", 15)
+                    .attr('fill', 'pink')
+                    .merge(node).call(d3.drag()
+                        .on('start', started)
+                        .on('drag', dragged)
+                        .on('end', ended));
+
+            }
+
+            // 展开
+            showDataWithName(nodesData, linksData, curNodeName);
+            link = link
+                .attr('class', d => d.cls)
+                .merge(link);
+
+            node = node
+                .attr('class', d => d.cls)
+                .merge(node);
+
+        }
+
+        // 隐藏节点
+        if (event.target == rightMenuElement.shrink) {
+
+            hideDataWithName(nodesData, linksData, curNodeName);
+            link = link
+                .attr('class', d => d.cls)
+                .merge(link);
+
+            node = node
+                .attr('class', d => d.cls)
+                .merge(node);
+        }
+
+        // 刷新视图
+        simulation.nodes(nodesData);
+        simulation.force("link").links(linksData);
+        simulation.alpha(1).restart();
+    });
+
+
+    // 节点右键显示展开隐藏菜单
+    function nodeRightClick(d) {
+
+        rightMenuElement.changeMenuPosition(d.x + 20, d.y + 20);
+        rightMenuElement.target = d;
+
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+    }
+
+    // 隐藏节点过滤数据方法
+    function hideDataWithName(nodes, links, delName, isHide = false) {
+
+        if (!delName) return false;
+
+        // 隐藏目标节点子孙节点
+        isHide && (nodes.find(item => item.name ==  delName).cls = 'hide');
+
+        // 遍历节点连线 隐藏所有向下的节点和连线
+        for (let i = 0; i < links.length; i++) {
+
+            if (links[i].source.name == delName) {
+
+                links[i].cls = 'hide';
+                let temp = links[i];
+
+                // 递归遍历 隐藏所有子孙节点和相关连线
+                hideDataWithName(nodes, links, temp.target.name, true);
+            }
+        }
+    }
+
+    // 显示节点过滤数据方法
+    function showDataWithName(nodes, links, nodeName) {
+
+        if (!nodeName) return false;
+
+        nodes.find(item => item.name ==  nodeName).cls = 'show';
+
+        for (let i = 0; i < links.length; i++) {
+
+            if (links[i].source.name == nodeName) {
+
+                links[i].cls = 'show';
+                let temp = links[i];
+
+                showDataWithName(nodes, links, temp.target.name);
+            }
+        }
+    }
+
+    // 转换数据为标准的力导向图数据格式
+    function transformDataToForceData(datas) {
+
+        let result = {
+            nodesData: [],
+            linksData: []
+        };
+
+        let i = 0;
+        result.nodesData.push({
+            name: '0',
+            type: 'enterKey',
+            cls: `${i}`
+        });
+        for (let type in datas) {
+
+            i++;
+            let name = i + '';
+            let list = datas[type];
+            result.nodesData.push({
+                name,
+                type,
+                value: list.length,
+                cls: `${i}`
+            });
+            result.linksData.push({
+                source: '0',
+                target: name
+            });
+
+            for (let j = 0; j < list.length; j++) {
+
+                result.nodesData.push({
+                    name: list[j].value,
+                    type,
+                    cls: `${i}-${j + 1}`,
+                    level: list[j].level
+                });
+                result.linksData.push({
+                    source: name,
+                    target: list[j].value
+                });
+            }
+        }
+
+        return result;
+    }
+
+    function started(d) {
+      if (!d3.event.active) {
+          simulation.alphaTarget(0.8).restart();
+      }
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    function dragged(d) {
+
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+    function ended(d) {
+        if (!d3.event.active) {
+            simulation.alphaTarget(0);
+        }
+        d.fx = null;
+        d.fy = null;
+    }
+
+    function tickAction () {
+        node
+            .attr('cx', (d) => { return d.x })
+            .attr('cy', (d) => { return d.y })
+
+        link
+            .attr('x1', (d) => { return d.source.x })
+            .attr('y1', (d) => { return d.source.y })
+            .attr('x2', (d) => { return d.target.x })
+            .attr('y2', (d) => { return d.target.y })
+    }
+
+    // 右键菜单隐藏操作
+    document.addEventListener('click', () => {
+
+        rightMenuElement.changeMenuPosition(-200, -200);
+    });
+    document.addEventListener('contextmenu', () => {
+
+        rightMenuElement.changeMenuPosition(-200, -200);
+    });
+</script>
+</body>
+</html>

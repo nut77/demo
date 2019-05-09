@@ -6872,7 +6872,7 @@ Style.prototype = {
      * @param {zrender/graphic/Style} otherStyle
      * @param {boolean} overwrite true: overwrirte any way.
      *                            false: overwrite only when !target.hasOwnProperty
-     *                            others: overwrite when property is not null/undefined.
+     *                            otherDemo: overwrite when property is not null/undefined.
      */
     extendFrom: function (otherStyle, overwrite) {
         if (otherStyle) {
@@ -6938,7 +6938,7 @@ for (var i = 0; i < STYLE_COMMON_PROPS.length; i++) {
     }
 }
 
-// Provide for others
+// Provide for otherDemo
 Style.getGradient = styleProto.getGradient;
 
 var Pattern = function (image, repeat) {
@@ -9000,7 +9000,7 @@ ZImage.prototype = {
         // Draw rect text
         if (style.text != null) {
             // Only restore transform when needs draw text.
-            this.restoreTransform(ctx);    
+            this.restoreTransform(ctx);
             this.drawRectText(ctx, this.getBoundingRect());
         }
     },
@@ -16981,7 +16981,7 @@ function setTokenTextStyle(textStyle, textStyleModel, globalTextStyle, opt, isEm
 
     // Do not use `getFont` here, because merge should be supported, where
     // part of these properties may be changed in emphasis style, and the
-    // others should remain their original value got from normal style.
+    // otherDemo should remain their original value got from normal style.
     textStyle.fontStyle = textStyleModel.getShallow('fontStyle') || globalTextStyle.fontStyle;
     textStyle.fontWeight = textStyleModel.getShallow('fontWeight') || globalTextStyle.fontWeight;
     textStyle.fontSize = textStyleModel.getShallow('fontSize') || globalTextStyle.fontSize;
@@ -33225,7 +33225,7 @@ function getScaleExtent(scale, model) {
     // Notice: When min/max is not set (that is, when there are null/undefined,
     // which is the most common case), these cases should be ensured:
     // (1) For 'ordinal', show all axis.data.
-    // (2) For others:
+    // (2) For otherDemo:
     //      + `boundaryGap` is applied (if min/max set, boundaryGap is
     //      disabled).
     //      + If `needCrossZero`, min/max should be zero, otherwise, min/max should
@@ -46870,7 +46870,7 @@ extendChartView({
                         text: hoverLabelModel.get('show') ? emphasisText : null
                     }, {isRectText: true, useInsideStyle: false}, true);
                     circle.style.extendFrom(hoverStyle);
-                    // Make label upper than others if overlaps.
+                    // Make label upper than otherDemo if overlaps.
                     circle.__mapOriginalZ2 = circle.z2;
                     circle.z2 += 1;
                 };
@@ -69037,7 +69037,7 @@ SeriesModel.extend({
         stillShowZeroSum: true,
 
         // Policy of highlighting pieces when hover on one
-        // Valid values: 'none' (for not downplay others), 'descendant',
+        // Valid values: 'none' (for not downplay otherDemo), 'descendant',
         // 'ancestor', 'self'
         highlightPolicy: 'descendant',
 
@@ -69182,7 +69182,7 @@ function completeTreeValue$1(dataNode) {
 */
 
 var NodeHighlightPolicy = {
-    NONE: 'none', // not downplay others
+    NONE: 'none', // not downplay otherDemo
     DESCENDANT: 'descendant',
     ANCESTOR: 'ancestor',
     SELF: 'self'
@@ -70001,10 +70001,10 @@ var sunburstLayout = function (seriesType, ecModel, api, payload) {
                     ? unitRadian : (value * unitRadian);
                 if (angle < minAngle) {
                     angle = minAngle;
-                    
+
                 }
                 else {
-                    
+
                 }
 
                 endAngle = startAngle + dir * angle;
@@ -71748,7 +71748,7 @@ var LegendModel = extendComponentModel({
             for (var i = 0; i < legendData.length; i++) {
                 var name = legendData[i].get('name');
                 if (this.isSelected(name)) {
-                    // Force to unselect others
+                    // Force to unselect otherDemo
                     this.select(name);
                     hasSelected = true;
                     break;
@@ -89095,7 +89095,7 @@ var ITEM_SPLITER = '\t';
 /**
  * Group series into two types
  *  1. on category axis, like line, bar
- *  2. others, like scatter, pie
+ *  2. otherDemo, like scatter, pie
  * @param {module:echarts/model/Global} ecModel
  * @return {Object}
  * @inner
@@ -91521,7 +91521,7 @@ function bindStyle(svgEl, style, isText, el) {
             ? el.getLineScale()
             : 1;
         attr(svgEl, 'stroke-width', strokeWidth / strokeScale);
-        // stroke then fill for text; fill then stroke for others
+        // stroke then fill for text; fill then stroke for otherDemo
         attr(svgEl, 'paint-order', isText ? 'stroke' : 'fill');
         attr(svgEl, 'stroke-opacity', style.strokeOpacity != null ? style.strokeOpacity : style.opacity);
         var lineDash = style.lineDash;
