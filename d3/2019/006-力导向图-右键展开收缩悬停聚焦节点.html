@@ -108,6 +108,7 @@
     let nodesLevelColor = ['#d9dfff', '#a2fdea', '#ff0000'];
 
 
+    let dragging = false;
     let nodesData = transformDataToForceData(datas).nodesData;
     let linksData = transformDataToForceData(datas).linksData;
 
@@ -118,11 +119,10 @@
         .force('center', d3.forceCenter(width / 2, height / 2));
 
     // 创建链接力
-    let linkForce = d3.forceLink(linksData)
-        .id(d => d.name);
+    let linkForce = d3.forceLink(linksData).id(d => d.name);
 
     // 把链接力添加到模拟器中
-    simulation.force('links', linkForce)
+    simulation.force('links', linkForce);
 
     let link = svg.append('g')
         .attr('class', 'links')
@@ -139,6 +139,7 @@
         .data(nodesData)
         .enter()
         .append('circle')
+        .attr('class', d => d.cls)
         .attr('r', 15)
         .attr('fill', d => {
 
@@ -150,27 +151,12 @@
         })
         .attr('stroke-width', 1)
         .on('contextmenu', nodeRightClick)
+        .on('mouseenter', nodeMouseEnter)
+        .on('mouseleave', nodeMouseLeave)
         .call(d3.drag()
             .on('start', started)
             .on('drag', dragged)
             .on('end', ended));
-
-    // 聚焦 相关操作
-    node
-        .on('mouseenter', function (d) {
-            /*if (draging) {
-                return;
-            }*/
-            toggleNode(node, d.name, true);
-            toggleLine(link, d.name, true);
-        })
-        .on('mouseleave', d => {
-            /*if (draging) {
-                return;
-            }*/
-            toggleNode(node, d.name, false);
-            toggleLine(link, d.name, false);
-        });
 
     simulation.nodes(nodesData)
         .on("tick", tickAction);
@@ -214,12 +200,8 @@
                     });
                 }
 
-                // 创建链接力
-                let linkForce = d3.forceLink(linksData)
-                    .id(d => d.name);
-
-                // 把链接力添加到模拟器中
-                simulation.force('links', linkForce)
+                // 创建链接力 把链接力添加到模拟器中
+                simulation.force('links', d3.forceLink(linksData).id(d => d.name));
 
                 link = link
                     .data(linksData)
@@ -229,18 +211,30 @@
                     .style("stroke-width", 3)
                     .merge(link);
 
-                console.log(link);
-
                 node = node
                     .data(nodesData, (d) => d.name)
                     .enter()
                     .append("circle")
                     .attr("r", 15)
-                    .attr('fill', 'pink')
-                    .merge(node).call(d3.drag()
+                    .attr('r', 15)
+                    .attr('class', d => d.cls)
+                    .attr('fill', d => {
+
+                        if (undefined !== d.level) {
+
+                            return nodesLevelColor[d.level - 1];
+                        }
+                        return 'enterKey' == d.type ? nodesColor[d.type] : 'green';
+                    })
+                    .attr('stroke-width', 1)
+                    .on('contextmenu', nodeRightClick)
+                    .on('mouseenter', nodeMouseEnter)
+                    .on('mouseleave', nodeMouseLeave)
+                    .call(d3.drag()
                         .on('start', started)
                         .on('drag', dragged)
-                        .on('end', ended));
+                        .on('end', ended))
+                    .merge(node);
 
             } else {
 
@@ -274,6 +268,19 @@
         simulation.force("link").links(linksData);
         simulation.alpha(1).restart();
     });
+
+    function nodeMouseEnter(d) {
+
+        if (dragging) return;
+        toggleNode(node, d.name, true);
+        toggleLine(link, d.name, true);
+    }
+    function nodeMouseLeave(d) {
+
+        if (dragging) return;
+        toggleNode(node, d.name, false);
+        toggleLine(link, d.name, false);
+    }
 
     // 节点右键显示展开隐藏菜单
     function nodeRightClick(d) {
@@ -396,11 +403,12 @@
     }
 
     function toggleNode(nodes, nodeName, isHover) {
-        if (isHover) {
+
+        if (isHover && 0 != nodeName) {
 
             let linkNodes = getLinkNodes(linksData, nodeName);
             nodes
-                .style('opacity', .1)
+                .style('opacity', 0)
                 .filter(d => linkNodes.includes(d.name))
                 .style('opacity', 1);
         } else {
@@ -409,10 +417,11 @@
     }
 
     function toggleLine(links, nodeName, isHover) {
-        if (isHover) {
+
+        if (isHover  && 0 != nodeName) {
             // 加重连线样式
             links
-                .style('opacity', .1)
+                .style('opacity', 0)
                 .filter(d => nodeName == d.target.name || nodeName == d.source.name)
                 .style('opacity', 1);
         } else {
@@ -423,18 +432,27 @@
     }
 
     function started(d) {
-      if (!d3.event.active) {
+
+        dragging = true;
+        if (!d3.event.active) {
           simulation.alphaTarget(0.8).restart();
-      }
-      d.fx = d.x;
-      d.fy = d.y;
+        }
+        d.fx = d.x;
+        d.fy = d.y;
+
     }
     function dragged(d) {
 
+        dragging = true;
         d.fx = d3.event.x;
         d.fy = d3.event.y;
+
+        toggleNode(node, '0', false);
+        toggleLine(link, '0', false);
     }
     function ended(d) {
+
+        dragging = false;
         if (!d3.event.active) {
             simulation.alphaTarget(0);
         }
@@ -444,13 +462,13 @@
     function tickAction () {
         node
             .attr('cx', (d) => { return d.x })
-            .attr('cy', (d) => { return d.y })
+            .attr('cy', (d) => { return d.y });
 
         link
             .attr('x1', (d) => { return d.source.x })
             .attr('y1', (d) => { return d.source.y })
             .attr('x2', (d) => { return d.target.x })
-            .attr('y2', (d) => { return d.target.y })
+            .attr('y2', (d) => { return d.target.y });
     }
 
     // 右键菜单隐藏操作

@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta charset="utf-8">
+        <title>Database process documentation</title>
+        <style type="text/css">
+            #menu {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 20px;
+                border: 1px solid #ddd;
+                background: #FFF;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="d3"></div>
+        <div id="menu">
+            <ul>
+                <li id="hide">隐藏</li>
+                <li id="open">展开</li>
+                <li id="focus">聚焦</li>
+            </ul>
+        </div>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script>
+            d3.select('#d3').style({
+                width: 666,
+                height: 666
+            })
+            let config = {
+                xOffset: 100,
+                yOffset: 100,
+                iconW: 50,
+                iconH: 50, 
+            }
+            let template = {
+               icon: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png',
+               pos: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 0
+               },
+               children: []
+            }
+            let data = {}
+            let chart = {}
+            chart.currentIcon = {}
+            data.tree = {
+              icon: 'https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png',
+              pos: {
+                x: 444,
+                y: 444,
+              },
+              children: []
+            }
+            data.icons = [];
+            data.lines = [];
+            
+
+            function init() {
+                let icon = {
+                  x: data.tree.pos.x,
+                  y: data.tree.pos.y,
+                  xOffset: config.xOffset,
+                  yOffset: config.yOffset,
+                  icon: data.tree.icon,
+                  nodeIconClass: 'icon',
+                  nodeLineClass: 'line',
+                  className: 'icon',
+                  index: 0
+                }
+                data.icons.push(icon);
+
+                chart.svg = d3.select('#d3').append('svg')
+                  .attr('width', 888)
+                  .attr('height', 888)
+
+                chart.icons = chart.svg.append('g')
+                  .attr('class', 'icons')
+
+                chart.lines = chart.svg.append('g')
+                  .attr('class', 'lines')
+
+                drawIcon();
+            }
+
+            function uniqueArray(arr) {
+              return arr.filter((item,index) => {
+                return arr.indexOf(item) === index;
+              })
+            }
+
+            function draw(node) {
+              if(!node) return;
+              let newNode = Object.assign({}, template);
+              newNode.pos.x1 = node.x + config.iconW/2;
+              newNode.pos.y1 = node.y + config.iconH/2;
+              newNode.pos.x2 = node.x + node.xOffset;
+              newNode.pos.y2 = node.y + node.yOffset - 150;
+
+              data.tree.children.push(newNode);
+
+              let newLine = {
+                x1: newNode.pos.x1,
+                y1: newNode.pos.y1,
+                x2: newNode.pos.x2,
+                y2: newNode.pos.y2,
+                nodeIconClass: '',
+                nodeLineClass: '',
+                className: '',
+                index: 0
+              }
+              let lineClass = node.className.replace(/icon/g, 'line');
+      
+              data.lines.push(newLine);
+
+              newLine.className = lineClass + ' ' + lineClass + '-' + node.index;
+              newLine.className = uniqueArray(newLine.className.split(' ')).join(' ');
+              let lineClassNameArr = newLine.className.split(' ');
+              newLine.nodeIconClass = lineClassNameArr[lineClassNameArr.length - 1];
+              newLine.nodeLineClass = newLine.nodeIconClass.replace(/icon/g, 'line');
+
+              let newIcon = {
+                x: newNode.pos.x2 - config.iconW/2,
+                y: newNode.pos.y2 - config.iconH/2,
+                xOffset: config.xOffset,
+                yOffset: config.yOffset,
+                icon: node.icon,
+                nodeIconClass: '',
+                nodeLineClass: '',
+                className: '',
+                index: 0
+              }
+              data.icons.push(newIcon);
+
+              newIcon.className = node.className + ' ' + node.className + '-' + node.index;
+              newIcon.className = uniqueArray(newIcon.className.split(' ')).join(' ');
+
+              let iconClassNameArr = newIcon.className.split(' ');
+              newIcon.nodeIconClass = iconClassNameArr[iconClassNameArr.length - 1];
+              newIcon.nodeLineClass = newIcon.nodeIconClass.replace(/icon/g, 'line');
+
+              node.xOffset = node.xOffset - 30;
+
+              drawLine();
+              drawIcon();
+
+              node.index++;
+            }
+
+            function drawLine(node) {
+              chart.lines.selectAll('line').data(data.lines).enter().append('line')
+                .style({
+                    stroke:'rgb(99,99,99)',
+                    strokeWidth: 2
+                })
+                .attr('class', function(d) {
+                    return d.className;
+                })
+                .attr('x1', function(d) {
+                    return d.x1
+                })
+                .attr('y1', function(d) {
+                    return d.y1
+                })
+                .attr('x2', function(d) {
+                    return d.x2
+                })
+                .attr('y2', function(d) {
+                    return d.y2
+                })
+            }
+
+            function drawIcon(node) {
+              chart.icons.selectAll('image').data(data.icons).enter().append('image')
+                .attr('xlink:href', function(d) {
+                  return d.icon
+                })
+                .attr('width', config.iconW)
+                .attr('height', config.iconH)
+                .attr('class', function (d){
+                  return d.className
+                })
+                .attr('transform', function(d) {
+                  return 'translate(' + d.x + ',' + d.y + ')'
+                })
+                .on('contextmenu', function(d) {
+                  d3.select('#menu').style({
+                      display: 'block',
+                      left: d.x - config.iconW/2 + 'px',
+                      top: d.y + config.iconH/2 + 10 + 'px'
+                  })
+                  chart.currentIcon = d;
+                  d3.event.preventDefault();
+                  d3.event.stopPropagation();
+                  return false;
+                })
+                .on('click', function(d) {   //add
+                  draw(d);
+                })
+            }
+
+            d3.select('html').on('click', function() {
+                d3.select('#menu').style({
+                    display: 'none'
+                })
+            })
+
+            function toggleShowChildren(isShow) {   
+              d3.selectAll('[class*="' + chart.currentIcon.nodeIconClass  + '-"],' + '[class*="' + chart.currentIcon.nodeLineClass  + '-"]').style({
+                display: isShow ? 'block' : 'none'
+              })
+            }
+
+            function highlightNodes() { //高亮
+              //console.log(chart.currentIcon)
+              let nodeIconClass = chart.currentIcon.nodeIconClass;
+              let nodeLineClass = chart.currentIcon.nodeLineClass;
+
+              let iconRegChildren = new RegExp(chart.currentIcon.nodeIconClass+ '-[0-9]+ ');
+              let nodeIconClassArr = chart.currentIcon.nodeIconClass.split('-');
+              nodeIconClassArr.length--;
+              let iconRegParent = new RegExp(nodeIconClassArr.join('-') + ' ');
+              console.log(iconRegParent)
+              let d3IconNodes = d3.selectAll('.' + chart.currentIcon.nodeIconClass).filter((item) => {
+                if(iconRegParent.test(item.className) || iconRegChildren.test(item.className)) {
+                  return true;
+                }
+              })
+              d3IconNodes.classed('icon-active', true).attr('height', 100);
+            }
+
+            d3.selectAll('#hide').on('click', function() {    //隐藏子节点
+                toggleShowChildren(false);
+            })
+
+            d3.selectAll('#open').on('click', function() {    //展开子节点
+              toggleShowChildren(true)
+            })
+
+            d3.selectAll('#focus').on('click', function() {    //聚焦
+              highlightNodes();
+            })
+
+            init();
+
+        </script>
+    </body>
+</html>
