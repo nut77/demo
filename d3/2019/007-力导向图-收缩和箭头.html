@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>力导向图-drag</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+    <style>
+        svg {
+            border: 1px solid #ccc;
+        }
+        .links line {
+            stroke: #999;
+            stroke-opacity: 0.6;
+        }
+        .nodes circle {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+<body>
+<h3>力导向图</h3>
+<script>
+    // 画布大小
+    const width = 900;
+    const height = 600;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let nodesData = [
+        { 'name': '123.12.12.13', 'type': 'ip' , 'level': '1'},
+        { 'name': '123@qq.com', 'type': 'email', 'level': '2'},
+        { 'name': '123123333333333', 'type': 'hash', 'level': '3'},
+        { 'name': '123.test.com', 'type': 'domain', 'level': '2'},
+        { 'name': '123.test11.com', 'type': 'domain', 'level': '1'},
+    ]
+
+    // 添加连线，指定链接数据
+    let linksData = [
+        { 'source': 0, 'target': 1 },
+        { 'source': 0, 'target': 2 },
+        { 'source': 0, 'target': 3 },
+        { 'source': 0, 'target': 4 },
+        { 'source': 1, 'target': 2 },
+        { 'source': 1, 'target': 3 },
+        { 'source': 1, 'target': 4 },
+        { 'source': 2, 'target': 3 },
+        { 'source': 2, 'target': 4 },
+        { 'source': 3, 'target': 4 },
+        { 'source': 4, 'target': 1 },
+    ]
+
+    // 使用节点数据设置模拟器
+    let simulation = d3.forceSimulation().nodes(nodesData);
+
+    // 添加定心力和充电力
+    simulation
+        .force('link', d3.forceLink())
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(width / 2, height / 2));
+
+    simulation.nodes(nodesData)
+        .on("tick", tickAction);
+
+    simulation.force('link')
+        .links(linksData)
+        .distance(100);
+
+    console.log(nodesData, linksData);
+    console.log(simulation);
+
+    //箭头
+    var marker=
+        svg.append("marker")
+            .attr("id", "arrow")
+            .attr("markerUnits", "userSpaceOnUse")
+            .attr("viewBox", "0 -5 10 10")//坐标系的区域
+            .attr("refX", 10)//箭头坐标
+            .attr("refY", -1)
+            .attr("markerWidth", 12)//标识的大小
+            .attr("markerHeight", 12)
+            .attr("orient", "auto")//绘制方向，可设定为：auto（自动确认方向）和 角度值
+            .attr("stroke-width", 2)//箭头宽度
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5")//箭头的路径
+            .attr('fill','#000000');//箭头颜色
+
+    // 画线
+    let link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(linksData)
+        .enter()
+        .append('line')
+        .attr('stroke-width', 2)
+        .attr('marker-end', 'url(#arrow)')
+        .style('stroke', '#6b9cde');
+
+    // 在svg元素中绘制圆圈
+    let node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('circle')
+        .data(nodesData)
+        .enter()
+        .append('circle')
+        .attr('r', 10)
+        .attr('fill', 'pink')
+        .call(d3.drag()
+            .on('start', started)
+            .on('drag', dragged)
+            .on('end', ended));
+
+    function started(d) {
+      if (!d3.event.active) {
+          simulation.alphaTarget(0.8).restart();
+      }
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    function dragged(d) {
+
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+    function ended(d) {
+        if (!d3.event.active) {
+            simulation.alphaTarget(0);
+        }
+        d.fx = null;
+        d.fy = null;
+    }
+
+    function tickAction () {
+        node
+            .attr('cx', (d) => { return d.x })
+            .attr('cy', (d) => { return d.y })
+
+        link
+            .attr('x1', (d) => { return d.source.x })
+            .attr('y1', (d) => { return d.source.y })
+            .attr('x2', (d) => { return d.target.x })
+            .attr('y2', (d) => { return d.target.y })
+    }
+</script>
+</body>
+</html>

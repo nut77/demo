@@ -37,86 +37,56 @@
         { 'name': 'Sylvester', 'sex': 'M' },
         { 'name': 'Mary', 'sex': 'F' },
         { 'name': 'Helen', 'sex': 'F' },
-        { 'name': 'Jamie', 'sex': 'M' },
-        { 'name': 'Jessie', 'sex': 'F' },
-        { 'name': 'Ashton', 'sex': 'M' },
-        { 'name': 'Duncan', 'sex': 'M' },
-        { 'name': 'Evette', 'sex': 'F' },
-        { 'name': 'Mauer', 'sex': 'M' },
-        { 'name': 'Fray', 'sex': 'F' },
-        { 'name': 'Duke', 'sex': 'M' },
-        { 'name': 'Baron', 'sex': 'M' },
-        { 'name': 'Infante', 'sex': 'M' },
-        { 'name': 'Percy', 'sex': 'M' },
-        { 'name': 'Cynthia', 'sex': 'F' }
-    ]
+        { 'name': 'Jamie', 'sex': 'M' }
+    ];
 
     // 添加连线，指定链接数据
     let linksData = [
         { 'source': 'Sylvester', 'target': 'Gordon', 'type': 'A' },
         { 'source': 'Sylvester', 'target': 'Lillian', 'type': 'A' },
-        { 'source': 'Sylvester', 'target': 'Mary', 'type': 'A' },
-        { 'source': 'Sylvester', 'target': 'Jamie', 'type': 'A' },
-        { 'source': 'Sylvester', 'target': 'Jessie', 'type': 'A' },
-        { 'source': 'Sylvester', 'target': 'Helen', 'type': 'A' },
-        { 'source': 'Helen', 'target': 'Gordon', 'type': 'A' },
-        { 'source': 'Mary', 'target': 'Lillian', 'type': 'A' },
-        { 'source': 'Ashton', 'target': 'Mary', 'type': 'A' },
-        { 'source': 'Duncan', 'target': 'Jamie', 'type': 'A' },
-        { 'source': 'Gordon', 'target': 'Jessie', 'type': 'A' },
-        { 'source': 'Sylvester', 'target': 'Fray', 'type': 'E' },
-        { 'source': 'Fray', 'target': 'Mauer', 'type': 'A' },
-        { 'source': 'Fray', 'target': 'Cynthia', 'type': 'A' },
-        { 'source': 'Fray', 'target': 'Percy', 'type': 'A' },
-        { 'source': 'Percy', 'target': 'Cynthia', 'type': 'A' },
-        { 'source': 'Infante', 'target': 'Duke', 'type': 'A' },
-        { 'source': 'Duke', 'target': 'Gordon', 'type': 'A' },
-        { 'source': 'Duke', 'target': 'Sylvester', 'type': 'A' },
-        { 'source': 'Baron', 'target': 'Duke', 'type': 'A' },
-        { 'source': 'Baron', 'target': 'Sylvester', 'type': 'E' },
-        { 'source': 'Evette', 'target': 'Sylvester', 'type': 'E' },
-        { 'source': 'Cynthia', 'target': 'Sylvester', 'type': 'E' },
-        { 'source': 'Cynthia', 'target': 'Jamie', 'type': 'E' },
-        { 'source': 'Mauer', 'target': 'Jessie', 'type': 'E' }
-    ]
+        { 'source': 'Lillian', 'target': 'Mary', 'type': 'B' },
+        { 'source': 'Lillian', 'target': 'Helen', 'type': 'B' },
+        { 'source': 'Helen', 'target': 'Jamie', 'type': 'C' },
+    ];
 
     // 使用节点数据设置模拟器
     let simulation = d3.forceSimulation().nodes(nodesData);
 
     // 添加定心力和充电力
     simulation
+        .force('link', d3.forceLink())
         .force('charge_force', d3.forceManyBody())
-        .force('center_force', d3.forceCenter(width / 2, height / 2))
-
-    // 在svg元素中绘制圆圈
-    let node = svg.append('g')
-        .attr('class', 'nodes')
-        .selectAll('circle')
-        .data(nodesData)
-        .enter()
-        .append('circle')
-        .attr('r', 10)
-        .attr('fill', circleColor)
+        .force('center_force', d3.forceCenter(width / 2, height / 2));
 
     // 每次作出举动时需要更新节点位置
-    simulation.on('tick', tickAction)
+    simulation.on('tick', tickAction);
 
-    // 创建链接力
-    let linkForce = d3.forceLink(linksData)
-        .id((d) => { return d.name })
+    // 创建链接力 把链接力添加到模拟器中
+    simulation.force('links', d3.forceLink(linksData).id(d => d.name));
+    simulation.force('link').links(linksData).distance(100);
 
-    // 把链接力添加到模拟器中
-    simulation.force('links', linkForce)
+    console.log(nodesData);
+    console.log(linksData);
 
     // 在页面绘制链接
-    let link = svg.append('g')
+    var link = svg.append('g')
         .attr('class', 'links')
         .selectAll('line')
         .data(linksData)
         .enter()
         .append('line')
         .attr('stroke-width', 2)
-        .style('stroke', linkColor)
+        .style('stroke', linkColor);
+
+    // 在svg元素中绘制圆圈
+    var node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('circle')
+        .data(nodesData)
+        .enter()
+        .append('circle')
+        .attr('r', 10)
+        .attr('fill', circleColor);
 
     // 添加 circleColor 函数
     function circleColor (d) {
@@ -125,7 +95,7 @@
         } else {
             return 'pink'
         }
-    };
+    }
 
     // 添加 linkColor 函数
     function linkColor (d) {
@@ -134,18 +104,19 @@
         } else {
             return 'red'
         }
+        return 'green';
     }
 
     function tickAction () {
         node
             .attr('cx', (d) => { return d.x })
-            .attr('cy', (d) => { return d.y })
+            .attr('cy', (d) => { return d.y });
 
         link
             .attr('x1', (d) => { return d.source.x })
             .attr('y1', (d) => { return d.source.y })
             .attr('x2', (d) => { return d.target.x })
-            .attr('y2', (d) => { return d.target.y })
+            .attr('y2', (d) => { return d.target.y });
     }
 </script>
 </body>

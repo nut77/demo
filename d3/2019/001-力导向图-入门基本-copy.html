@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>力导向图-入门基本</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+    <style>
+        svg {
+            border: 1px solid #ccc;
+        }
+        .links line {
+            stroke: #999;
+            stroke-opacity: 0.6;
+        }
+        .nodes circle {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+<body>
+<h3>力导向图</h3>
+<script>
+    // 画布大小
+    const width = 900;
+    const height = 600;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let nodesData = [
+            {"name": "Lillian", "sex": "F", "index": 0, "x": 0, "y": 0, "vy": 0, "vx": 0}, {
+            "name": "Gordon",
+            "sex": "M",
+            "index": 1,
+            "x": -7.373688780783198,
+            "y": 6.754902942615239,
+            "vy": 0,
+            "vx": 0
+        }, {
+            "name": "Sylvester",
+            "sex": "M",
+            "index": 2,
+            "x": 1.2363864559502138,
+            "y": -14.087985964343622,
+            "vy": 0,
+            "vx": 0
+        }, {
+            "name": "Mary",
+            "sex": "F",
+            "index": 3,
+            "x": 10.538470205147267,
+            "y": 13.745568221620495,
+            "vy": 0,
+            "vx": 0
+        }, {
+            "name": "Helen",
+            "sex": "F",
+            "index": 4,
+            "x": -19.694269706308575,
+            "y": -3.4836390075862327,
+            "vy": 0,
+            "vx": 0
+        }, {
+            "name": "Jamie",
+            "sex": "M",
+            "index": 5,
+            "x": 18.866941955758957,
+            "y": -12.001604111035421,
+            "vy": 0,
+            "vx": 0
+        }]
+
+    // 添加连线，指定链接数据
+    let linksDatas = [
+        {
+        "source": {
+            "name": "Sylvester",
+            "sex": "M",
+            "index": 2,
+            "x": 1.2363864559502138,
+            "y": -14.087985964343622,
+            "vy": 0,
+            "vx": 0
+        },
+        "target": {
+            "name": "Gordon",
+            "sex": "M",
+            "index": 1,
+            "x": -7.373688780783198,
+            "y": 6.754902942615239,
+            "vy": 0,
+            "vx": 0
+        },
+        "type": "A",
+        "index": 0
+    }, {
+        "source": {
+            "name": "Sylvester",
+            "sex": "M",
+            "index": 2,
+            "x": 1.2363864559502138,
+            "y": -14.087985964343622,
+            "vy": 0,
+            "vx": 0
+        },
+        "target": {"name": "Lillian", "sex": "F", "index": 0, "x": 0, "y": 0, "vy": 0, "vx": 0},
+        "type": "A",
+        "index": 1
+    }, {
+        "source": {"name": "Lillian", "sex": "F", "index": 0, "x": 0, "y": 0, "vy": 0, "vx": 0},
+        "target": {
+            "name": "Mary",
+            "sex": "F",
+            "index": 3,
+            "x": 10.538470205147267,
+            "y": 13.745568221620495,
+            "vy": 0,
+            "vx": 0
+        },
+        "type": "B",
+        "index": 2
+    }, {
+        "source": {"name": "Lillian", "sex": "F", "index": 0, "x": 0, "y": 0, "vy": 0, "vx": 0},
+        "target": {
+            "name": "Helen",
+            "sex": "F",
+            "index": 4,
+            "x": -19.694269706308575,
+            "y": -3.4836390075862327,
+            "vy": 0,
+            "vx": 0
+        },
+        "type": "B",
+        "index": 3
+    }, {
+        "source": {
+            "name": "Helen",
+            "sex": "F",
+            "index": 4,
+            "x": -19.694269706308575,
+            "y": -3.4836390075862327,
+            "vy": 0,
+            "vx": 0
+        },
+        "target": {
+            "name": "Jamie",
+            "sex": "M",
+            "index": 5,
+            "x": 18.866941955758957,
+            "y": -12.001604111035421,
+            "vy": 0,
+            "vx": 0
+        },
+        "type": "C",
+        "index": 4
+    }]
+    let linksData = [];
+    for (let i = 0, len = linksDatas.length; i < len; i++) {
+
+        linksData.push({source: linksDatas[i].source.name, target: linksDatas[i].target.name});
+    }
+
+    // 在页面绘制链接
+    var link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(linksData)
+        .enter()
+        .append('line')
+        .attr('stroke-width', 2)
+        .style('stroke', linkColor);
+
+    // 在svg元素中绘制圆圈
+    var node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('circle')
+        .data(nodesData)
+        .enter()
+        .append('circle')
+        .attr('r', 10)
+        .attr('fill', circleColor);
+
+    // 使用节点数据设置模拟器
+    let simulation =
+
+        d3.forceSimulation().nodes(nodesData);
+
+    // 添加定心力和充电力
+    simulation
+        .force('link', d3.forceLink())
+        .force('charge_force', d3.forceManyBody())
+        .force('center_force', d3.forceCenter(width / 2, height / 2));
+
+    // 每次作出举动时需要更新节点位置
+    simulation.on('tick', tickAction);
+
+    // 创建链接力 把链接力添加到模拟器中
+    simulation.force('links', d3.forceLink(linksData).id(d => d.name));
+    simulation.force('link').links(linksData).distance(100);
+
+    console.log(nodesData);
+    console.log(linksData);
+
+    // 添加 circleColor 函数
+    function circleColor (d) {
+        if (d.sex === 'M') {
+            return 'blue'
+        } else {
+            return 'pink'
+        }
+    }
+
+    // 添加 linkColor 函数
+    function linkColor (d) {
+        if (d.type === 'A') {
+            return 'green'
+        } else {
+            return 'red'
+        }
+        return 'green';
+    }
+
+    function tickAction () {
+        node
+            .attr('cx', (d) => { return d.x })
+            .attr('cy', (d) => { return d.y });
+
+        link
+            .attr('x1', (d) => { return d.source.x })
+            .attr('y1', (d) => { return d.source.y })
+            .attr('x2', (d) => { return d.target.x })
+            .attr('y2', (d) => { return d.target.y });
+    }
+</script>
+</body>
+</html>
