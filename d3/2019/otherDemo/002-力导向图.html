@@ -140,7 +140,7 @@
             .attr("y", function(d){ return d.y; });
 
         svg_links
-            .attr("d",function(d){
+            .attr("d", function(d){
                 var xAndy = coordinate.findArrowPoint(d.source.x,d.source.y,d.target.x,d.target.y,rect_width,rect_height);
                 return 'M '+ d.source.x + ' '+d.source.y+' L '+
                     xAndy[0]
