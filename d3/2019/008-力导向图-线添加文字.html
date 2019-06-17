@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>力导向图-线添加文字</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+    <style>
+        svg {
+            border: 1px solid #ccc;
+        }
+        .links line {
+            stroke: #999;
+            stroke-opacity: 0.6;
+        }
+        .nodes circle {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+<body>
+<h3>力导向图</h3>
+<script>
+    // 画布大小
+    const width = 900;
+    const height = 600;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let nodesData = [
+        { 'name': '123.12.12.13', 'type': 'ip' , 'level': '1'},
+        { 'name': '123@qq.com', 'type': 'email', 'level': '2'},
+        { 'name': '123123333333333', 'type': 'hash', 'level': '3'},
+        { 'name': '123.test.com', 'type': 'domain', 'level': '2'},
+        { 'name': '123.test11.com', 'type': 'domain', 'level': '1'},
+    ];
+
+    // 添加连线，指定链接数据
+    let linksData = [
+        { 'source': 0, 'target': 1, label: 'test'},
+        { 'source': 0, 'target': 2, label: 'test' },
+        { 'source': 0, 'target': 3, label: 'test' },
+        { 'source': 0, 'target': 4, label: 'test' },
+        { 'source': 1, 'target': 2, label: 'test' },
+        { 'source': 1, 'target': 3, label: 'test' },
+        { 'source': 2, 'target': 3, label: 'test' },
+        { 'source': 2, 'target': 4, label: 'test' },
+        { 'source': 3, 'target': 4, label: 'test' },
+        { 'source': 4, 'target': 1, label: 'test' }
+    ];
+
+    // 使用节点数据设置模拟器
+    let simulation = d3.forceSimulation().nodes(nodesData);
+
+    // 添加定心力和充电力
+    simulation
+        .force('link', d3.forceLink())
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(width / 2, height / 2));
+
+    simulation.nodes(nodesData)
+        .on("tick", tickAction);
+
+    simulation.force('link')
+        .links(linksData)
+        .distance(100);
+
+    // 画线
+    let link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('path')
+        .data(linksData)
+        .enter()
+        .append('path')
+        .attr('stroke-width', 2)
+        .style('stroke', '#6b9cde')
+        .attr('d', link => {
+
+            let sx = link.source.x;
+            let tx = link.target.x;
+            let sy = link.source.y;
+            let ty = link.target.y;
+
+            return 'M' + sx + ',' + sy + ' L' + tx + ',' + ty;
+        })
+        .attr('id', (link, i) => 'link-' + i);
+
+
+    // 在svg元素中绘制圆圈
+    let node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('circle')
+        .data(nodesData)
+        .enter()
+        .append('circle')
+        .attr('r', 10)
+        .attr('fill', 'pink')
+        .call(d3.drag()
+            .on('start', started)
+            .on('drag', dragged)
+            .on('end', ended));
+
+    const lineTextFontSize = 12;
+    // 连线的文字
+    const lineText = svg.append('g')
+        .attr('class', 'texts')
+        .selectAll('.linetext')
+        .data(linksData)
+        .enter()
+        .append('text')
+        .style('font-size', lineTextFontSize)
+        .attr('class', 'linetext')
+        .attr('id', link => 'linktext' + link.index)
+        .attr('x', link => getLineTextDx(link))
+        .attr('y', 5);
+
+    lineText.append('textPath')
+        .attr('xlink:href', (link, i) => '#link-' + i)
+        .text(link => link.label);
+
+    function started(d) {
+      if (!d3.event.active) {
+          simulation.alphaTarget(0.8).restart();
+      }
+      d.fx = d.x;
+      d.fy = d.y;
+    }
+    function dragged(d) {
+
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+    }
+    function ended(d) {
+        if (!d3.event.active) {
+            simulation.alphaTarget(0);
+        }
+        d.fx = null;
+        d.fy = null;
+    }
+
+    function tickAction () {
+        node
+            .attr('cx', (d) => { return d.x })
+            .attr('cy', (d) => { return d.y })
+
+        link.attr('d', link => {
+
+            let sx = link.source.x;
+            let tx = link.target.x;
+            let sy = link.source.y;
+            let ty = link.target.y;
+
+            return 'M' + sx + ',' + sy + ' L' + tx + ',' + ty;
+        });
+
+        // 连线文字位置
+        lineText.attr('x', link => getLineTextDx(link));
+
+        // 连线文字角度
+        lineText.attr('transform', function (link) {
+            return getLineTextAngle(link, this.getBBox());
+        });
+    }
+
+    function getLineTextDx(d) {
+
+        const sr = 10;
+        const sx = d.source.x;
+        const sy = d.source.y;
+        const tx = d.target.x;
+        const ty = d.target.y;
+
+        const distance = Math.sqrt(Math.pow(tx - sx, 2) + Math.pow(ty - sy, 2));
+
+        const textLength = d.label.length;
+        const deviation = 8; // 调整误差
+        const dx = (distance - sr - textLength * lineTextFontSize) / 2 + deviation;
+
+        return dx;
+    }
+
+    function getLineTextAngle(d, bbox) {
+        if (d.target.x < d.source.x) {
+            const {
+                x,
+                y,
+                width,
+                height
+            } = bbox;
+            const rx = x + width / 2;
+            const ry = y + height / 2;
+            return 'rotate(180 ' + rx + ' ' + ry + ')';
+        } else {
+            return 'rotate(0)';
+        }
+    }
+
+    function textBreaking(d3text, text) {
+        const len = text.length;
+        if (len <= 4) {
+            d3text.append('tspan')
+                .attr('x', 0)
+                .attr('y', 2)
+                .text(text);
+        } else {
+            const topText = text.substring(0, 4);
+            const midText = text.substring(4, 9);
+            let botText = text.substring(9, len);
+            let topY = -22;
+            let midY = 8;
+            let botY = 34;
+            if (len <= 10) {
+                topY += 10;
+                midY += 10;
+            } else {
+                botText = text.substring(9, 11) + '...';
+            }
+
+            d3text.text('');
+            d3text.append('tspan')
+                .attr('x', 0)
+                .attr('y', topY)
+                .text(function () {
+                    return topText;
+                });
+            d3text.append('tspan')
+                .attr('x', 0)
+                .attr('y', midY)
+                .text(function () {
+                    return midText;
+                });
+            d3text.append('tspan')
+                .attr('x', 0)
+                .attr('y', botY)
+                .text(function () {
+                    return botText;
+                });
+        }
+    }
+</script>
+</body>
+</html>
