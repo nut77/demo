@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue双向绑定的实现</title>
+</head>
+<body>
+<h1 id="name">{{name}}</h1>
+<script>
+    class Dep {
+        constructor() {
+            this.subs = [];
+        }
+        addSub(sub) {
+
+            this.subs.push(sub);
+        }
+        notify() {
+
+            this.subs.forEach(sub => {
+
+                sub.update();
+            });
+        }
+    }
+
+    class Watcher {
+        constructor(vm, exp, cb) {
+
+            this.cb = cb;
+            this.vm = vm;
+            this.exp = exp;
+            this.value = this.get(); // 将自己添加到订阅器
+        }
+        update() {
+            this.run();
+        }
+        run() {
+
+            let value = this.vm.data[this.exp];
+            let oldVal = this.value;
+            if (value !== oldVal) {
+
+                this.value = value;
+                this.cb.call(this.vm, value, oldVal);
+            }
+        }
+        get() {
+
+            Dep.target = this; // 缓存自己
+            let value = this.vm.data[this.exp]; // 强制执行监听器里的get函数
+            Dep.target = null; // 释放自己
+            return value;
+        }
+    }
+
+    class SelfVue {
+        constructor(data, el, exp) {
+
+            let self = this;
+            this.data = data;
+
+            Object.keys(data).forEach(key => {
+
+               self.proxyKeys(key);
+            });
+            observe(data);
+            el.innerHTML = this.data[exp]; // 初始化模板数据
+
+            new Watcher(this, exp, value => {
+
+                el.innerHTML = value;
+            });
+
+            return this;
+        }
+        proxyKeys(key) {
+
+            let self = this;
+            Object.defineProperty(this, key, {
+                enumerable: false,
+                configurable: true,
+                get() {
+                    return self.data[key];
+                },
+                set(newVal) {
+                    self.data[key] = newVal;
+                }
+            });
+        }
+    }
+
+    let ele = document.querySelector('#name');
+    let vm = new SelfVue({
+        name: 'hello vue~'
+    }, ele, 'name');
+
+    setTimeout(() => {
+
+        vm.name = 'change name~'
+    }, 2000);
+
+
+    function defineReactive(data, key, val) {
+
+        observe(val); // 递归遍历所有子属性
+        let dep = new Dep();
+        Object.defineProperty(data, key, {
+            enumerable: true,
+            configurable: true,
+            get: function () {
+
+                if (Dep.target) dep.addSub(Dep.target);
+                return val;
+            },
+            set: function (newVal) {
+
+                if (val === newVal) return;
+                val = newVal;
+                console.log(`属性${key}已经被监听了，现在值为：${newVal}`);
+
+                dep.notify(); // 如果数据变化，通知所有订阅者
+            }
+        });
+    }
+
+    function observe(data) {
+
+        if (!data || 'object' !== typeof data) return;
+        Object.keys(data).forEach(key => defineReactive(data, key, data[key]));
+    }
+</script>
+</body>
+</html>
