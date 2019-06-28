@@ -129,6 +129,54 @@
         if (!data || 'object' !== typeof data) return;
         Object.keys(data).forEach(key => defineReactive(data, key, data[key]));
     }
+
+    function nodeToFragment(el) {
+
+        let fragment = document.createDocumentFragment();
+        let child = el.firstChild;
+        while (child) {
+
+            fragment.appendChild(child);
+            child = el.firstChild;
+        }
+
+        return fragment;
+    }
+
+    function compileElement(el) {
+
+        let childNodes = el.childNodes;
+        let self = this;
+        [].slice.call(childNodes).forEach(node => {
+
+            let reg = /\{\{(.*)\}\}/;
+            let text = node.textContent;
+
+            if (self.isTextNode(node) && reg.test(text)) {
+                self.compileText(node, reg.exec(text)[1]);
+            }
+
+            if (node.childNodes && node.childNodes.lenght) {
+                self.compileElement(node);
+            }
+        });
+    }
+
+    function compileText(node, exp) {
+
+        let self = this;
+        let initText = this.vm(exp);
+        updateText(node, initText);
+        new Watcher(this.vm, exp, value => {
+
+            self.updateText(node, value);
+        });
+    }
+
+    function updateText(node, value) {
+
+        node.textContent = 'undefined' === typeof value ? '' : value;
+    }
 </script>
 </body>
 </html>
