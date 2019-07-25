@@ -1,0 +1,69 @@
+doctype  html
+html
+    head
+        title 测试datatables使用
+        meta(charset="utf-8")
+        link(href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.css" rel="stylesheet")
+        link(href="css/bootstrap.min.css" rel="stylesheet")
+        link(href="css/style.css" rel="stylesheet")
+        script(src="js/jquery-3.0.0.js")
+        script(src="js/bootstrap.js")
+        script(src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.js")
+    body
+        div.content
+            p 报警列表
+            table#DT_test1
+                thead
+                    tr
+                        th name
+                        th age
+            script.
+                var data = [
+                    ["wang",11],
+                    ["liw",22],
+                    ["bob",10],
+                ];
+
+                $("#DT_test1").DataTable({
+                    data: data// 以数组方式传递数据源
+                });
+            table#DT_test2
+                thead
+                    tr
+                        th addr
+                        th name
+                        th phoneNumber
+            script.
+                var data = [
+                    {"addr":"c","name":"tony","phoneNumber":123455},
+                    {"name":"tony1","phoneNumber":123456},
+                    {"name":"tony2","phoneNumber":123457},
+                    {"name":"tony3","phoneNumber":123452}
+                ];
+
+                $("#DT_test2").DataTable({
+                    data: data,//以对象数组方式传递数据源
+                    columns:[  //使用对象数组
+                        {data:'name'},
+                        {data:'phoneNumber'}
+                    ]
+                });
+            table#DT_test3
+                thead
+                    tr
+                        th 姓名
+                        th 电话
+            script.
+                $("#DT_test3").DataTable({
+                    serverSide:true,//以服务器形式传递数据
+                    ajax:{
+                        url:"data.html",
+                        type:"get",
+                        length:1,
+                    },
+                    columns: [  //使用对象数组
+                        {data: 'name'},
+                        {data: 'age'}
+                    ]
+                });
+

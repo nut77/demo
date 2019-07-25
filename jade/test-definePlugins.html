@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用自定义插件</title>
+    <script src="../js/jquery-3.0.0.js"></script>
+    <style>
+        #splice-word {
+            width: 800px;
+            padding: 0 20px;
+            border: 1px solid #0085d0;
+            margin: 20px;
+        }
+    </style>
+    <script>
+        (function ($) {
+
+            // 获取光标在当前元素的位置
+            $.fn.getCursorPosition = function () {
+
+                var el = $(this).get(0); // 获取当前调用该方法的dom元素 等价于this[0]
+                var pos = 0;
+                if ("selectionStart" in el) {
+
+                    pos = el.selectionStart;
+                } else if ("selection" in document) { // 兼容IE低版本
+
+                    el.focus();
+                    var sel = document.selection.createRange();
+                    var selLength = document.selection.createRange().text.length;
+                    sel.moveStart("charactor", -el.value.length);
+                    pos = sel.text.length - selLength;
+                }
+                return pos;
+            };
+
+            // 获得当前关标所在位置的单词
+            $.fn.getCurrentWord = function () {
+
+                var val = $(this).val();
+                var start, end;
+                for (start = $(this).getCursorPosition(); start > 0; start--) {
+
+                    if (" " == val[start - 1]) break;
+                }
+
+                for (end = $(this).getCursorPosition(); end < val.length; end++) {
+
+                    if (" " == val[end]) break;
+                }
+                return val.substring(start, end);
+            }
+        })(jQuery);
+
+        (function ($) {
+
+            $.fn.extend({
+
+               "getClass": function () {
+
+                   // this指代调用当前方法的jquery对象
+                   // use like this $(".hello").getClass();
+                },
+                /*"getCurrentWord": function () { // 获得当前关标所在位置的单词
+
+                    var val = this.val();
+                    var start, end;
+                    for (start = this.getCursorPosition(); start > 0; start--) {
+
+                        if (" " == val[start - 1]) break;
+                    }
+
+                    for (end = this.getCursorPosition(); end < val.length; end++) {
+
+                        if (" " == val[end]) break;
+                    }
+                    return val.substr(start, end);
+                }*/
+            });
+        })(jQuery);
+    </script>
+</head>
+<body>
+<div class="hello">
+    hello i has very long sentence
+</div>
+<div id="splice-word">
+    <h3>获取当前关标所在文本域的位置，从0开始</h3>
+    <textarea cols="90" rows="10">
+        Why do you need a poetry app? The better question, to my mind, is why don’t you?
+        For with the iF Poems app, created by Allie Esiri and Rachel Kelly, you will have more
+        than 200 classic poems at your fingertips, all of them (yes, I do mean all of them)
+        perfect to read and recite for children and adults alike. It’s the first poetry app for
+        children, but grown-ups will get a great deal out of it, too.
+    </textarea>
+    <button type="button">截取单词</button>
+    <p></p>
+</div>
+
+<script>
+    $("#splice-word button").click(function () {
+
+        var position = $("#splice-word textarea").getCursorPosition();
+        var word = $("#splice-word textarea").getCurrentWord();
+        $("#splice-word p").text("光标所在位置是：" + position + "; 截取单词为：" + word);
+    });
+</script>
+
+<script language="javascript">
+
+    function moveCursor() {
+
+        var temp = $("#txtNum").val(); // this指代的是window对象
+        if (!temp) {
+
+            alert("请输入一个数字");
+            return;
+        }
+
+        var rng = this.txtTest.createTextRange(); // 这段代码只有运行在IE环境下才不报错
+        rng.move("character", temp);
+        rng.select();
+    }
+
+</script>
+
+<input type="text" id="txtTest" value="明·罗贯中《三国演义》第二十一回 操曰:“夫英雄者，胸怀大志，腹有良谋，有包藏宇宙之机，吞吐天地之志者也。" size="100"><br>
+移动光标到第<input type="text" id="txtNum" size="5">个位置
+
+<input type="button" name="btnMove" value="移动" onclick="moveCursor()">
+</body>
+</html>

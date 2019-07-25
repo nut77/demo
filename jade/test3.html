@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>hello jade</title>
+    <meta charset="utf-8">
+    <script>
+      window.onload = function(){
+          // alert("hello");
+      }
+      var obj = {"user": "bob"};
+      console.log(JSON.stringify(obj));
+    </script>
+  </head>
+  <body>
+    <h2>test222</h2>
+    <p>我是一个测试用例</p>
+    <h3 style="color:red;">red</h3>
+    <p>123 {"user":"bob"}</p>
+    <h4 style="color:red;"><script>使用！是不会转义的，使用#是会对这个进行转义的（变为转义字符串）</script></h4>
+    <h4>&lt;script&gt;使用！是不会转义的，使用#是会对这个进行转义的（变为转义字符串）&lt;/script&gt;</h4>
+  </body>
+</html>

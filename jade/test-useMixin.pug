@@ -1,0 +1,41 @@
+doctype html
+html
+    head
+        title test use mixin
+        meta(charset="utf-8")
+        link(href="../css/reset.css" rel="stylesheet")
+        link(href="../css/base.css" rel="stylesheet")
+    body
+        include test-mixin
+        - var lists = [1, 2, 3, 4];
+        div
+            h4 hello
+        +list
+        +showIndex(lists)
+        - var friends = 10
+        case friends
+            when 0
+                p you have no friends
+            when 1
+                p you have a friend
+            default
+                p you have #{friends} friends
+        script.
+            // script标签内的变量在不能在jade里使用,但是jade里声明的变量可以在script里使用
+            var lists = [1, 2, 3, 4];
+            var poo = "rrr" + !{friends};
+        if(friends) /*变量声明前面才加“-” js语句前面可以不用加 一定要分清楚层级关系*/
+            p i have #{friends} friends
+        else
+            p i have no friends #{poo}
+        - var user = {id: 1, name: "first" + friends} // 用赋值形式给标签添加内容“=”前不能有空格（会报错）
+        h3(id="user" + user.id)= user.name + friends
+        table.table-normal
+            tr
+                td 1
+                td 2
+                td 3
+            tr
+                td 11
+                td 22
+                td 33

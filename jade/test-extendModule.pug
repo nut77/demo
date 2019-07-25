@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+    head
+        title jade-继承（extends）的使用
+        meta(charset="utf-8")
+        link(src="../css/reset.css" rel="stylesheet")
+        block css
+            link(src="../css/reset.css1" rel="stylesheet")
+    body
+        h4 我是一个大标题
+        header
+            block header
+                h5 我是继承的父类的标题
+            p 11
+            include test-includeModule
+                h5 我是添加到include 里面的内容

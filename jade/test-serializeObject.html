@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试表单参数转变为json对象</title>
+    <script src="../js/jquery-3.0.0.js"></script>
+    <script>
+        $.fn.serializeObject = function () {
+
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name] !== undefined) { // 存在多个键名一样的元素
+                    if (!o[this.name].push) { // 如果o[this.name]值不是数组
+                        o[this.name] = [o[this.name]]; // o[this.name]初始化其值为数组
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    </script>
+</head>
+<body>
+<div>
+    <form action="#">
+        姓名：<input name="name" type="text"/><br/>
+        姓名：<input name="name" type="text"/><br/>
+        年龄：<input name="age" type="text"/><br/>
+        电话：<input name="phone" type="text"/><br/>
+        男：<input name="sex" type="radio" value="男"/>
+        女：<input name="sex" type="radio" value="女"/><br/>
+        单身：<input name="single" type="checkbox"><br/>
+        <input type="button" value="确定"/>
+    </form>
+</div>
+<script>
+    $("[type='button']").click(function () {
+
+        var params1 = $("form").serializeObject(); // 返回表单值的json对象 键值对
+        var params2 = $("form").serializeArray(); // 返回一个对象数组，数组中的元素是以{name：表单元素名,value: 表单元素值}存贮的
+        var params3 = $("form").serialize(); // 以地址栏参数格式来显示表单元素和其值 name=ada&age=22&phone=112333&sex=%E5%A5%B3
+        console.log(params1);
+        console.log(params2);
+        console.log(params3);
+    });
+</script>
+</body>
+</html>

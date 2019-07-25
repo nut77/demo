@@ -1,0 +1,21 @@
+doctype html
+html
+    head
+        title hello jade
+        meta(charset="utf-8")
+        script.
+            window.onload = function(){
+                // alert("hello");
+            }
+            var obj = {"user": "bob"};
+            console.log(JSON.stringify(obj));
+    body
+        h2 test222
+        p 我是一个测试用例
+        h3(style="color:red;") red
+        - var obj = {"user": "bob"};
+        p 123 !{JSON.stringify(obj)}
+        - var obj1 = "<script>使用！是不会转义的，使用#是会对这个进行转义的（变为转义字符串）</script>"
+        h4(style="color:red;") !{obj1}
+        h4 #{obj1}
+

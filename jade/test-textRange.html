@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单的使用textRange对象</title>
+    <style>
+        #test {
+            border-bottom: 1px solid #0085d0;
+            padding: 5px 10px;
+            outline: none;
+        }
+        button {
+            display: block;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #0085d0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<h3>JS在可编辑的div中的光标位置插入内容的方法</h3>
+<div>
+    <div id="test" contenteditable=true></div>
+    <button type="button" onclick="document.getElementById('test').focus(); insertHtmlAtCaret('<b>INSERTED</b>');">
+        插入字符
+    </button>
+</div>
+<div>
+    <ul>
+        <li>document.selection.createRange() ie浏览器的方法</li>
+    </ul>
+    <textarea cols=50 rows=15> 哈哈。我们都是新生来得。大家都来相互帮助呀。这样我们才能进步，我们才能赚大钱！</textarea>
+    <input type=button value=选择字后点击我看看 onclick=alert(document.selection.createRange().text)>
+</div>
+<script>
+
+    // 给可编辑的div插入指定的文本内容
+    function insertHtmlAtCaret(html) {
+
+        var sel, range;
+        if (window.getSelection) {
+            // IE9 and non-IE
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+                // Range.createContextualFragment() would be useful here but is non-standard and not supported in all browsers (IE9, for one)
+                var el = document.createElement("div");
+                el.innerHTML = html;
+                var frag = document.createDocumentFragment(), node, lastNode;
+                while ( (node = el.firstChild) ) {
+                    lastNode = frag.appendChild(node);
+                }
+                range.insertNode(frag);
+                // Preserve the selection
+                if (lastNode) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode);
+                    range.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        } else if (document.selection && document.selection.type != "Control") {
+            // IE < 9
+            document.selection.createRange().pasteHTML(html);
+        }
+    }
+</script>
+</body>
+</html>

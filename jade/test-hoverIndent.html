@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>使用自定义插件-鼠标延迟</title>
+    <script src="../js/jquery-3.0.0.js"></script>
+    <style>
+        ul.demo {display:block; width:100%; height:75px; padding:0; margin:0; background:#9cc; list-style-type:none;}
+        ul.demo li {background:#fcc; display:block; width:25%; height:50px; padding:0; margin:0; float: left; position:relative; overflow:hidden; cursor:default;  font-size:0.9em; line-height:1.1em;}
+        ul.demo li.p2 {background:#ffc;}
+        ul.demo li.p3 {background:#cfc;}
+        ul.demo li.p4 {background:#ccf;}
+        ul.demo li span { display:block; margin:4px; background:#eef; cursor:default;}
+    </style>
+    <script>
+        (function ($) {
+            $.fn.hoverIntent = function (t, n, r) {
+                var i = {interval: 100, sensitivity: 7, timeout: 0};
+                if (typeof t === "object") {
+                    i = $.extend(i, t); // 扩展option
+                } else if ($.isFunction(n)) {
+                    i = $.extend(i, {over: t, out: n, selector: r});
+                } else {
+                    i = $.extend(i, {over: t, out: t, selector: n});
+                }
+                // s:当前鼠标x坐标 o:当前鼠标y坐标 u:之前鼠标x坐标 a:之前鼠标y坐标
+                var s, o, u, a;
+                // 获得当前鼠标的位置
+                var f = function (e) {
+                    s = e.pageX;
+                    o = e.pageY
+                };
+                // 比较当前和之前的鼠标位置差
+                var l = function (t, n) {
+                    n.hoverIntent_t = clearTimeout(n.hoverIntent_t);
+                    // 比较鼠标的位置，看它们是否超过阈值
+                    if (Math.abs(u - s) + Math.abs(a - o) < i.sensitivity) {
+                        $(n).off("mousemove.hoverIntent", f);
+                        n.hoverIntent_s = 1;
+                        return i.over.apply(n, [t])
+                    } else {
+                        // 准备下一次
+                        u = s;
+                        a = o;
+                        n.hoverIntent_t = setTimeout(function () {
+                            l(t, n)
+                        }, i.interval)
+                    }
+                };
+
+                // 延迟mouseout事件
+                var c = function (e, t) {
+                    t.hoverIntent_t = clearTimeout(t.hoverIntent_t);
+                    t.hoverIntent_s = 0;
+                    return i.out.apply(t, [e])
+                };
+
+                // 处理鼠标hover事件
+                var h = function (t) {
+                    var n = jQuery.extend({}, t);
+                    var r = this;
+                    if (r.hoverIntent_t) {
+                        r.hoverIntent_t = clearTimeout(r.hoverIntent_t)
+                    }
+                    if (t.type == "mouseenter") {
+                        u = n.pageX;
+                        a = n.pageY;
+                        $(r).on("mousemove.hoverIntent", f);
+                        if (r.hoverIntent_s != 1) {
+                            r.hoverIntent_t = setTimeout(function () {
+                                l(n, r)
+                            }, i.interval)
+                        }
+                    } else {
+                        $(r).off("mousemove.hoverIntent", f);
+                        if (r.hoverIntent_s == 1) {
+                            r.hoverIntent_t = setTimeout(function () {
+                                c(n, r)
+                            }, i.timeout)
+                        }
+                    }
+                };
+                return this.on({"mouseenter.hoverIntent": h, "mouseleave.hoverIntent": h}, i.selector)
+            }
+        })(jQuery);
+
+        $(document).ready(function(){
+            $("#demo6").hoverIntent({
+                over: makeTall,
+                out: makeShort,
+                selector: 'li',
+                timeout: 500
+            });
+        });
+
+        function makeTall(){$(this).animate({"height":75},200);}
+        function makeShort(){$(this).animate({"height":50},200);}
+    </script>
+</head>
+<body>
+<div id="banner">
+    <ul id="demo6" class="demo">
+        <li class="p1"></li>
+        <li class="p2" ></li>
+        <li class="p3" ></li>
+        <li class="p4"></li>
+    </ul>
+</div>
+</body>
+</html>

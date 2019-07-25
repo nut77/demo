@@ -1,0 +1,11 @@
+mixin list
+    ul
+        li: a(href="#" target="_blank") foo
+        li bar
+        li baz
+
+mixin showIndex(indexs)
+    ul
+        each index, i in indexs
+            li= index + i
+                span.info i = #{i} : value = #{index}

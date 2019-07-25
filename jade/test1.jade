@@ -1,0 +1,82 @@
+doctype html
+html
+    head
+        title hello jade
+        meta(charset="utf-8")
+        script.
+            window.onload = function(){
+                alert("hello");
+            }
+    body
+        h2 test222
+        p 我是一个测试用例
+        h3(style="color:red;") red
+        ul
+            li hello+ff0000000<b style="color:pink;">test</b>
+            li nihao
+            li. ji00
+                hhhhh
+                hhhh
+            li nin
+                |333
+                |fff
+        div 黑色还坐
+            a(href="www.baidu.com",title="baidu") 百度链接
+            //我是注释注释啊
+              a nihao
+            //-我是不输出的注释，你看不看得到==哈哈哈，你看不到了吧
+        //不加标签默认使用div标签
+        .ni 333dd
+        -for(var i=0;i<4;i++)
+          div 88+i=#{i}
+            a(href="www.baidu.com"+i style="margin-left:10px;") #{i}
+        p="nihao iahdusud<b> nihao</b>被转义了"
+        p!="nihao iahdusud<b>nihao</b>没有被转义"
+        - var code = "<script></script>"
+        div 被转义#{code}
+        div=code+"被转义njdjhj"
+        div 没有被转义!{code}
+        //数组示例
+        - var names = ['bob1','tom','back','aisa'];
+        each name in names
+            li=name
+        //对象示例
+        -var persons = {"bob":"13","tom":"21","lisa":"9"};
+        -var talk = "hello";
+        each val,key in persons
+            li #{key}:age=#{val}---talk:#{talk}
+        case talk
+            when "1"
+                p hello0
+            when "hello"
+                p hello again
+            default
+                p bye
+        div#id test1+buhgfa
+            mixin join(company)
+                ul
+                    li 我们是很友好的#{company}
+                    li shide
+                    li nishuoshima
+                    li 所以你要加入#{company}嘛？
+            +join("test")
+        -var title="title";
+        =title
+        //title就是一个纯文本，没有标签
+        mixin joins(ins)
+            ul
+                li 12
+                li 23
+                li 344
+                if block
+                    block
+                else
+                    li 000
+        +joins('in')
+            li 45
+            li 567
+        mixin link(href,name)
+            a(href=href,class!=attributes.class,title!=attributes.title)=name
+        +link('www.baidu.com','baidu')(class='btn',title='百度')
+
+
