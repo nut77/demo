@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>入门练习</title>
+    <script src="https://cdn.bootcss.com/react/16.9.0-rc.0/umd/react.development.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.9.0-alpha.0/umd/react-dom.development.js"></script>
+</head>
+<body>
+<h3>手动添加react相关文件，要用UMD模块发布的形式</h3>
+<div id="like_button_container"></div>
+<script>
+    const e = React.createElement;
+
+    class LikeButton extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {liked: false};
+        }
+
+        render() {
+            if (this.state.liked) {
+                return 'You liked this.';
+            }
+
+            return e(
+                'button',
+                {onClick: () => this.setState({liked: true})},
+                'Like'
+            );
+        }
+    }
+
+    const domContainer = document.querySelector('#like_button_container');
+    ReactDOM.render(e(LikeButton), domContainer);
+</script>
+</body>
+</html>

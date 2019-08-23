@@ -8,16 +8,16 @@ const Router = DefaultRouter;
 
 const routes = [
   {
-    path: '/Home',
+    path: '/',
+    component: require('../Home').default,
     exact: true,
-    component: require('../Home.js').default,
   },
   {
     component: () =>
       React.createElement(
         require('F:/github/demo/react/pro/antd-course/node_modules/_umi-build-dev@1.10.14@umi-build-dev/lib/plugins/404/NotFound.js')
           .default,
-        { pagesPath: 'src/page', hasRoutesInConfig: false },
+        { pagesPath: 'src/page', hasRoutesInConfig: true },
       ),
   },
 ];
