@@ -17,8 +17,15 @@ plugins.init({
     'onRouteChange',
     'modifyInitialProps',
     'initialProps',
+    'dva',
   ],
 });
+plugins.use(
+  require('../../../node_modules/_umi-plugin-dva@1.7.7@umi-plugin-dva/lib/runtime'),
+);
+
+const app = require('@tmp/dva')._onCreate();
+window.g_app = app;
 
 // render
 let clientRender = async () => {
