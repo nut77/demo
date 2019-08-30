@@ -1,3 +1,13 @@
+import request from '../util/request';
+
+const delay = millisecond => {
+
+    return new Promise(resolve => {
+
+        setTimeout(resolve, millisecond);
+    });
+};
+
 export default {
     namespace: 'puzzlecard',
     state: {
@@ -13,7 +23,22 @@ export default {
                 punchline: 'It gets toad away'
             }
         ],
-        counter: 100
+        counter: 2
+    },
+    effects: {
+        *queryInitCards(_, sagaEffects) {
+
+            const {call, put} = sagaEffects;
+            const endPointURI = 'https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke';
+
+            const puzzle = yield call(request, endPointURI);
+            yield put({type: 'addNewCard', payload: puzzle});
+
+            yield call(delay, 3000);
+
+            const puzzle2 = yield call(request, endPointURI);
+            yield put({type: 'addNewCard', payload: puzzle2});
+        }
     },
     reducers: {
         addNewCard(state, {payload: newCard}) {

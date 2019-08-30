@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import '@/index.less';
 
 // 函数组件
 function Square(props) {

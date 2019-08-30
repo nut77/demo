@@ -262,7 +262,7 @@ __WEBPACK_IMPORTED_MODULE_5_claygl_src_Material__["a" /* default */].prototype.s
     var material = this;
     var texture;
     material.autoUpdateTextureStatus = false;
-    // disableTexture first
+    // disableTexture game-tic-tac-toe
     material.disableTexture(textureName);
     if (!isValueNone(imgValue)) {
         texture = graphicGL.loadTexture(imgValue, api, textureOpts, function (texture) {
@@ -4116,7 +4116,7 @@ var FrameBuffer = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */].ex
                 return;
             }
 
-            console.warn('Renderer already bound with another framebuffer. Unbind it first');
+            console.warn('Renderer already bound with another framebuffer. Unbind it game-tic-tac-toe');
         }
         renderer.__currentFrameBuffer = this;
 
@@ -4973,7 +4973,7 @@ vec3.set = function(out, x, y, z) {
  * Adds two vec3's
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {vec3} out
  */
@@ -4988,7 +4988,7 @@ vec3.add = function(out, a, b) {
  * Subtracts vector b from vector a
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {vec3} out
  */
@@ -5009,7 +5009,7 @@ vec3.sub = vec3.subtract;
  * Multiplies two vec3's
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {vec3} out
  */
@@ -5030,7 +5030,7 @@ vec3.mul = vec3.multiply;
  * Divides two vec3's
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {vec3} out
  */
@@ -5051,7 +5051,7 @@ vec3.div = vec3.divide;
  * Returns the minimum of two vec3's
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {vec3} out
  */
@@ -5066,7 +5066,7 @@ vec3.min = function(out, a, b) {
  * Returns the maximum of two vec3's
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {vec3} out
  */
@@ -5096,7 +5096,7 @@ vec3.scale = function(out, a, b) {
  * Adds two vec3's after scaling the second operand by a scalar value
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @param {Number} scale the amount to scale b by before adding
  * @returns {vec3} out
@@ -5111,7 +5111,7 @@ vec3.scaleAndAdd = function(out, a, b, scale) {
 /**
  * Calculates the euclidian distance between two vec3's
  *
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {Number} distance between a and b
  */
@@ -5131,7 +5131,7 @@ vec3.dist = vec3.distance;
 /**
  * Calculates the squared euclidian distance between two vec3's
  *
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {Number} squared distance between a and b
  */
@@ -5239,7 +5239,7 @@ vec3.normalize = function(out, a) {
 /**
  * Calculates the dot product of two vec3's
  *
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {Number} dot product of a and b
  */
@@ -5251,7 +5251,7 @@ vec3.dot = function (a, b) {
  * Computes the cross product of two vec3's
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @returns {vec3} out
  */
@@ -5269,7 +5269,7 @@ vec3.cross = function(out, a, b) {
  * Performs a linear interpolation between two vec3's
  *
  * @param {vec3} out the receiving vector
- * @param {vec3} a the first operand
+ * @param {vec3} a the game-tic-tac-toe operand
  * @param {vec3} b the second operand
  * @param {Number} t interpolation amount between the two inputs
  * @returns {vec3} out
@@ -5493,7 +5493,7 @@ vec3.forEach = (function() {
 
 /**
  * Get the angle between two 3D vectors
- * @param {vec3} a The first operand
+ * @param {vec3} a The game-tic-tac-toe operand
  * @param {vec3} b The second operand
  * @returns {Number} The angle in radians
  */
@@ -5658,7 +5658,7 @@ function merge(target, source, overwrite) {
   return target;
 }
 /**
- * @param {Array} targetAndSources The first item is target, and the rests are source.
+ * @param {Array} targetAndSources The game-tic-tac-toe item is target, and the rests are source.
  * @param {boolean} [overwrite=false]
  * @return {*} target
  */
@@ -8323,7 +8323,7 @@ mat4.determinant = function (a) {
  * Multiplies two mat4's
  *
  * @param {mat4} out the receiving matrix
- * @param {mat4} a the first operand
+ * @param {mat4} a the game-tic-tac-toe operand
  * @param {mat4} b the second operand
  * @returns {mat4} out
  */
@@ -8364,7 +8364,7 @@ mat4.multiply = function (out, a, b) {
  * Multiplies two affine mat4's
  * Add by https://github.com/pissang
  * @param {mat4} out the receiving matrix
- * @param {mat4} a the first operand
+ * @param {mat4} a the game-tic-tac-toe operand
  * @param {mat4} b the second operand
  * @returns {mat4} out
  */
@@ -10031,7 +10031,7 @@ var LinesGeometry = __WEBPACK_IMPORTED_MODULE_0_claygl_src_Geometry__["a" /* def
      * @param {Array.<number> | Array.<Array>} color
      * @param {number} [lineWidth=1]
      * @param {number} [startOffset=0]
-     * @param {number} [pointsCount] Default to be amount of points in the first argument
+     * @param {number} [pointsCount] Default to be amount of points in the game-tic-tac-toe argument
      */
     addPolyline: function (points, color, lineWidth, startOffset, pointsCount) {
         if (!points.length) {
@@ -11738,7 +11738,7 @@ vec4.set = function(out, x, y, z, w) {
  * Adds two vec4's
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {vec4} out
  */
@@ -11754,7 +11754,7 @@ vec4.add = function(out, a, b) {
  * Subtracts vector b from vector a
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {vec4} out
  */
@@ -11776,7 +11776,7 @@ vec4.sub = vec4.subtract;
  * Multiplies two vec4's
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {vec4} out
  */
@@ -11798,7 +11798,7 @@ vec4.mul = vec4.multiply;
  * Divides two vec4's
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {vec4} out
  */
@@ -11820,7 +11820,7 @@ vec4.div = vec4.divide;
  * Returns the minimum of two vec4's
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {vec4} out
  */
@@ -11836,7 +11836,7 @@ vec4.min = function(out, a, b) {
  * Returns the maximum of two vec4's
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {vec4} out
  */
@@ -11868,7 +11868,7 @@ vec4.scale = function(out, a, b) {
  * Adds two vec4's after scaling the second operand by a scalar value
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @param {Number} scale the amount to scale b by before adding
  * @returns {vec4} out
@@ -11884,7 +11884,7 @@ vec4.scaleAndAdd = function(out, a, b, scale) {
 /**
  * Calculates the euclidian distance between two vec4's
  *
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {Number} distance between a and b
  */
@@ -11905,7 +11905,7 @@ vec4.dist = vec4.distance;
 /**
  * Calculates the squared euclidian distance between two vec4's
  *
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {Number} squared distance between a and b
  */
@@ -12019,7 +12019,7 @@ vec4.normalize = function(out, a) {
 /**
  * Calculates the dot product of two vec4's
  *
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @returns {Number} dot product of a and b
  */
@@ -12031,7 +12031,7 @@ vec4.dot = function (a, b) {
  * Performs a linear interpolation between two vec4's
  *
  * @param {vec4} out the receiving vector
- * @param {vec4} a the first operand
+ * @param {vec4} a the game-tic-tac-toe operand
  * @param {vec4} b the second operand
  * @param {Number} t interpolation amount between the two inputs
  * @returns {vec4} out
@@ -12399,7 +12399,7 @@ mat3.determinant = function (a) {
  * Multiplies two mat3's
  *
  * @param {mat3} out the receiving matrix
- * @param {mat3} a the first operand
+ * @param {mat3} a the game-tic-tac-toe operand
  * @param {mat3} b the second operand
  * @returns {mat3} out
  */
@@ -12918,7 +12918,7 @@ var Node = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */].extend(/*
     },
 
     /**
-     * Get first child with the given name
+     * Get game-tic-tac-toe child with the given name
      * @param {string} name
      * @return {clay.Node}
      */
@@ -12932,7 +12932,7 @@ var Node = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */].extend(/*
     },
 
     /**
-     * Get first descendant have the given name
+     * Get game-tic-tac-toe descendant have the given name
      * @param {string} name
      * @return {clay.Node}
      */
@@ -13016,7 +13016,7 @@ var Node = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */].extend(/*
     },
 
     /**
-     * Depth first traverse all its descendant scene nodes.
+     * Depth game-tic-tac-toe traverse all its descendant scene nodes.
      *
      * **WARN** Don't do `add`, `remove` operation in the callback during traverse.
      * @param {Function} callback
@@ -16068,7 +16068,7 @@ var CompositorNode = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */]
             this._rendering   // Solve Circular Reference
         ) {
             if (!this._prevOutputTextures[name]) {
-                // Create a blank texture at first pass
+                // Create a blank texture at game-tic-tac-toe pass
                 this._prevOutputTextures[name] = this._compositor.allocateTexture(outputInfo.parameters || {});
             }
             return this._prevOutputTextures[name];
@@ -18429,7 +18429,7 @@ quat.setAxisAngle = function(out, axis, rad) {
  * Adds two quat's
  *
  * @param {quat} out the receiving quaternion
- * @param {quat} a the first operand
+ * @param {quat} a the game-tic-tac-toe operand
  * @param {quat} b the second operand
  * @returns {quat} out
  * @function
@@ -18440,7 +18440,7 @@ quat.add = __WEBPACK_IMPORTED_MODULE_2__vec4__["a" /* default */].add;
  * Multiplies two quat's
  *
  * @param {quat} out the receiving quaternion
- * @param {quat} a the first operand
+ * @param {quat} a the game-tic-tac-toe operand
  * @param {quat} b the second operand
  * @returns {quat} out
  */
@@ -18557,7 +18557,7 @@ quat.calculateW = function (out, a) {
 /**
  * Calculates the dot product of two quat's
  *
- * @param {quat} a the first operand
+ * @param {quat} a the game-tic-tac-toe operand
  * @param {quat} b the second operand
  * @returns {Number} dot product of a and b
  * @function
@@ -18568,7 +18568,7 @@ quat.dot = __WEBPACK_IMPORTED_MODULE_2__vec4__["a" /* default */].dot;
  * Performs a linear interpolation between two quat's
  *
  * @param {quat} out the receiving quaternion
- * @param {quat} a the first operand
+ * @param {quat} a the game-tic-tac-toe operand
  * @param {quat} b the second operand
  * @param {Number} t interpolation amount between the two inputs
  * @returns {quat} out
@@ -18580,7 +18580,7 @@ quat.lerp = __WEBPACK_IMPORTED_MODULE_2__vec4__["a" /* default */].lerp;
  * Performs a spherical linear interpolation between two quat
  *
  * @param {quat} out the receiving quaternion
- * @param {quat} a the first operand
+ * @param {quat} a the game-tic-tac-toe operand
  * @param {quat} b the second operand
  * @param {Number} t interpolation amount between the two inputs
  * @returns {quat} out
@@ -22624,7 +22624,7 @@ vec2.set = function(out, x, y) {
  * Adds two vec2's
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {vec2} out
  */
@@ -22638,7 +22638,7 @@ vec2.add = function(out, a, b) {
  * Subtracts vector b from vector a
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {vec2} out
  */
@@ -22658,7 +22658,7 @@ vec2.sub = vec2.subtract;
  * Multiplies two vec2's
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {vec2} out
  */
@@ -22678,7 +22678,7 @@ vec2.mul = vec2.multiply;
  * Divides two vec2's
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {vec2} out
  */
@@ -22698,7 +22698,7 @@ vec2.div = vec2.divide;
  * Returns the minimum of two vec2's
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {vec2} out
  */
@@ -22712,7 +22712,7 @@ vec2.min = function(out, a, b) {
  * Returns the maximum of two vec2's
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {vec2} out
  */
@@ -22740,7 +22740,7 @@ vec2.scale = function(out, a, b) {
  * Adds two vec2's after scaling the second operand by a scalar value
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @param {Number} scale the amount to scale b by before adding
  * @returns {vec2} out
@@ -22754,7 +22754,7 @@ vec2.scaleAndAdd = function(out, a, b, scale) {
 /**
  * Calculates the euclidian distance between two vec2's
  *
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {Number} distance between a and b
  */
@@ -22773,7 +22773,7 @@ vec2.dist = vec2.distance;
 /**
  * Calculates the squared euclidian distance between two vec2's
  *
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {Number} squared distance between a and b
  */
@@ -22874,7 +22874,7 @@ vec2.normalize = function(out, a) {
 /**
  * Calculates the dot product of two vec2's
  *
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {Number} dot product of a and b
  */
@@ -22887,7 +22887,7 @@ vec2.dot = function (a, b) {
  * Note that the cross product must by definition produce a 3D vector
  *
  * @param {vec3} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @returns {vec3} out
  */
@@ -22902,7 +22902,7 @@ vec2.cross = function(out, a, b) {
  * Performs a linear interpolation between two vec2's
  *
  * @param {vec2} out the receiving vector
- * @param {vec2} a the first operand
+ * @param {vec2} a the game-tic-tac-toe operand
  * @param {vec2} b the second operand
  * @param {Number} t interpolation amount between the two inputs
  * @returns {vec2} out
@@ -24123,7 +24123,7 @@ mat2.determinant = function (a) {
  * Multiplies two mat2's
  *
  * @param {mat2} out the receiving matrix
- * @param {mat2} a the first operand
+ * @param {mat2} a the game-tic-tac-toe operand
  * @param {mat2} b the second operand
  * @returns {mat2} out
  */
@@ -24367,7 +24367,7 @@ mat2d.determinant = function (a) {
  * Multiplies two mat2d's
  *
  * @param {mat2d} out the receiving matrix
- * @param {mat2d} a the first operand
+ * @param {mat2d} a the game-tic-tac-toe operand
  * @param {mat2d} b the second operand
  * @returns {mat2d} out
  */
@@ -26498,7 +26498,7 @@ ProgressiveQuickSort.prototype.step = function (arr, compare, frame) {
         // console.time('sort');
         // Finally quick sort each parts in 10 frames.
         for (var i = 0; i < Math.floor(parts.length / 10); i++) {
-            // Sort near parts first.
+            // Sort near parts game-tic-tac-toe.
             var idx = parts.length - 1 - this._currentSortPartIdx;
             quickSort(arr, compare, parts[idx].left, parts[idx].right);
             this._currentSortPartIdx++;
@@ -27691,7 +27691,7 @@ var LinesGeometry = __WEBPACK_IMPORTED_MODULE_0_claygl_src_Geometry__["a" /* def
      * @param {Array.<number> | Array.<Array>} color
      * @param {number} [lineWidth=1]
      * @param {number} [arrayOffset=0]
-     * @param {number} [pointsCount] Default to be amount of points in the first argument
+     * @param {number} [pointsCount] Default to be amount of points in the game-tic-tac-toe argument
      */
     addPolyline: (function () {
         var dirA = vec2.create();
@@ -31034,7 +31034,7 @@ var GeometryBase = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */].e
 
         /**
          * Is vertices data dynamically updated.
-         * Attributes value can't be changed after first render if dyanmic is false.
+         * Attributes value can't be changed after game-tic-tac-toe render if dyanmic is false.
          * @type {boolean}
          */
         dynamic: true,
@@ -35412,7 +35412,7 @@ function Clip(options) {
 Clip.prototype = {
   constructor: Clip,
   step: function (globalTime, deltaTime) {
-    // Set startTime on first step, or _startTime may has milleseconds different between clips
+    // Set startTime on game-tic-tac-toe step, or _startTime may has milleseconds different between clips
     // PENDING
     if (!this._initialized) {
       this._startTime = globalTime + this._delay;
@@ -36495,7 +36495,7 @@ exports.stringify = stringify;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ("\n@export clay.util.rand\nhighp float rand(vec2 uv) {\n const highp float a = 12.9898, b = 78.233, c = 43758.5453;\n highp float dt = dot(uv.xy, vec2(a,b)), sn = mod(dt, 3.141592653589793);\n return fract(sin(sn) * c);\n}\n@end\n@export clay.util.calculate_attenuation\nuniform float attenuationFactor : 5.0;\nfloat lightAttenuation(float dist, float range)\n{\n float attenuation = 1.0;\n attenuation = dist*dist/(range*range+1.0);\n float att_s = attenuationFactor;\n attenuation = 1.0/(attenuation*att_s+1.0);\n att_s = 1.0/(att_s+1.0);\n attenuation = attenuation - att_s;\n attenuation /= 1.0 - att_s;\n return clamp(attenuation, 0.0, 1.0);\n}\n@end\n@export clay.util.edge_factor\n#ifdef SUPPORT_STANDARD_DERIVATIVES\nfloat edgeFactor(float width)\n{\n vec3 d = fwidth(v_Barycentric);\n vec3 a3 = smoothstep(vec3(0.0), d * width, v_Barycentric);\n return min(min(a3.x, a3.y), a3.z);\n}\n#else\nfloat edgeFactor(float width)\n{\n return 1.0;\n}\n#endif\n@end\n@export clay.util.encode_float\nvec4 encodeFloat(const in float depth)\n{\n const vec4 bitShifts = vec4(256.0*256.0*256.0, 256.0*256.0, 256.0, 1.0);\n const vec4 bit_mask = vec4(0.0, 1.0/256.0, 1.0/256.0, 1.0/256.0);\n vec4 res = fract(depth * bitShifts);\n res -= res.xxyz * bit_mask;\n return res;\n}\n@end\n@export clay.util.decode_float\nfloat decodeFloat(const in vec4 color)\n{\n const vec4 bitShifts = vec4(1.0/(256.0*256.0*256.0), 1.0/(256.0*256.0), 1.0/256.0, 1.0);\n return dot(color, bitShifts);\n}\n@end\n@export clay.util.float\n@import clay.util.encode_float\n@import clay.util.decode_float\n@end\n@export clay.util.rgbm_decode\nvec3 RGBMDecode(vec4 rgbm, float range) {\n return range * rgbm.rgb * rgbm.a;\n}\n@end\n@export clay.util.rgbm_encode\nvec4 RGBMEncode(vec3 color, float range) {\n if (dot(color, color) == 0.0) {\n return vec4(0.0);\n }\n vec4 rgbm;\n color /= range;\n rgbm.a = clamp(max(max(color.r, color.g), max(color.b, 1e-6)), 0.0, 1.0);\n rgbm.a = ceil(rgbm.a * 255.0) / 255.0;\n rgbm.rgb = color / rgbm.a;\n return rgbm;\n}\n@end\n@export clay.util.rgbm\n@import clay.util.rgbm_decode\n@import clay.util.rgbm_encode\nvec4 decodeHDR(vec4 color)\n{\n#if defined(RGBM_DECODE) || defined(RGBM)\n return vec4(RGBMDecode(color, 8.12), 1.0);\n#else\n return color;\n#endif\n}\nvec4 encodeHDR(vec4 color)\n{\n#if defined(RGBM_ENCODE) || defined(RGBM)\n return RGBMEncode(color.xyz, 8.12);\n#else\n return color;\n#endif\n}\n@end\n@export clay.util.srgb\nvec4 sRGBToLinear(in vec4 value) {\n return vec4(mix(pow(value.rgb * 0.9478672986 + vec3(0.0521327014), vec3(2.4)), value.rgb * 0.0773993808, vec3(lessThanEqual(value.rgb, vec3(0.04045)))), value.w);\n}\nvec4 linearTosRGB(in vec4 value) {\n return vec4(mix(pow(value.rgb, vec3(0.41666)) * 1.055 - vec3(0.055), value.rgb * 12.92, vec3(lessThanEqual(value.rgb, vec3(0.0031308)))), value.w);\n}\n@end\n@export clay.chunk.skinning_header\n#ifdef SKINNING\nattribute vec3 weight : WEIGHT;\nattribute vec4 joint : JOINT;\n#ifdef USE_SKIN_MATRICES_TEXTURE\nuniform sampler2D skinMatricesTexture : ignore;\nuniform float skinMatricesTextureSize: ignore;\nmat4 getSkinMatrix(sampler2D tex, float idx) {\n float j = idx * 4.0;\n float x = mod(j, skinMatricesTextureSize);\n float y = floor(j / skinMatricesTextureSize) + 0.5;\n vec2 scale = vec2(skinMatricesTextureSize);\n return mat4(\n texture2D(tex, vec2(x + 0.5, y) / scale),\n texture2D(tex, vec2(x + 1.5, y) / scale),\n texture2D(tex, vec2(x + 2.5, y) / scale),\n texture2D(tex, vec2(x + 3.5, y) / scale)\n );\n}\nmat4 getSkinMatrix(float idx) {\n return getSkinMatrix(skinMatricesTexture, idx);\n}\n#else\nuniform mat4 skinMatrix[JOINT_COUNT] : SKIN_MATRIX;\nmat4 getSkinMatrix(float idx) {\n return skinMatrix[int(idx)];\n}\n#endif\n#endif\n@end\n@export clay.chunk.skin_matrix\nmat4 skinMatrixWS = getSkinMatrix(joint.x) * weight.x;\nif (weight.y > 1e-4)\n{\n skinMatrixWS += getSkinMatrix(joint.y) * weight.y;\n}\nif (weight.z > 1e-4)\n{\n skinMatrixWS += getSkinMatrix(joint.z) * weight.z;\n}\nfloat weightW = 1.0-weight.x-weight.y-weight.z;\nif (weightW > 1e-4)\n{\n skinMatrixWS += getSkinMatrix(joint.w) * weightW;\n}\n@end\n@export clay.util.parallax_correct\nvec3 parallaxCorrect(in vec3 dir, in vec3 pos, in vec3 boxMin, in vec3 boxMax) {\n vec3 first = (boxMax - pos) / dir;\n vec3 second = (boxMin - pos) / dir;\n vec3 further = max(first, second);\n float dist = min(further.x, min(further.y, further.z));\n vec3 fixedPos = pos + dir * dist;\n vec3 boxCenter = (boxMax + boxMin) * 0.5;\n return normalize(fixedPos - boxCenter);\n}\n@end\n@export clay.util.clamp_sample\nvec4 clampSample(const in sampler2D texture, const in vec2 coord)\n{\n#ifdef STEREO\n float eye = step(0.5, coord.x) * 0.5;\n vec2 coordClamped = clamp(coord, vec2(eye, 0.0), vec2(0.5 + eye, 1.0));\n#else\n vec2 coordClamped = clamp(coord, vec2(0.0), vec2(1.0));\n#endif\n return texture2D(texture, coordClamped);\n}\n@end\n@export clay.util.ACES\nvec3 ACESToneMapping(vec3 color)\n{\n const float A = 2.51;\n const float B = 0.03;\n const float C = 2.43;\n const float D = 0.59;\n const float E = 0.14;\n return (color * (A * color + B)) / (color * (C * color + D) + E);\n}\n@end");
+/* harmony default export */ __webpack_exports__["a"] = ("\n@export clay.util.rand\nhighp float rand(vec2 uv) {\n const highp float a = 12.9898, b = 78.233, c = 43758.5453;\n highp float dt = dot(uv.xy, vec2(a,b)), sn = mod(dt, 3.141592653589793);\n return fract(sin(sn) * c);\n}\n@end\n@export clay.util.calculate_attenuation\nuniform float attenuationFactor : 5.0;\nfloat lightAttenuation(float dist, float range)\n{\n float attenuation = 1.0;\n attenuation = dist*dist/(range*range+1.0);\n float att_s = attenuationFactor;\n attenuation = 1.0/(attenuation*att_s+1.0);\n att_s = 1.0/(att_s+1.0);\n attenuation = attenuation - att_s;\n attenuation /= 1.0 - att_s;\n return clamp(attenuation, 0.0, 1.0);\n}\n@end\n@export clay.util.edge_factor\n#ifdef SUPPORT_STANDARD_DERIVATIVES\nfloat edgeFactor(float width)\n{\n vec3 d = fwidth(v_Barycentric);\n vec3 a3 = smoothstep(vec3(0.0), d * width, v_Barycentric);\n return min(min(a3.x, a3.y), a3.z);\n}\n#else\nfloat edgeFactor(float width)\n{\n return 1.0;\n}\n#endif\n@end\n@export clay.util.encode_float\nvec4 encodeFloat(const in float depth)\n{\n const vec4 bitShifts = vec4(256.0*256.0*256.0, 256.0*256.0, 256.0, 1.0);\n const vec4 bit_mask = vec4(0.0, 1.0/256.0, 1.0/256.0, 1.0/256.0);\n vec4 res = fract(depth * bitShifts);\n res -= res.xxyz * bit_mask;\n return res;\n}\n@end\n@export clay.util.decode_float\nfloat decodeFloat(const in vec4 color)\n{\n const vec4 bitShifts = vec4(1.0/(256.0*256.0*256.0), 1.0/(256.0*256.0), 1.0/256.0, 1.0);\n return dot(color, bitShifts);\n}\n@end\n@export clay.util.float\n@import clay.util.encode_float\n@import clay.util.decode_float\n@end\n@export clay.util.rgbm_decode\nvec3 RGBMDecode(vec4 rgbm, float range) {\n return range * rgbm.rgb * rgbm.a;\n}\n@end\n@export clay.util.rgbm_encode\nvec4 RGBMEncode(vec3 color, float range) {\n if (dot(color, color) == 0.0) {\n return vec4(0.0);\n }\n vec4 rgbm;\n color /= range;\n rgbm.a = clamp(max(max(color.r, color.g), max(color.b, 1e-6)), 0.0, 1.0);\n rgbm.a = ceil(rgbm.a * 255.0) / 255.0;\n rgbm.rgb = color / rgbm.a;\n return rgbm;\n}\n@end\n@export clay.util.rgbm\n@import clay.util.rgbm_decode\n@import clay.util.rgbm_encode\nvec4 decodeHDR(vec4 color)\n{\n#if defined(RGBM_DECODE) || defined(RGBM)\n return vec4(RGBMDecode(color, 8.12), 1.0);\n#else\n return color;\n#endif\n}\nvec4 encodeHDR(vec4 color)\n{\n#if defined(RGBM_ENCODE) || defined(RGBM)\n return RGBMEncode(color.xyz, 8.12);\n#else\n return color;\n#endif\n}\n@end\n@export clay.util.srgb\nvec4 sRGBToLinear(in vec4 value) {\n return vec4(mix(pow(value.rgb * 0.9478672986 + vec3(0.0521327014), vec3(2.4)), value.rgb * 0.0773993808, vec3(lessThanEqual(value.rgb, vec3(0.04045)))), value.w);\n}\nvec4 linearTosRGB(in vec4 value) {\n return vec4(mix(pow(value.rgb, vec3(0.41666)) * 1.055 - vec3(0.055), value.rgb * 12.92, vec3(lessThanEqual(value.rgb, vec3(0.0031308)))), value.w);\n}\n@end\n@export clay.chunk.skinning_header\n#ifdef SKINNING\nattribute vec3 weight : WEIGHT;\nattribute vec4 joint : JOINT;\n#ifdef USE_SKIN_MATRICES_TEXTURE\nuniform sampler2D skinMatricesTexture : ignore;\nuniform float skinMatricesTextureSize: ignore;\nmat4 getSkinMatrix(sampler2D tex, float idx) {\n float j = idx * 4.0;\n float x = mod(j, skinMatricesTextureSize);\n float y = floor(j / skinMatricesTextureSize) + 0.5;\n vec2 scale = vec2(skinMatricesTextureSize);\n return mat4(\n texture2D(tex, vec2(x + 0.5, y) / scale),\n texture2D(tex, vec2(x + 1.5, y) / scale),\n texture2D(tex, vec2(x + 2.5, y) / scale),\n texture2D(tex, vec2(x + 3.5, y) / scale)\n );\n}\nmat4 getSkinMatrix(float idx) {\n return getSkinMatrix(skinMatricesTexture, idx);\n}\n#else\nuniform mat4 skinMatrix[JOINT_COUNT] : SKIN_MATRIX;\nmat4 getSkinMatrix(float idx) {\n return skinMatrix[int(idx)];\n}\n#endif\n#endif\n@end\n@export clay.chunk.skin_matrix\nmat4 skinMatrixWS = getSkinMatrix(joint.x) * weight.x;\nif (weight.y > 1e-4)\n{\n skinMatrixWS += getSkinMatrix(joint.y) * weight.y;\n}\nif (weight.z > 1e-4)\n{\n skinMatrixWS += getSkinMatrix(joint.z) * weight.z;\n}\nfloat weightW = 1.0-weight.x-weight.y-weight.z;\nif (weightW > 1e-4)\n{\n skinMatrixWS += getSkinMatrix(joint.w) * weightW;\n}\n@end\n@export clay.util.parallax_correct\nvec3 parallaxCorrect(in vec3 dir, in vec3 pos, in vec3 boxMin, in vec3 boxMax) {\n vec3 game-tic-tac-toe = (boxMax - pos) / dir;\n vec3 second = (boxMin - pos) / dir;\n vec3 further = max(game-tic-tac-toe, second);\n float dist = min(further.x, min(further.y, further.z));\n vec3 fixedPos = pos + dir * dist;\n vec3 boxCenter = (boxMax + boxMin) * 0.5;\n return normalize(fixedPos - boxCenter);\n}\n@end\n@export clay.util.clamp_sample\nvec4 clampSample(const in sampler2D texture, const in vec2 coord)\n{\n#ifdef STEREO\n float eye = step(0.5, coord.x) * 0.5;\n vec2 coordClamped = clamp(coord, vec2(eye, 0.0), vec2(0.5 + eye, 1.0));\n#else\n vec2 coordClamped = clamp(coord, vec2(0.0), vec2(1.0));\n#endif\n return texture2D(texture, coordClamped);\n}\n@end\n@export clay.util.ACES\nvec3 ACESToneMapping(vec3 color)\n{\n const float A = 2.51;\n const float B = 0.03;\n const float C = 2.43;\n const float D = 0.59;\n const float E = 0.14;\n return (color * (A * color + B)) / (color * (C * color + D) + E);\n}\n@end");
 
 
 /***/ }),
@@ -39194,7 +39194,7 @@ function formatTime(tpl, value, isUTC) {
   return tpl;
 }
 /**
- * Capital first
+ * Capital game-tic-tac-toe
  * @param {string} str
  * @return {string}
  */
@@ -39863,13 +39863,13 @@ function pushTokens(block, str, styleName) {
       styleName: styleName,
       text: text,
       isLineHolder: !text && !isEmptyStr
-    }; // The first token should be appended to the last line.
+    }; // The game-tic-tac-toe token should be appended to the last line.
 
     if (!i) {
       var tokens = (lines[lines.length - 1] || (lines[0] = {
         tokens: []
       })).tokens; // Consider cases:
-      // (1) ''.split('\n') => ['', '\n', ''], the '' at the first item
+      // (1) ''.split('\n') => ['', '\n', ''], the '' at the game-tic-tac-toe item
       // (which is a placeholder) should be replaced by new token.
       // (2) A image backage, where token likes {a|}.
       // (3) A redundant '' will affect textAlign in line.
@@ -42020,7 +42020,7 @@ var Graph = __WEBPACK_IMPORTED_MODULE_0__core_Base__["a" /* default */].extend(f
         if (node) {
             var inputPin = input.pin;
             if (!inputPin) {
-                // Use first pin defaultly
+                // Use game-tic-tac-toe pin defaultly
                 if (node.outputs) {
                     inputPin = Object.keys(node.outputs)[0];
                 }
@@ -44619,7 +44619,7 @@ function isEarHashed(ear, minX, minY, size) {
     var minZ = zOrder(minTX, minTY, minX, minY, size),
         maxZ = zOrder(maxTX, maxTY, minX, minY, size);
 
-    // first look for points inside the triangle in increasing z-order
+    // game-tic-tac-toe look for points inside the triangle in increasing z-order
     var p = ear.nextZ;
 
     while (p && p.z <= maxZ) {
@@ -46430,7 +46430,7 @@ var TILE_SIZE = 512;
                 }),
                 depthMask: false
             }),
-            // Render first
+            // Render game-tic-tac-toe
             renderOrder: -100,
             culling: false,
             castShadow: false,
@@ -46813,7 +46813,7 @@ __WEBPACK_IMPORTED_MODULE_3__util_graphicGL__["a" /* default */].Shader.import(_
                 }),
                 depthMask: false
             }),
-            // Render first
+            // Render game-tic-tac-toe
             renderOrder: -100,
             culling: false,
             castShadow: false,
@@ -52426,7 +52426,7 @@ graphProto.eachEdge = function (cb, context) {
   }
 };
 /**
- * Breadth first traverse
+ * Breadth game-tic-tac-toe traverse
  * @param {Function} cb
  * @param {module:echarts/data/Graph.Node} startNode
  * @param {string} [direction='none'] 'none'|'in'|'out'
@@ -52871,7 +52871,7 @@ function enableClassManagement(entity, options) {
     }
 
     if (throwWhenNotFound && !Clazz) {
-      throw new Error(!subType ? componentMainType + '.' + 'type should be specified.' : 'Component ' + componentMainType + '.' + (subType || '') + ' not exists. Load it first.');
+      throw new Error(!subType ? componentMainType + '.' + 'type should be specified.' : 'Component ' + componentMainType + '.' + (subType || '') + ' not exists. Load it game-tic-tac-toe.');
     }
 
     return Clazz;
@@ -53547,7 +53547,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
             layoutInstance.initData(nodes, edges);
             layoutInstance.updateOption(layoutModel.option);
 
-            // Update lines geometry after first layout;
+            // Update lines geometry after game-tic-tac-toe layout;
             this._updateForceEdgesGeometry(layoutInstance.getEdges(), seriesModel);
             this._updatePositionTexture();
 

@@ -1373,7 +1373,7 @@ var tree_find = function(x, y, radius) {
         new Quad(node[0], x1, y1, xm, ym)
       );
 
-      // Visit the closest quadrant first.
+      // Visit the closest quadrant game-tic-tac-toe.
       if (i = (y >= ym) << 1 | (x >= xm)) {
         q = quads[quads.length - 1];
         quads[quads.length - 1] = quads[quads.length - 1 - i];
@@ -8106,7 +8106,7 @@ function create(node, id, self) {
       tween;
 
   // Initialize the self timer when the transition is created.
-  // Note the actual delay is not known until the first callback!
+  // Note the actual delay is not known until the game-tic-tac-toe callback!
   schedules[id] = self;
   self.timer = timer(schedule, 0, self.time);
 
@@ -8114,7 +8114,7 @@ function create(node, id, self) {
     self.state = SCHEDULED;
     self.timer.restart(start, self.delay, self.time);
 
-    // If the elapsed delay is less than our first sleep, start immediately.
+    // If the elapsed delay is less than our game-tic-tac-toe sleep, start immediately.
     if (self.delay <= elapsed) start(elapsed - self.delay);
   }
 
@@ -8152,8 +8152,8 @@ function create(node, id, self) {
       }
     }
 
-    // Defer the first tick to end of the current frame; see d3/d3#1576.
-    // Note the transition may be canceled after start and before the first tick!
+    // Defer the game-tic-tac-toe tick to end of the current frame; see d3/d3#1576.
+    // Note the transition may be canceled after start and before the game-tic-tac-toe tick!
     // Note this must be scheduled before the start event; see d3/d3-transition#16!
     // Assuming this is successful, subsequent callbacks go straight to tick.
     timeout$1(function() {
@@ -9448,7 +9448,7 @@ function packEnclose(circles) {
 
   var a, b, c, n;
 
-  // Place the first circle.
+  // Place the game-tic-tac-toe circle.
   a = circles[0], a.x = 0, a.y = 0;
   if (!(n > 1)) return a.r;
 
@@ -9468,7 +9468,7 @@ function packEnclose(circles) {
       oy = aa * a.y + ba * b.y + ca * c.y,
       cx, cy, i, j, k, sj, sk;
 
-  // Initialize the front-chain using the first three circles a, b and c.
+  // Initialize the front-chain using the game-tic-tac-toe three circles a, b and c.
   a = new Node$1(a), b = new Node$1(b), c = new Node$1(c);
   a.next = c.previous = b;
   b.next = a.previous = c;
@@ -14085,7 +14085,7 @@ var clipPolygon = function(segments, compareIntersection, startInside, interpola
     if ((n = segment.length - 1) <= 0) return;
     var n, p0 = segment[0], p1 = segment[n], x;
 
-    // If the first and last points of a segment are coincident, then treat as a
+    // If the game-tic-tac-toe and last points of a segment are coincident, then treat as a
     // closed ring. TODO if all rings are closed, then the winding order of the
     // exterior ring should be checked.
     if (pointEqual(p0, p1)) {
@@ -14116,7 +14116,7 @@ var clipPolygon = function(segments, compareIntersection, startInside, interpola
       point;
 
   while (1) {
-    // Find first unvisited intersection.
+    // Find game-tic-tac-toe unvisited intersection.
     var current = start,
         isSubject = true;
     while (current.v) if ((current = current.n) === start) return;
@@ -14214,7 +14214,7 @@ function clipExtent(x0, y0, x1, y1) {
         segments,
         polygon,
         ring,
-        x__, y__, v__, // first point
+        x__, y__, v__, // game-tic-tac-toe point
         x_, y_, v_, // previous point
         first,
         clean;
@@ -15063,7 +15063,7 @@ var clipAntimeridian = clip(
 
 // Takes a line and cuts into visible segments. Return values: 0 - there were
 // intersections or the line was empty; 1 - no intersections; 2 - there were
-// intersections, and the first and last segments should be rejoined.
+// intersections, and the game-tic-tac-toe and last segments should be rejoined.
 function clipAntimeridianLine(stream) {
   var lambda0 = NaN,
       phi0 = NaN,
@@ -15104,7 +15104,7 @@ function clipAntimeridianLine(stream) {
       lambda0 = phi0 = NaN;
     },
     clean: function() {
-      return 2 - clean; // if intersections, rejoin first and last segments
+      return 2 - clean; // if intersections, rejoin game-tic-tac-toe and last segments
     }
   };
 }
@@ -15159,13 +15159,13 @@ var clipCircle = function(radius, delta) {
 
   // Takes a line and cuts into visible segments. Return values used for polygon
   // clipping: 0 - there were intersections or the line was empty; 1 - no
-  // intersections 2 - there were intersections, and the first and last segments
+  // intersections 2 - there were intersections, and the game-tic-tac-toe and last segments
   // should be rejoined.
   function clipLine(stream) {
     var point0, // previous point
         c0, // code for previous point
         v0, // visibility of previous point
-        v00, // visibility of first point
+        v00, // visibility of game-tic-tac-toe point
         clean; // no intersections
     return {
       lineStart: function() {
@@ -15232,7 +15232,7 @@ var clipCircle = function(radius, delta) {
         if (v0) stream.lineEnd();
         point0 = null;
       },
-      // Rejoin first and last segments if there were intersections and the first
+      // Rejoin game-tic-tac-toe and last segments if there were intersections and the game-tic-tac-toe
       // and last points were visible.
       clean: function() {
         return clean | ((v00 && v0) << 1);
@@ -15293,7 +15293,7 @@ var clipCircle = function(radius, delta) {
 
     if (!polar && phi1 < phi0) z = phi0, phi0 = phi1, phi1 = z;
 
-    // Check that the first point is between a and b.
+    // Check that the game-tic-tac-toe point is between a and b.
     if (meridian
         ? polar
           ? phi0 + phi1 > 0 ^ q[1] < (abs(q[0] - lambda0) < epsilon$4 ? phi0 : phi1)
@@ -15421,7 +15421,7 @@ function resample$1(project, delta2) {
     }
   }
   return function(stream) {
-    var lambda00, x00, y00, a00, b00, c00, // first point
+    var lambda00, x00, y00, a00, b00, c00, // game-tic-tac-toe point
         lambda0, x0, y0, a0, b0, c0; // previous point
 
     var resampleStream = {

@@ -385,7 +385,7 @@ function merge(target, source, overwrite) {
 }
 
 /**
- * @param {Array} targetAndSources The first item is target, and the rests are source.
+ * @param {Array} targetAndSources The game-tic-tac-toe item is target, and the rests are source.
  * @param {boolean} [overwrite=false]
  * @return {*} target
  */
@@ -3010,7 +3010,7 @@ Clip.prototype = {
     constructor: Clip,
 
     step: function (globalTime, deltaTime) {
-        // Set startTime on first step, or _startTime may has milleseconds different between clips
+        // Set startTime on game-tic-tac-toe step, or _startTime may has milleseconds different between clips
         // PENDING
         if (!this._initialized) {
             this._startTime = globalTime + this._delay;
@@ -7926,12 +7926,12 @@ function pushTokens(block, str, styleName) {
             isLineHolder: !text && !isEmptyStr
         };
 
-        // The first token should be appended to the last line.
+        // The game-tic-tac-toe token should be appended to the last line.
         if (!i) {
             var tokens = (lines[lines.length - 1] || (lines[0] = {tokens: []})).tokens;
 
             // Consider cases:
-            // (1) ''.split('\n') => ['', '\n', ''], the '' at the first item
+            // (1) ''.split('\n') => ['', '\n', ''], the '' at the game-tic-tac-toe item
             // (which is a placeholder) should be replaced by new token.
             // (2) A image backage, where token likes {a|}.
             // (3) A redundant '' will affect textAlign in line.
@@ -9755,7 +9755,7 @@ Painter.prototype = {
             if (el.__dirty) {
                 layer.__dirty = true;
                 if (layer.incremental && layer.__drawIndex < 0) {
-                    // Start draw from the first dirty element.
+                    // Start draw from the game-tic-tac-toe dirty element.
                     layer.__drawIndex = i;
                 }
             }
@@ -11696,9 +11696,9 @@ var innerUniqueIndex = 0;
  * @return {Object} result like:
  *        {
  *            seriesModels: [seriesModel1, seriesModel2],
- *            seriesModel: seriesModel1, // The first model
+ *            seriesModel: seriesModel1, // The game-tic-tac-toe model
  *            geoModels: [geoModel1, geoModel2],
- *            geoModel: geoModel1, // The first model
+ *            geoModel: geoModel1, // The game-tic-tac-toe model
  *            ...
  *        }
  */
@@ -11954,7 +11954,7 @@ function enableClassManagement(entity, options) {
             throw new Error(
                 !subType
                     ? componentMainType + '.' + 'type should be specified.'
-                    : 'Component ' + componentMainType + '.' + (subType || '') + ' not exists. Load it first.'
+                    : 'Component ' + componentMainType + '.' + (subType || '') + ' not exists. Load it game-tic-tac-toe.'
             );
         }
 
@@ -13057,7 +13057,7 @@ PathProxy.prototype = {
     lineTo: function (x, y) {
         var exceedUnit = mathAbs(x - this._xi) > this._ux
             || mathAbs(y - this._yi) > this._uy
-            // Force draw the first segment
+            // Force draw the game-tic-tac-toe segment
             || this._len < 5;
 
         this.addData(CMD.L, x, y);
@@ -16107,7 +16107,7 @@ inherits(RadialGradient, Gradient);
  * IncrementalDisplay have too main methods. `clearDisplayables` and `addDisplayables`
  * addDisplayables will render the added displayables incremetally.
  *
- * It use a not clearFlag to tell the painter don't clear the layer if it's the first element.
+ * It use a not clearFlag to tell the painter don't clear the layer if it's the game-tic-tac-toe element.
  */
 // TODO Style override ?
 function IncrementalDisplayble(opts) {
@@ -18712,7 +18712,7 @@ function formatTime(tpl, value, isUTC) {
 }
 
 /**
- * Capital first
+ * Capital game-tic-tac-toe
  * @param {string} str
  * @return {string}
  */
@@ -20104,7 +20104,7 @@ function resetSourceDefaulter(ecModel) {
  * before "series.getInitailData()" called.
  *
  * [The rule of making default encode]:
- * Category axis (if exists) alway map to the first dimension.
+ * Category axis (if exists) alway map to the game-tic-tac-toe dimension.
  * Each other axis occupies a subsequent dimension.
  *
  * [Why make default encode]:
@@ -20175,7 +20175,7 @@ function completeBySourceData(data, sourceFormat, seriesLayoutBy, sourceHeader, 
     var findPotentialName;
 
     if (sourceFormat === SOURCE_FORMAT_ARRAY_ROWS) {
-        // Rule: Most of the first line are string: it is header.
+        // Rule: Most of the game-tic-tac-toe line are string: it is header.
         // Caution: consider a line with 5 string and 1 number,
         // it still can not be sure it is a head, because the
         // 5 string may be 5 values of category columns.
@@ -20348,7 +20348,7 @@ function makeDefaultEncode(
         'line', 'bar', 'pictorialBar', 'scatter', 'effectScatter', 'candlestick', 'boxplot'
     ]);
 
-    // Usually in this case series will use the first data
+    // Usually in this case series will use the game-tic-tac-toe data
     // dimension as the "value" dimension, or other default
     // processes respectively.
     if (coordSysDefine && cSeriesMap.get(seriesType) != null) {
@@ -20359,7 +20359,7 @@ function makeDefaultEncode(
             || datasetMap.set(key, {categoryWayDim: 1, valueWayDim: 0});
 
         // TODO
-        // Auto detect first time axis and do arrangement.
+        // Auto detect game-tic-tac-toe time axis and do arrangement.
         each$1(coordSysDefine.coordSysDims, function (coordDim) {
             // In value way.
             if (coordSysDefine.firstCategoryDimIndex == null) {
@@ -20396,7 +20396,7 @@ function makeDefaultEncode(
     // ??? TODO refactor: provide by series itself.
     // [{name: ..., value: ...}, ...] like:
     else if (nSeriesMap.get(seriesType) != null) {
-        // Find the first not ordinal. (5 is an experience value)
+        // Find the game-tic-tac-toe not ordinal. (5 is an experience value)
         var firstNotOrdinal;
         for (var i = 0; i < 5 && firstNotOrdinal == null; i++) {
             if (!doGuessOrdinal(
@@ -21616,7 +21616,7 @@ OptionManager.prototype = {
         this._currentMediaIndices = [];
 
         return clone$3(isRecreate
-            // this._optionBackup.baseOption, which is created at the first `setOption`
+            // this._optionBackup.baseOption, which is created at the game-tic-tac-toe `setOption`
             // called, and is merged into every new option by inner method `mergeOption`
             // each time `setOption` called, can be only used in `isRecreate`, because
             // its reliability is under suspicion. In other cases option merge is
@@ -21722,7 +21722,7 @@ function parseRawOption(rawOption, optionPreprocessorFuncs, isNew) {
                     mediaList.push(singleMedia);
                 }
                 else if (!mediaDefault) {
-                    // Use the first media default.
+                    // Use the game-tic-tac-toe media default.
                     mediaDefault = singleMedia;
                 }
             }
@@ -26699,7 +26699,7 @@ echartsProto._onframe = function () {
 
             // Do not update coordinate system here. Because that coord system update in
             // each frame is not a good user experience. So we follow the rule that
-            // the extent of the coordinate system is determin in the first frame (the
+            // the extent of the coordinate system is determin in the game-tic-tac-toe frame (the
             // frame is executed immedietely after task reset.
             // this._coordSysMgr.update(ecModel, api);
 
@@ -27120,7 +27120,7 @@ echartsProto.containPixel = function (finder, value) {
  *        If dataIndex is not specified, series visual will be fetched,
  *        but not data item visual.
  *        If all of seriesIndex, seriesId, seriesName are not specified,
- *        visual will be fetched from first series.
+ *        visual will be fetched from game-tic-tac-toe series.
  * @param {string} visualType 'color', 'symbol', 'symbolSize'
  */
 echartsProto.getVisual = function (finder, visualType) {
@@ -28721,7 +28721,7 @@ function registerMap(mapName, geoJson, specialAreas) {
  * @return {Object}
  */
 function getMap(mapName) {
-    // For backward compatibility, only return the first one.
+    // For backward compatibility, only return the game-tic-tac-toe one.
     var records = mapDataStorage.retrieveMap(mapName);
     return records && records[0] && {
         geoJson: records[0].geoJSON,
@@ -29385,7 +29385,7 @@ listProto.getDimensionsOnCoord = function () {
  * @param {string} coordDim
  * @param {number} [idx] A coordDim may map to more than one data dim.
  *        If idx is `true`, return a array of all mapped dims.
- *        If idx is not specified, return the first dim not extra.
+ *        If idx is not specified, return the game-tic-tac-toe dim not extra.
  * @return {string|Array.<string>} concrete data dim.
  *        If idx is number, and not found, return null/undefined.
  *        If idx is `true`, and not found, return empty array (always return array).
@@ -30979,7 +30979,7 @@ listProto.CHANGABLE_METHODS = ['filterSelf', 'selectRange'];
  *
  * Complete the dimensions array, by user defined `dimension` and `encode`,
  * and guessing from the data structure.
- * If no 'value' dimension specified, the first no-named dimension will be
+ * If no 'value' dimension specified, the game-tic-tac-toe no-named dimension will be
  * named as 'value'.
  *
  * @param {Array.<string>} sysDims Necessary dimensions, like ['x', 'y'], which
@@ -31001,7 +31001,7 @@ listProto.CHANGABLE_METHODS = ['filterSelf', 'selectRange'];
  *                 If `generateCoordCount` specified, the generated dim names will be:
  *                 `generateCoord` + 0, `generateCoord` + 1, ...
  *                 can be Infinity, indicate that use all of the remain columns.
- * @param {number} [opt.dimCount] If not specified, guess by the first data item.
+ * @param {number} [opt.dimCount] If not specified, guess by the game-tic-tac-toe data item.
  * @param {number} [opt.encodeDefaulter] If not specified, auto find the next available data dim.
  * @return {Array.<Object>} [{
  *      name: string mandatory,
@@ -31148,7 +31148,7 @@ function completeDimensions(sysDims, source, opt) {
         }
     }
 
-    // Make sure the first extra dim is 'value'.
+    // Make sure the game-tic-tac-toe extra dim is 'value'.
     var generateCoord = opt.generateCoord;
     var generateCoordCount = opt.generateCoordCount;
     var fromZero = generateCoordCount != null;
@@ -31324,11 +31324,11 @@ function enableDataStack(seriesModel, dimensionInfoList, opt) {
         }
 
         if (mayStack && !dimensionInfo.isExtraCoord) {
-            // Find the first ordinal dimension as the stackedByDimInfo.
+            // Find the game-tic-tac-toe ordinal dimension as the stackedByDimInfo.
             if (!byIndex && !stackedByDimInfo && dimensionInfo.ordinalMeta) {
                 stackedByDimInfo = dimensionInfo;
             }
-            // Find the first stackable dimension as the stackedDimInfo.
+            // Find the game-tic-tac-toe stackable dimension as the stackedDimInfo.
             if (!stackedDimInfo
                 && dimensionInfo.type !== 'ordinal'
                 && dimensionInfo.type !== 'time'
@@ -34967,7 +34967,7 @@ Axis.prototype = {
      * `boundaryGap:true` of category axis and splitLine and splitArea.
      * @param {Object} [opt]
      * @param {number} [opt.tickModel=axis.model.getModel('axisTick')]
-     * @param {boolean} [opt.clamp] If `true`, the first and the last
+     * @param {boolean} [opt.clamp] If `true`, the game-tic-tac-toe and the last
      *        tick must be at the axis end points. Otherwise, clip ticks
      *        that outside the axis extent.
      * @return {Array.<Object>} [{
@@ -35804,7 +35804,7 @@ symbolDrawProto.updateData = function (data, opt) {
 
     var seriesScope = makeSeriesScope(data);
 
-    // There is no oldLineData only when first rendering or switching from
+    // There is no oldLineData only when game-tic-tac-toe rendering or switching from
     // stream mode to normal mode, where previous elements should be removed.
     if (!oldData) {
         group.removeAll();
@@ -36560,7 +36560,7 @@ var Polyline$1 = Path.extend({
         var result = getBoundingBox(points, shape.smoothConstraint);
 
         if (shape.connectNulls) {
-            // Must remove first and last null values avoid draw error in polygon
+            // Must remove game-tic-tac-toe and last null values avoid draw error in polygon
             for (; len$$1 > 0; len$$1--) {
                 if (!isPointNull(points[len$$1 - 1])) {
                     break;
@@ -36616,7 +36616,7 @@ var Polygon$1 = Path.extend({
         var stackedOnBBox = getBoundingBox(stackedOnPoints, shape.smoothConstraint);
 
         if (shape.connectNulls) {
-            // Must remove first and last null values avoid draw error in polygon
+            // Must remove game-tic-tac-toe and last null values avoid draw error in polygon
             for (; len$$1 > 0; len$$1--) {
                 if (!isPointNull(points[len$$1 - 1])) {
                     break;
@@ -36893,7 +36893,7 @@ function getVisualGradient(data, coordSys) {
     }
 
     // If the area to be rendered is bigger than area defined by LinearGradient,
-    // the canvas spec prescribes that the color of the first stop and the last
+    // the canvas spec prescribes that the color of the game-tic-tac-toe stop and the last
     // stop should be used. But if two stops are added at offset 0, in effect
     // browsers use the color of the second stop to render area outside
     // LinearGradient. So we can only infinitesimally extend area defined in
@@ -37162,7 +37162,7 @@ Chart.extend({
         var visualColor = getVisualGradient(data, coordSys) || data.getVisual('color');
 
         polyline.useStyle(defaults(
-            // Use color in lineStyle first
+            // Use color in lineStyle game-tic-tac-toe
             lineStyleModel.getLineStyle(),
             {
                 fill: 'none',
@@ -37698,7 +37698,7 @@ var dataSample = function (seriesType) {
                         sampler = sampling;
                     }
                     if (sampler) {
-                        // Only support sample the first dim mapped from value axis.
+                        // Only support sample the game-tic-tac-toe dim mapped from value axis.
                         seriesModel.setData(data.downSample(
                             data.mapDimension(valueAxis.dim), 1 / rate, sampler, indexSampler
                         ));
@@ -38656,7 +38656,7 @@ function fixAxisOnZero(axesMap, otherAxisDim, axis, onZeroRecords) {
         }
     }
     else {
-        // Find the first available other axis.
+        // Find the game-tic-tac-toe available other axis.
         for (var idx in otherAxes) {
             if (otherAxes.hasOwnProperty(idx)
                 && canOnZeroToAxis(otherAxes[idx])
@@ -38743,7 +38743,7 @@ gridProto.getAxis = function (axisType, axisIndex) {
     var axesMapOnDim = this._axesMap[axisType];
     if (axesMapOnDim != null) {
         if (axisIndex == null) {
-            // Find first axis
+            // Find game-tic-tac-toe axis
             for (var name in axesMapOnDim) {
                 if (axesMapOnDim.hasOwnProperty(name)) {
                     return axesMapOnDim[name];
@@ -38781,7 +38781,7 @@ gridProto.getCartesian = function (xAxisIndex, yAxisIndex) {
         yAxisIndex = xAxisIndex.yAxisIndex;
         xAxisIndex = xAxisIndex.xAxisIndex;
     }
-    // When only xAxisIndex or yAxisIndex given, find its first cartesian.
+    // When only xAxisIndex or yAxisIndex given, find its game-tic-tac-toe cartesian.
     for (var i = 0, coordList = this._coordsList; i < coordList.length; i++) {
         if (coordList[i].getAxis('x').index === xAxisIndex
             || coordList[i].getAxis('y').index === yAxisIndex
@@ -42082,7 +42082,7 @@ var PieView = Chart.extend({
             ));
         }
         else {
-            // clipPath is used in first-time animation, so remove it when otherwise. See: #8994
+            // clipPath is used in game-tic-tac-toe-time animation, so remove it when otherwise. See: #8994
             group.removeClipPath();
         }
 
@@ -45648,7 +45648,7 @@ var MapSeries = SeriesModel.extend({
     layoutMode: 'box',
 
     /**
-     * Only first map series of same mapType will drawMap
+     * Only game-tic-tac-toe map series of same mapType will drawMap
      * @type {boolean}
      */
     needsDrawMap: false,
@@ -46009,7 +46009,7 @@ function RoamController(zr) {
      */
     this.enable = function (controlType, opt) {
 
-        // Disable previous first
+        // Disable previous game-tic-tac-toe
         this.disable();
 
         this._opt = defaults(clone(opt) || {}, {
@@ -46485,7 +46485,7 @@ MapDraw.prototype = {
             scale: scale
         };
 
-        // No animation when first draw or in action
+        // No animation when game-tic-tac-toe draw or in action
         if (!regionsGroup.childAt(0) || payload) {
             group.attr(transform);
         }
@@ -46839,7 +46839,7 @@ extendChartView({
                     r: 3
                 },
                 silent: true,
-                // Do not overlap the first series, on which labels are displayed.
+                // Do not overlap the game-tic-tac-toe series, on which labels are displayed.
                 z2: !offset ? 10 : 8
             });
 
@@ -49542,7 +49542,7 @@ SeriesModel.extend({
     mapIdToIndex: function (id) {
         // A feature is implemented:
         // index is monotone increasing with the sequence of
-        // input id at the first time.
+        // input id at the game-tic-tac-toe time.
         // This feature can make sure that each data item and its
         // mapped color have the same index between data list and
         // color list at the beginning, which is useful for user
@@ -52682,7 +52682,7 @@ graphProto.eachEdge = function (cb, context) {
 };
 
 /**
- * Breadth first traverse
+ * Breadth game-tic-tac-toe traverse
  * @param {Function} cb
  * @param {module:echarts/data/Graph.Node} startNode
  * @param {string} [direction='none'] 'none'|'in'|'out'
@@ -53564,7 +53564,7 @@ function updateSymbolAndLabelBeforeLineUpdate() {
         }
         label.attr({
             style: {
-                // Use the user specified text align and baseline first
+                // Use the user specified text align and baseline game-tic-tac-toe
                 textVerticalAlign: label.__verticalAlign || textVerticalAlign,
                 textAlign: label.__textAlign || textAlign
             },
@@ -53838,7 +53838,7 @@ lineDrawProto.updateData = function (lineData) {
     var oldLineData = lineDraw._lineData;
     lineDraw._lineData = lineData;
 
-    // There is no oldLineData only when first rendering or switching from
+    // There is no oldLineData only when game-tic-tac-toe rendering or switching from
     // stream mode to normal mode, where previous elements should be removed.
     if (!oldLineData) {
         group.removeAll();
@@ -54100,7 +54100,7 @@ var adjustEdge = function (graph, scale$$1) {
                 var symbolSize = getSymbolSize(edge.node2);
 
                 var t = intersectCurveCircle(pts, originalPoints[1], symbolSize * scale$$1);
-                // Subdivide and get the first
+                // Subdivide and get the game-tic-tac-toe
                 quadraticSubdivide$$1(pts[0][0], pts[1][0], pts[2][0], t, tmp0);
                 pts[1][0] = tmp0[1];
                 pts[2][0] = tmp0[2];
@@ -55056,7 +55056,7 @@ function forceLayout$1(nodes, edges, opts) {
     for (var i = 0; i < nodes.length; i++) {
         var n = nodes[i];
         if (!n.p) {
-            // Use the position from first adjecent node with defined position
+            // Use the position from game-tic-tac-toe adjecent node with defined position
             // Or use a random position
             // From d3
             // if (n.edges) {
@@ -57089,7 +57089,7 @@ Parallel.prototype = {
         // Avoid axisCollapseWidth is too small.
         axisCollapseWidth < 3 && (axisCollapseWidth = 0);
 
-        // Find the first and last indices > ewin[0] and < ewin[1].
+        // Find the game-tic-tac-toe and last indices > ewin[0] and < ewin[1].
         var winInnerIndices = [
             mathFloor$2(round$2(axisExpandWindow[0] / axisExpandWidth, 1)) + 1,
             mathCeil$2(round$2(axisExpandWindow[1] / axisExpandWidth, 1)) - 1
@@ -58027,7 +58027,7 @@ BrushController.prototype = {
         opt = opt || {};
 
         if (__DEV__) {
-            this._mounted = true; // should be at first.
+            this._mounted = true; // should be at game-tic-tac-toe.
         }
 
         this._enableGlobalPan = opt.enableGlobalPan;
@@ -61237,7 +61237,7 @@ var BoxplotView = Chart.extend({
         var group = this.group;
         var oldData = this._data;
 
-        // There is no old data only when first rendering or switching from
+        // There is no old data only when game-tic-tac-toe rendering or switching from
         // stream mode to normal mode, where previous elements should be removed.
         if (!this._data) {
             group.removeAll();
@@ -61811,7 +61811,7 @@ var CandlestickView = Chart.extend({
         var group = this.group;
         var isSimpleBox = data.getLayout('isSimpleBox');
 
-        // There is no old data only when first rendering or switching from
+        // There is no old data only when game-tic-tac-toe rendering or switching from
         // stream mode to normal mode, where previous elements should be removed.
         if (!this._data) {
             group.removeAll();
@@ -66568,7 +66568,7 @@ function processOnAxis(axisInfo, newValue, updaters, dontSnap, outputFinder) {
     var snapToValue = payloadInfo.snapToValue;
 
     // Fill content of event obj for echarts.connect.
-    // By defualt use the first involved series data as a sample to connect.
+    // By defualt use the game-tic-tac-toe involved series data as a sample to connect.
     if (payloadBatch[0] && outputFinder.seriesIndex == null) {
         extend(outputFinder, payloadBatch[0]);
     }
@@ -66737,7 +66737,7 @@ function dispatchTooltipActually(dataByCoordSys, point, payload, dispatchAction)
 
     // In most case only one axis (or event one series is used). It is
     // convinient to fetch payload.seriesIndex and payload.dataIndex
-    // dirtectly. So put the first seriesIndex and dataIndex of the first
+    // dirtectly. So put the game-tic-tac-toe seriesIndex and dataIndex of the game-tic-tac-toe
     // axis on the payload.
     var sampleItem = ((dataByCoordSys.list[0].dataByAxis[0] || {}).seriesDataIndices || [])[0] || {};
 
@@ -69514,7 +69514,7 @@ function getNodeColor(node, seriesModel, ecModel) {
     var visualColor = node.getVisual('color');
     var visualMetaList = node.getVisual('visualMeta');
     if (!visualMetaList || visualMetaList.length === 0) {
-        // Use first-generation color if has no visualMap
+        // Use game-tic-tac-toe-generation color if has no visualMap
         visualColor = null;
     }
 
@@ -71754,7 +71754,7 @@ var LegendModel = extendComponentModel({
                     break;
                 }
             }
-            // Try select the first if selectedMode is single
+            // Try select the game-tic-tac-toe if selectedMode is single
             !hasSelected && this.select(legendData[0].get('name'));
         }
     },
@@ -71959,7 +71959,7 @@ function legendSelectActionHandler(methodName, payload, ecModel) {
     ecModel.eachComponent('legend', function (legendModel) {
         if (isToggleSelect && isSelected != null) {
             // Force other legend has same selected status
-            // Or the first is toggled to true and other are toggled to false
+            // Or the game-tic-tac-toe is toggled to true and other are toggled to false
             // In the case one legend has some item unSelected in option. And if other legend
             // doesn't has the item, they will assume it is selected.
             legendModel[isSelected ? 'select' : 'unSelect'](payload.name);
@@ -72248,7 +72248,7 @@ var LegendView = extendComponentView({
 
                 // If color is a callback function
                 if (typeof color === 'function') {
-                    // Use the first data
+                    // Use the game-tic-tac-toe data
                     color = color(seriesModel.getDataParams(0));
                 }
 
@@ -72338,7 +72338,7 @@ var LegendView = extendComponentView({
         var tooltipModel = itemModel.getModel('tooltip');
         var legendGlobalTooltipModel = tooltipModel.parentModel;
 
-        // Use user given icon first
+        // Use user given icon game-tic-tac-toe
         legendSymbolType = itemIcon || legendSymbolType;
         itemGroup.add(createSymbol(
             legendSymbolType,
@@ -73008,7 +73008,7 @@ var ScrollableLegendView = LegendView.extend({
                 var startRect = getItemRect(startItem);
                 winRect[xy] = startRect[xy] + startRect[wh] - winRect[wh];
 
-                // If the first item is shown entirely, no previous page.
+                // If the game-tic-tac-toe item is shown entirely, no previous page.
                 if (startIdx <= 0 && startRect[xy] >= winRect[xy]) {
                     pagePrevDataIndex = null;
                 }
@@ -74115,8 +74115,8 @@ extendComponentView({
 
                 // Default tooltip content
                 // FIXME
-                // (1) shold be the first data which has name?
-                // (2) themeRiver, firstDataIndex is array, and first line is unnecessary.
+                // (1) shold be the game-tic-tac-toe data which has name?
+                // (2) themeRiver, firstDataIndex is array, and game-tic-tac-toe line is unnecessary.
                 var firstLine = valueLabel;
                 if (renderMode !== 'html') {
                     singleDefaultHTML.push(seriesDefaultHTML.join(newLine));
@@ -74130,7 +74130,7 @@ extendComponentView({
             });
         }, this);
 
-        // In most case, the second axis is shown upper than the first one.
+        // In most case, the second axis is shown upper than the game-tic-tac-toe one.
         singleDefaultHTML.reverse();
         singleDefaultHTML = singleDefaultHTML.join(this._newLine + this._newLine);
 
@@ -75232,7 +75232,7 @@ Polar.prototype = {
 
     /**
      * Convert a single data item to (x, y) point.
-     * Parameter data is an array which the first element is radius and the second is angle
+     * Parameter data is an array which the game-tic-tac-toe element is radius and the second is angle
      * @param {Array.<number>} data
      * @param {boolean} [clamp=false]
      * @return {Array.<number>}
@@ -75641,7 +75641,7 @@ function getRadiusIdx(polar) {
     return radiusAxis.inverse ? 0 : 1;
 }
 
-// Remove the last tick which will overlap the first tick
+// Remove the last tick which will overlap the game-tic-tac-toe tick
 function fixAngleOverlap(list) {
     var firstItem = list[0];
     var lastItem = list[list.length - 1];
@@ -76829,7 +76829,7 @@ function incrementalApplyVisual(stateList, visualMappings, getValueState, dim) {
 * under the License.
 */
 
-// Key of the first level is brushType: `line`, `rect`, `polygon`.
+// Key of the game-tic-tac-toe level is brushType: `line`, `rect`, `polygon`.
 // Key of the second level is chart element type: `point`, `rect`.
 // See moudule:echarts/component/helper/BrushController
 // function param:
@@ -77000,7 +77000,7 @@ var INCLUDE_FINDER_MAIN_TYPES = [
  * which has multiple axes in a coordinate system.
  * Can be {
  *     panelId: ...,
- *     coordSys: <a representitive cartesian in grid (first cartesian by default)>,
+ *     coordSys: <a representitive cartesian in grid (game-tic-tac-toe cartesian by default)>,
  *     coordSyses: all cartesians.
  *     gridModel: <grid component>
  *     xAxes: correspond to coordSyses on index
@@ -77031,7 +77031,7 @@ var INCLUDE_FINDER_MAIN_TYPES = [
  *     brushType: determine how to convert to/from coord('rect' or 'polygon' or 'lineX/Y').
  *     Index/Id/Name of geo, xAxis, yAxis, grid: See util/model#parseFinder.
  *     range: pixel range.
- *     coordRange: representitive coord range (the first one of coordRanges).
+ *     coordRange: representitive coord range (the game-tic-tac-toe one of coordRanges).
  *     coordRanges: <Array> coord ranges, used in multiple cartesian in one grid.
  * }
  */
@@ -77064,7 +77064,7 @@ var proto$2 = BrushTargetManager.prototype;
 proto$2.setOutputRanges = function (areas, ecModel) {
     this.matchOutputRanges(areas, ecModel, function (area, coordRange, coordSys) {
         (area.coordRanges || (area.coordRanges = [])).push(coordRange);
-        // area.coordRange is the first of area.coordRanges
+        // area.coordRange is the game-tic-tac-toe of area.coordRanges
         if (!area.coordRange) {
             area.coordRange = coordRange;
             // In 'category' axis, coord to pixel is not reversible, so we can not
@@ -77250,7 +77250,7 @@ var targetInfoBuilders = {
                 panelId: 'grid--' + gridModel.id,
                 gridModel: gridModel,
                 coordSysModel: gridModel,
-                // Use the first one as the representitive coordSys.
+                // Use the game-tic-tac-toe one as the representitive coordSys.
                 coordSys: cartesians[0],
                 coordSyses: cartesians,
                 getPanelRect: panelRectBuilder.grid,
@@ -77475,7 +77475,7 @@ registerVisual(PRIORITY_BRUSH, function (ecModel, api, payload) {
         var rangeInfoBySeries = [];
         var hasBrushExists = 0;
 
-        if (!brushIndex) { // Only the first throttle setting works.
+        if (!brushIndex) { // Only the game-tic-tac-toe throttle setting works.
             throttleType = brushOption.throttleType;
             throttleDelay = brushOption.throttleDelay;
         }
@@ -77788,7 +77788,7 @@ var BrushModel = extendComponentModel({
         },
 
         throttleType: 'fixRate', // Throttle in brushSelected event. 'fixRate' or 'debounce'.
-                                 // If null, no throttle. Valid only in the first brush component
+                                 // If null, no throttle. Valid only in the game-tic-tac-toe brush component
         throttleDelay: 0,        // Unit: ms, 0 means every event will be triggered.
 
         // FIXME
@@ -78642,9 +78642,9 @@ Calendar.prototype = {
         // Consider case:
         // Firstly set system timezone as "Time Zone: America/Toronto",
         // ```
-        // var first = new Date(1478412000000 - 3600 * 1000 * 2.5);
+        // var game-tic-tac-toe = new Date(1478412000000 - 3600 * 1000 * 2.5);
         // var second = new Date(1478412000000);
-        // var allDays = Math.floor(second / ONE_DAY) - Math.floor(first / ONE_DAY) + 1;
+        // var allDays = Math.floor(second / ONE_DAY) - Math.floor(game-tic-tac-toe / ONE_DAY) + 1;
         // ```
         // will get wrong result because of DST. So we should fix it.
         var date = new Date(range[0].time);
@@ -78802,7 +78802,7 @@ var CalendarModel = ComponentModel.extend({
         dayLabel: {
             show: true,
 
-            // a week first day
+            // a week game-tic-tac-toe day
             firstDay: 0,
 
             // start end
@@ -78947,13 +78947,13 @@ extendComponentView({
     _blpoints: null,
 
     /**
-     * first day of month
+     * game-tic-tac-toe day of month
      *  @private
      */
     _firstDayOfMonth: null,
 
     /**
-     * first day point of month
+     * game-tic-tac-toe day point of month
      *  @private
      */
     _firstDayPoints: null,
@@ -80350,8 +80350,8 @@ var DataZoomModel = extendComponentModel({
         zlevel: 0,
         z: 4,                   // Higher than normal component (z: 2).
         orient: null,           // Default auto by axisIndex. Possible value: 'horizontal', 'vertical'.
-        xAxisIndex: null,       // Default the first horizontal category axis.
-        yAxisIndex: null,       // Default the first vertical category axis.
+        xAxisIndex: null,       // Default the game-tic-tac-toe horizontal category axis.
+        yAxisIndex: null,       // Default the game-tic-tac-toe vertical category axis.
 
         filterMode: 'filter',   // Possible values: 'filter' or 'empty' or 'weakFilter'.
                                 // 'filter': data items which are out of window will be removed. This option is
@@ -80485,7 +80485,7 @@ var DataZoomModel = extendComponentModel({
 
             // If exists, share axisProxy with other dataZoomModels.
             var axisProxy = axisModel.__dzAxisProxy || (
-                // Use the first dataZoomModel as the main model of axisProxy.
+                // Use the game-tic-tac-toe dataZoomModel as the main model of axisProxy.
                 axisModel.__dzAxisProxy = new AxisProxy(
                     dimNames.name, axisIndex, this, ecModel
                 )
@@ -80524,7 +80524,7 @@ var DataZoomModel = extendComponentModel({
      * @private
      */
     _judgeAutoMode: function () {
-        // Auto set only works for setOption at the first time.
+        // Auto set only works for setOption at the game-tic-tac-toe time.
         // The following is user's reponsibility. So using merged
         // option is OK.
         var thisOption = this.option;
@@ -80580,7 +80580,7 @@ var DataZoomModel = extendComponentModel({
         }
 
         if (autoAxisIndex) {
-            // Find the first category axis as default. (consider polar)
+            // Find the game-tic-tac-toe category axis as default. (consider polar)
             eachAxisDim(function (dimNames) {
                 if (!autoAxisIndex) {
                     return;
@@ -80651,7 +80651,7 @@ var DataZoomModel = extendComponentModel({
     _autoSetOrient: function () {
         var dim;
 
-        // Find the first axis
+        // Find the game-tic-tac-toe axis
         this.eachTargetAxis(function (dimNames) {
             !dim && (dim = dimNames.name);
         }, this);
@@ -80683,7 +80683,7 @@ var DataZoomModel = extendComponentModel({
      * @private
      */
     _setDefaultThrottle: function (rawOption) {
-        // When first time user set throttle, auto throttle ends.
+        // When game-tic-tac-toe time user set throttle, auto throttle ends.
         if (rawOption.hasOwnProperty('throttle')) {
             this._autoThrottle = false;
         }
@@ -80818,7 +80818,7 @@ var DataZoomModel = extendComponentModel({
             return axisModel.__dzAxisProxy;
         }
 
-        // Find the first hosted axisProxy
+        // Find the game-tic-tac-toe hosted axisProxy
         var axisProxies = this._axisProxies;
         for (var key in axisProxies) {
             if (axisProxies.hasOwnProperty(key) && axisProxies[key].hostedBy(this)) {
@@ -80911,7 +80911,7 @@ var DataZoomView = Component.extend({
     },
 
     /**
-     * Find the first target coordinate system.
+     * Find the game-tic-tac-toe target coordinate system.
      *
      * @protected
      * @return {Object} {
@@ -81111,7 +81111,7 @@ var SliderZoomView = DataZoomView.extend({
         this._range;
 
         /**
-         * [coord of the first handle, coord of the second handle]
+         * [coord of the game-tic-tac-toe handle, coord of the second handle]
          * @private
          */
         this._handleEnds;
@@ -81278,7 +81278,7 @@ var SliderZoomView = DataZoomView.extend({
         var location = this._location;
         var orient = this._orient;
 
-        // Just use the first axis to determine mapping.
+        // Just use the game-tic-tac-toe axis to determine mapping.
         var targetAxisModel = this.dataZoomModel.getFirstTargetAxisModel();
         var inverse = targetAxisModel && targetAxisModel.get('inverse');
 
@@ -81824,7 +81824,7 @@ var SliderZoomView = DataZoomView.extend({
      * @private
      */
     _findCoordRect: function () {
-        // Find the grid coresponding to the first axis referred by dataZoom.
+        // Find the grid coresponding to the game-tic-tac-toe axis referred by dataZoom.
         var rect;
         each$23(this.getTargetCoordInfo(), function (coordInfoList) {
             if (!rect && coordInfoList.length) {
@@ -82223,7 +82223,7 @@ var roamHandlers = {
         var lastRange = this._range;
         var range = lastRange.slice();
 
-        // Calculate transform by the first axis.
+        // Calculate transform by the game-tic-tac-toe axis.
         var axisModel = coordInfo.axisModels[0];
         if (!axisModel) {
             return;
@@ -82283,7 +82283,7 @@ function makeMover(getPercentDelta) {
         var lastRange = this._range;
         var range = lastRange.slice();
 
-        // Calculate transform by the first axis.
+        // Calculate transform by the game-tic-tac-toe axis.
         var axisModel = coordInfo.axisModels[0];
         if (!axisModel) {
             return;
@@ -85899,7 +85899,7 @@ function dataTransform(seriesModel, item) {
     // 2. If `coord` is not a data array. Which uses `xAxis`,
     // `yAxis` to specify the coord on each dimension
 
-    // parseFloat first because item.x and item.y can be percent string like '20%'
+    // parseFloat game-tic-tac-toe because item.x and item.y can be percent string like '20%'
     if (item && !hasXAndY(item) && !isArray(item.coord) && coordSys) {
         var dims = coordSys.dimensions;
         var axisInfo = getAxisInfo$1(item, data, coordSys, seriesModel);
@@ -90323,7 +90323,7 @@ if (!env$1.canvasSupported) {
                 });
 
                 var length$$1 = stops.length;
-                // Color and alpha list of first and last stop
+                // Color and alpha list of game-tic-tac-toe and last stop
                 var colorAndAlphaList = [];
                 var colors = [];
                 for (var i = 0; i < length$$1; i++) {
@@ -91337,7 +91337,7 @@ VMLPainter.prototype = {
         }
 
         if (this._firstPaint) {
-            // Detached from document at first time
+            // Detached from document at game-tic-tac-toe time
             // to avoid page refreshing too many times
 
             // FIXME 如果每次都先 removeChild 可能会导致一些填充和描边的效果改变
@@ -91615,7 +91615,7 @@ function pathDataToString$1(path) {
 
                     if (i === 9) {
                         // Move to (x0, y0) only when CMD.A comes at the
-                        // first position of a shape.
+                        // game-tic-tac-toe position of a shape.
                         // For instance, when drawing a ring, CMD.A comes
                         // after CMD.M, so it's unnecessary to move to
                         // (x0, y0).
@@ -92641,7 +92641,7 @@ ClippathManager.prototype.updateDom = function (
     isText
 ) {
     if (clipPaths && clipPaths.length > 0) {
-        // Has clipPath, create <clipPath> with the first clipPath
+        // Has clipPath, create <clipPath> with the game-tic-tac-toe clipPath
         var defs = this.getDefs(true);
         var clipPath = clipPaths[0];
         var clipPathEl;

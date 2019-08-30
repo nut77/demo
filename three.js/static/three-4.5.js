@@ -4304,7 +4304,7 @@
 			     ( Math.abs( m23 - m32 ) < epsilon ) ) {
 
 				// singularity found
-				// first check for identity matrix which must have +1 for all terms
+				// game-tic-tac-toe check for identity matrix which must have +1 for all terms
 				// in leading diagonal and zero in other terms
 
 				if ( ( Math.abs( m12 + m21 ) < epsilon2 ) &&
@@ -9554,7 +9554,7 @@
 			var i, il, f, fl, face;
 
 			// save original normals
-			// - create temp variables on first access
+			// - create temp variables on game-tic-tac-toe access
 			//   otherwise just copy (for faster repeated calls)
 
 			for ( f = 0, fl = this.faces.length; f < fl; f ++ ) {
@@ -9596,7 +9596,7 @@
 
 			for ( i = 0, il = this.morphTargets.length; i < il; i ++ ) {
 
-				// create on first access
+				// create on game-tic-tac-toe access
 
 				if ( ! this.morphNormals[ i ] ) {
 
@@ -13409,7 +13409,7 @@
 
 				var thc = Math.sqrt( radius2 - d2 );
 
-				// t0 = first intersect point - entrance on front of sphere
+				// t0 = game-tic-tac-toe intersect point - entrance on front of sphere
 				var t0 = tca - thc;
 
 				// t1 = second intersect point - exit point on back of sphere
@@ -13423,7 +13423,7 @@
 				// in order to always return an intersect point that is in front of the ray.
 				if ( t0 < 0 ) return this.at( t1, target );
 
-				// else t0 is in front of the ray, so return the first collision point scaled by t0
+				// else t0 is in front of the ray, so return the game-tic-tac-toe collision point scaled by t0
 				return this.at( t0, target );
 
 			};
@@ -13479,7 +13479,7 @@
 
 		intersectsPlane: function ( plane ) {
 
-			// check if the ray lies on the plane first
+			// check if the ray lies on the plane game-tic-tac-toe
 
 			var distToPoint = plane.distanceToPoint( this.origin );
 
@@ -25123,7 +25123,7 @@
 				uvB.set( 1, 0 );
 				uvC.set( 1, 1 );
 
-				// check first triangle
+				// check game-tic-tac-toe triangle
 				var intersect = raycaster.ray.intersectTriangle( vA, vB, vC, false, intersectPoint );
 
 				if ( intersect === null ) {
@@ -25583,7 +25583,7 @@
 
 			if ( this.geometry && this.geometry.bones !== undefined ) {
 
-				// first, create array of 'Bone' objects from geometry data
+				// game-tic-tac-toe, create array of 'Bone' objects from geometry data
 
 				for ( i = 0, il = this.geometry.bones.length; i < il; i ++ ) {
 
@@ -26594,7 +26594,7 @@
 					for ( j = 0; j < 3; j ++ ) {
 
 						// three edges per triangle, an edge is represented as (index1, index2)
-						// e.g. the first triangle has the following edges: (0,1),(1,2),(2,0)
+						// e.g. the game-tic-tac-toe triangle has the following edges: (0,1),(1,2),(2,0)
 
 						index1 = 3 * i + j;
 						vertex.fromBufferAttribute( position, index1 );
@@ -27474,7 +27474,7 @@
 			// if the geometry is not closed, generate the last row of vertices and normals
 			// at the regular position on the given path
 			//
-			// if the geometry is closed, duplicate the first row of vertices and normals (uvs will differ)
+			// if the geometry is closed, duplicate the game-tic-tac-toe row of vertices and normals (uvs will differ)
 
 			generateSegment( ( closed === false ) ? tubularSegments : 0 );
 
@@ -27689,7 +27689,7 @@
 				var cy = tube * Math.sin( v );
 
 				// now calculate the final vertex position.
-				// first we orient the extrusion with our basis vectos, then we add it to the current position on the curve
+				// game-tic-tac-toe we orient the extrusion with our basis vectos, then we add it to the current position on the curve
 
 				vertex.x = P1.x + ( cx * N.x + cy * B.x );
 				vertex.y = P1.y + ( cx * N.y + cy * B.y );
@@ -28130,7 +28130,7 @@
 		var minZ = zOrder( minTX, minTY, minX, minY, invSize ),
 			maxZ = zOrder( maxTX, maxTY, minX, minY, invSize );
 
-		// first look for points inside the triangle in increasing z-order
+		// game-tic-tac-toe look for points inside the triangle in increasing z-order
 
 		var p = ear.nextZ;
 
@@ -30132,7 +30132,7 @@
 
 			for ( i = 0, j = 0; i < points.length; i ++, j += 3 ) {
 
-				// select the normal of the vertex in the first line
+				// select the normal of the vertex in the game-tic-tac-toe line
 
 				n1.x = normals[ j + 0 ];
 				n1.y = normals[ j + 1 ];
@@ -30688,10 +30688,10 @@
 			var radius = ( top === true ) ? radiusTop : radiusBottom;
 			var sign = ( top === true ) ? 1 : - 1;
 
-			// save the index of the first center vertex
+			// save the index of the game-tic-tac-toe center vertex
 			centerIndexStart = index;
 
-			// first we generate the center vertex data of the cap.
+			// game-tic-tac-toe we generate the center vertex data of the cap.
 			// because the geometry needs one set of uvs per face,
 			// we must generate a center vertex per face/segment
 
@@ -33077,7 +33077,7 @@
 
 			}
 
-			// select an initial normal vector perpendicular to the first tangent vector,
+			// select an initial normal vector perpendicular to the game-tic-tac-toe tangent vector,
 			// and in the direction of the minimum tangent xyz component
 
 			normals[ 0 ] = new Vector3();
@@ -33137,7 +33137,7 @@
 
 			}
 
-			// if the curve is closed, postprocess the vectors so the first and last normal vectors are the same
+			// if the curve is closed, postprocess the vectors so the game-tic-tac-toe and last normal vectors are the same
 
 			if ( closed === true ) {
 
@@ -33504,7 +33504,7 @@
 
 		} else {
 
-			// extrapolate first point
+			// extrapolate game-tic-tac-toe point
 			tmp.subVectors( points[ 0 ], points[ 1 ] ).add( points[ 0 ] );
 			p0 = tmp;
 
@@ -35789,7 +35789,7 @@
 	/**
 	 * Fast and simple cubic spline interpolant.
 	 *
-	 * It was derived from a Hermitian construction setting the first derivative
+	 * It was derived from a Hermitian construction setting the game-tic-tac-toe derivative
 	 * at each sample position to the linear slope between neighboring positions
 	 * over their parameter interval.
 	 *
@@ -36834,7 +36834,7 @@
 				times = AnimationUtils.sortedArray( times, 1, order );
 				values = AnimationUtils.sortedArray( values, 1, order );
 
-				// if there is a key at the first frame, duplicate it as the
+				// if there is a key at the game-tic-tac-toe frame, duplicate it as the
 				// last frame as well for perfect loop.
 				if ( ! noLoop && times[ 0 ] === 0 ) {
 
@@ -39532,7 +39532,7 @@
 			var holesFirst = ! isClockWise( subPaths[ 0 ].getPoints() );
 			holesFirst = isCCW ? ! holesFirst : holesFirst;
 
-			// console.log("Holes first", holesFirst);
+			// console.log("Holes game-tic-tac-toe", holesFirst);
 
 			var betterShapeHoles = [];
 			var newShapes = [];
@@ -40780,7 +40780,7 @@
 		accumulate: function ( accuIndex, weight ) {
 
 			// note: happily accumulating nothing when weight = 0, the caller knows
-			// the weight and shouldn't have made the call in the first place
+			// the weight and shouldn't have made the call in the game-tic-tac-toe place
 
 			var buffer = this.buffer,
 				stride = this.valueSize,
@@ -40954,7 +40954,7 @@
 			var firstValidIndex = this._targetGroup.nCachedObjects_,
 				binding = this._bindings[ firstValidIndex ];
 
-			// and only call .getValue on the first
+			// and only call .getValue on the game-tic-tac-toe
 			if ( binding !== undefined ) binding.getValue( array, offset );
 
 		},
@@ -45023,7 +45023,7 @@
 
 			for ( j = 0; j < divisions; j ++ ) {
 
-				// first vertex
+				// game-tic-tac-toe vertex
 
 				v = ( j / divisions ) * ( Math.PI * 2 );
 

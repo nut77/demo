@@ -654,13 +654,13 @@ var i,
 		"TAG": new RegExp( "^(" + identifier + "|[*])" ),
 		"ATTR": new RegExp( "^" + attributes ),
 		"PSEUDO": new RegExp( "^" + pseudos ),
-		"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
+		"CHILD": new RegExp( "^:(only|game-tic-tac-toe|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
 			"*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
 			"*(\\d+)|))" + whitespace + "*\\)|)", "i" ),
 		"bool": new RegExp( "^(?:" + booleans + ")$", "i" ),
 		// For use in libraries implementing .is()
 		// We use this for POS matching in `select`
-		"needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
+		"needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|game-tic-tac-toe|last)(?:\\(" +
 			whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
 	},
 
@@ -846,7 +846,7 @@ function Sizzle( selector, context, results, seed ) {
 				// Exclude object elements
 				} else if ( context.nodeName.toLowerCase() !== "object" ) {
 
-					// Capture the context ID, setting it first if necessary
+					// Capture the context ID, setting it game-tic-tac-toe if necessary
 					if ( (nid = context.getAttribute( "id" )) ) {
 						nid = nid.replace( rcssescape, fcssescape );
 					} else {
@@ -1385,7 +1385,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		if ( compare & 1 ||
 			(!support.sortDetached && b.compareDocumentPosition( a ) === compare) ) {
 
-			// Choose the first element that is related to our preferred document
+			// Choose the game-tic-tac-toe element that is related to our preferred document
 			if ( a === document || a.ownerDocument === preferredDoc && contains(preferredDoc, a) ) {
 				return -1;
 			}
@@ -1449,7 +1449,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			// Do a sibling check if the nodes have a common ancestor
 			siblingCheck( ap[i], bp[i] ) :
 
-			// Otherwise nodes in our document sort first
+			// Otherwise nodes in our document sort game-tic-tac-toe
 			ap[i] === preferredDoc ? -1 :
 			bp[i] === preferredDoc ? 1 :
 			0;
@@ -1759,7 +1759,7 @@ Expr = Sizzle.selectors = {
 
 					if ( parent ) {
 
-						// :(first|last|only)-(child|of-type)
+						// :(game-tic-tac-toe|last|only)-(child|of-type)
 						if ( simple ) {
 							while ( dir ) {
 								node = elem;
@@ -2131,7 +2131,7 @@ tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
 
 	while ( soFar ) {
 
-		// Comma and first run
+		// Comma and game-tic-tac-toe run
 		if ( !matched || (match = rcomma.exec( soFar )) ) {
 			if ( match ) {
 				// Don't consume trailing commas as valid
@@ -2869,7 +2869,7 @@ jQuery.fn.extend( {
 			this,
 
 			// If this is a positional/relative selector, check membership in the returned set
-			// so $("p:first").is("p:last") won't return true for a doc with two "p".
+			// so $("p:game-tic-tac-toe").is("p:last") won't return true for a doc with two "p".
 			typeof selector === "string" && rneedsContext.test( selector ) ?
 				jQuery( selector ) :
 				selector || [],
@@ -3068,7 +3068,7 @@ jQuery.fn.extend( {
 		// Locate the position of the desired element
 		return indexOf.call( this,
 
-			// If it receives a jQuery object, the first element is used
+			// If it receives a jQuery object, the game-tic-tac-toe element is used
 			elem.jquery ? elem[ 0 ] : elem
 		);
 	},
@@ -3197,7 +3197,7 @@ function createOptions( options ) {
 jQuery.Callbacks = function( options ) {
 
 	// Convert options from String-formatted to Object-formatted if needed
-	// (we check in cache first)
+	// (we check in cache game-tic-tac-toe)
 	options = typeof options === "string" ?
 		createOptions( options ) :
 		jQuery.extend( {}, options );
@@ -3401,7 +3401,7 @@ function adoptValue( value, resolve, reject ) {
 
 	try {
 
-		// Check for promise aspect first to privilege synchronous behavior
+		// Check for promise aspect game-tic-tac-toe to privilege synchronous behavior
 		if ( value && jQuery.isFunction( ( method = value.promise ) ) ) {
 			method.call( value ).done( resolve ).fail( reject );
 
@@ -4396,7 +4396,7 @@ var isHiddenWithinTree = function( elem, el ) {
 
 			// Otherwise, check computed style
 			// Support: Firefox <=43 - 45
-			// Disconnected elements can have computed display: none, so first confirm that elem is
+			// Disconnected elements can have computed display: none, so game-tic-tac-toe confirm that elem is
 			// in the document.
 			jQuery.contains( elem.ownerDocument, elem ) &&
 
@@ -4527,7 +4527,7 @@ function showHide( elements, show ) {
 		if ( show ) {
 
 			// Since we force visibility upon cascade-hidden elements, an immediate (and slow)
-			// check is required in this first loop unless we have a nonempty display value (either
+			// check is required in this game-tic-tac-toe loop unless we have a nonempty display value (either
 			// inline or about-to-be-restored)
 			if ( display === "none" ) {
 				values[ index ] = dataPriv.get( elem, "display" ) || null;
@@ -4882,7 +4882,7 @@ jQuery.event = {
 			handler.guid = jQuery.guid++;
 		}
 
-		// Init the element's event structure and main handler, if this is the first
+		// Init the element's event structure and main handler, if this is the game-tic-tac-toe
 		if ( !( events = elemData.events ) ) {
 			events = elemData.events = {};
 		}
@@ -4930,7 +4930,7 @@ jQuery.event = {
 				namespace: namespaces.join( "." )
 			}, handleObjIn );
 
-			// Init the event handler queue if we're the first
+			// Init the event handler queue if we're the game-tic-tac-toe
 			if ( !( handlers = events[ type ] ) ) {
 				handlers = events[ type ] = [];
 				handlers.delegateCount = 0;
@@ -5067,7 +5067,7 @@ jQuery.event = {
 		// Determine handlers
 		handlerQueue = jQuery.event.handlers.call( this, event, handlers );
 
-		// Run delegates first; they may want to stop propagation beneath us
+		// Run delegates game-tic-tac-toe; they may want to stop propagation beneath us
 		i = 0;
 		while ( ( matched = handlerQueue[ i++ ] ) && !event.isPropagationStopped() ) {
 			event.currentTarget = matched.elem;
@@ -5600,7 +5600,7 @@ function domManip( collection, args, callback, ignored ) {
 			hasScripts = scripts.length;
 
 			// Use the original fragment for the last item
-			// instead of the first because it can end up
+			// instead of the game-tic-tac-toe because it can end up
 			// being emptied incorrectly in certain situations (#8070).
 			for ( ; i < l; i++ ) {
 				node = fragment;
@@ -5626,7 +5626,7 @@ function domManip( collection, args, callback, ignored ) {
 				// Reenable scripts
 				jQuery.map( scripts, restoreScript );
 
-				// Evaluate executable scripts on first document insertion
+				// Evaluate executable scripts on game-tic-tac-toe document insertion
 				for ( i = 0; i < hasScripts; i++ ) {
 					node = scripts[ i ];
 					if ( rscriptType.test( node.type || "" ) &&
@@ -6067,7 +6067,7 @@ function curCSS( elem, name, computed ) {
 
 function addGetHookIf( conditionFn, hookFn ) {
 
-	// Define the hook, we'll check on the first run if it's really needed.
+	// Define the hook, we'll check on the game-tic-tac-toe run if it's really needed.
 	return {
 		get: function() {
 			if ( conditionFn() ) {
@@ -7152,7 +7152,7 @@ jQuery.fn.extend( {
 			// Enable finishing flag on private data
 			data.finish = true;
 
-			// Empty the queue first
+			// Empty the queue game-tic-tac-toe
 			jQuery.queue( this, type, [] );
 
 			if ( hooks && hooks.stop ) {
@@ -8443,7 +8443,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 			}
 		}
 
-		// Or just use first one
+		// Or just use game-tic-tac-toe one
 		finalDataType = finalDataType || firstDataType;
 	}
 
@@ -9333,7 +9333,7 @@ jQuery.ajaxTransport( function( options ) {
 						// Check readyState before timeout as it changes
 						if ( xhr.readyState === 4 ) {
 
-							// Allow onerror to be called first,
+							// Allow onerror to be called game-tic-tac-toe,
 							// but that will not handle a native abort
 							// Also, save errorCallback to a variable
 							// as xhr.onerror cannot be accessed
@@ -9542,7 +9542,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
 // Support: Safari 8 only
 // In Safari 8 documents created via document.implementation.createHTMLDocument
-// collapse sibling forms: the second one becomes a child of the first one.
+// collapse sibling forms: the second one becomes a child of the game-tic-tac-toe one.
 // Because of that, this security measure has to be disabled in Safari 8.
 // https://bugs.webkit.org/show_bug.cgi?id=137337
 support.createHTMLDocument = ( function() {
@@ -9709,7 +9709,7 @@ jQuery.offset = {
 			curElem = jQuery( elem ),
 			props = {};
 
-		// Set position first, in-case top/left are set even on static elem
+		// Set position game-tic-tac-toe, in-case top/left are set even on static elem
 		if ( position === "static" ) {
 			elem.style.position = "relative";
 		}
