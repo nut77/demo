@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据更新调研</title>
+    <style>
+        html, body, svg {
+            width: 100%;
+            height: 100%;
+        }
+        span {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 15px;
+            background-color: #00C1DE;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .show {
+            display: inline-block;
+        }
+        .hide {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+</head>
+<body>
+<div></div>
+<button class="delete3">删除3</button>
+<button class="add3 hide">增加3</button>
+<button class="add6">增加6</button>
+<button class="update">更新所有数据</button>
+<script>
+    let data = [1, 2, 3, 4, 5];
+    let elements = d3.select('div')
+        .selectAll('span')
+        .data(data, (d, i) => i).enter().append('span').text(d => d);
+    console.log(elements);
+
+    // 中间删除--这个地方删除 只会默认删除最后一项
+    d3.select('.delete3').on('click', function () {
+
+        data.splice(2, 1);
+        elements = elements.data(data).exit().remove().data(data).append('span').text(d => d).merge(elements);
+
+        d3.select('.delete3').attr('class', 'hide');
+        d3.select('.add3').attr('class', 'show');
+
+        console.log('delete3 ----- ' + data);
+        console.log(elements);
+    });
+
+    // 中间增加 也是从最后一个增加
+    d3.select('.add3').on('click', function () {
+
+        data.splice(2, 0, 3);
+        elements = elements.data(data).enter().append('span').text(d => d).merge(elements);
+
+        d3.select('.delete3').attr('class', 'show');
+        d3.select('.add3').attr('class', 'hide');
+
+        console.log('add3 ----- ' + data);
+        console.log(elements);
+    });
+
+    // 尾部增加
+    d3.select('.add6').on('click', function () {
+
+        data.push(6);
+        // elements.data(data).enter() [x, x, x, x, x, EnterNode] size()为1
+        // elements = elements.data(data).enter().append('span').text(d => d).merge(elements);
+
+        d3.select(this).attr('class', 'hide');
+
+        console.log('add6 ----- ' + data);
+        console.log(elements);
+    });
+
+    // 更新
+    d3.select('.update').on('click', function () {
+
+        let isString = /0/.test(data[0]);
+        for (let i = 0; i < data.length; i++) {
+
+            data[i] = isString ? (parseInt(data[i].split('0')[0]) || parseInt(data[i].split('0')[1])) : '0' + data[i];
+        }
+        elements.data(data).text(d => d);
+
+        console.log('update ----- ' + data);
+        console.log(elements);
+    });
+</script>
+</body>
+</html>

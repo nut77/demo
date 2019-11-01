@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据删除调研</title>
+    <style>
+        span {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            border-radius: 15px;
+            background-color: #00C1DE;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .show {
+            display: inline-block;
+        }
+        .hide {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+</head>
+<body>
+<div></div>
+<button class="delete3">删除3</button>
+<button class="add3 hide">增加3</button>
+<script>
+    let data = [
+        {name: 1, id: 1},
+        {name: 2, id: 2},
+        {name: 3, id: 3},
+        {name: 4, id: 4},
+        {name: 5, id: 5}
+    ];
+    let elements = d3.select('div')
+        .selectAll('span')
+        .data(data, d => d.id).enter().append('span').text(d => d.name);
+    console.log(elements);
+
+    // 中间删除 - 删除项必须有唯一标识符 不然会从最后一项开始删
+    // merge不会改变 调用merge的Selection的长度 如果对应为空才会合并 不为空则跳过
+    // selection中如果某项为empty d3不计入长度
+    d3.select('.delete3').on('click', function () {
+
+        data.splice(2, 1); // data.splice(2, 2);
+        // elements.data(data, d => d.id).exit().remove() [x, x, span, x, x] size()为1
+        elements = elements.data(data, d => d.id)
+            .exit()
+            .remove().data(data, d => d.id).enter().append('span').text(d => d.name).merge(elements.remove());
+
+        d3.select('.delete3').attr('class', 'hide');
+        d3.select('.add3').attr('class', 'show');
+
+        console.log('delete3 ----- ' + data);
+        console.log(elements);
+    });
+
+    // 只能从最后一项增加
+    d3.select('.add3').on('click', function () {
+
+        data.push({name: 3, id: 3});
+        elements.data(data, d => d.id).enter().append('span').text(d => d.name).merge(elements);
+
+        d3.select('.delete3').attr('class', 'show');
+        d3.select('.add3').attr('class', 'hide');
+
+        console.log('add3 ----- ' + data);
+        console.log(elements);
+    });
+</script>
+</body>
+</html>
