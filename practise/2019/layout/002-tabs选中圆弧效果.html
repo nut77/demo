@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tabs选中圆弧效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 800px;
+            margin: 20px auto;
+        }
+        .tablist {
+            text-align: center;
+        }
+        .tablist li {
+            position: relative;
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            margin-left: 80px;
+            background: #F94C4C;
+            border-radius: 20px 20px 0 0;
+            color: #fff;
+            line-height: 50px;
+            text-align: center;
+            list-style: none;
+            cursor: pointer;
+            box-shadow: 20px 20px 0 0 #F94C4C,-20px 20px 0 0 #F94C4C;
+        }
+        .tablist li.current,
+        .tablist li:hover {
+            background: #4C79F9;
+            box-shadow: none;
+            box-shadow: 20px 20px 0 0 #4C79F9,-20px 20px 0 0 #4C79F9;
+        }
+        .tablist li:before {
+            content: '';
+            position: absolute;
+            left: -50px;
+            bottom: 0;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 0 0 20px 0;
+        }
+        .tablist li:after {
+            content: '';
+            position: absolute;
+            left: 100px;
+            bottom: 0;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 0 0 0 20px;
+        }
+        .tabcon {
+            position: relative;
+            width: 100%;
+            height: 80px;
+            background: #F94C4C;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <ul class="tablist">
+        <li class="current">tab1</li>
+        <li>tab2</li>
+    </ul>
+    <div class="tabcon"></div>
+</div>
+</body>
+</html>

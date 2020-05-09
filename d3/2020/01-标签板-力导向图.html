@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标签板-力导向图</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@5.7.0/dist/d3.js"></script>
+    <style>
+        svg {
+            border: 1px solid #ccc;
+        }
+        .links line {
+            stroke: #999;
+            stroke-opacity: 0.6;
+        }
+        .nodes circle {
+            stroke: #fff;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+<body>
+<h3>力导向图</h3>
+<script>
+    // 画布大小
+    const width = 300;
+    const height = 300;
+
+    // 添加svg画布
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let nodesData = [
+        {name: '要好好加油呀', value: 10},
+        {name: '七月上', value: 10},
+        {name: '找歌名凑字数', value: 1},
+        {name: '今日头条', value: 2},
+        {name: '今天天气真好', value: 0},
+        {name: '明天天气也不错', value: 0},
+        {name: '你想吃什么', value: 0},
+        {name: '暖一杯茶', value: 0}
+    ];
+
+    // 使用节点数据设置模拟器
+    let simulation = d3.forceSimulation().nodes(nodesData);
+
+    // 添加定心力和充电力
+    simulation
+        .force('collision', d3.forceCollide(10))
+        .force('charge_force', d3.forceManyBody().strength(-10))
+        .force('center_force', d3.forceCenter(width / 2, height / 2));
+
+    // 每次作出举动时需要更新节点位置
+    simulation.on('tick', tickAction);
+
+    // 在svg元素中绘制圆圈
+    var node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('text')
+        .data(nodesData)
+        .enter()
+        .append('text')
+        .text(d => d.name)
+        .style('transform', 'translateX(-30px)')
+        .attr('fill', d => getFontSizeAndColorByValue(d.value, 'color'))
+        .attr('font-size', d => getFontSizeAndColorByValue(d.value, 'fontSize'));
+
+    // 添加 circleColor 函数
+    function getFontSizeAndColorByValue (value, type = 'color') {
+
+        let option = {
+            fontSize: '12px',
+            color: '#999'
+        };
+        if (value > 0) {
+
+            option.fontSize = '14px';
+            option.color = 'pink';
+        }
+        if (value > 5) {
+
+            option.fontSize = '16px';
+            option.color = '#77313e';
+        }
+        if (value > 9) {
+
+            option.fontSize = '18px';
+            option.color = 'red';
+        }
+
+        if('color' === type) return option.color;
+        if('fontSize' === type) return option.fontSize;
+        return option;
+    }
+
+    function tickAction () {
+        node
+            .attr('x', d => d.x)
+            .attr('y', d => d.y);
+    }
+</script>
+</body>
+</html>

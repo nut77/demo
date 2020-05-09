@@ -6,11 +6,15 @@
     - 2018
 - d3
     - 2018
+    - 2019
+    - 2020
+    - d3-cookbook-v2（D3 4.X数据可视化实战手册 第2版-朱启）
 - echarts
     - 2019
 - jianshu（[简书](https://www.jianshu.com/u/acb01dde7ec7)）
     - 2018
     - 2019
+    - 2020
 - nodejs
     - 2018
 - practise
@@ -26,3 +30,4 @@
     - 2018
 - vue
     - 2018
+    - 2020

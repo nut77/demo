@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <meta charset="UTF-8">
+    <title>slot插槽不同版本使用方式-2.6.0分割</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+    <style>
+        #app {
+            display: flex;
+        }
+        strong {
+            color: #57eeff;
+        }
+        .article {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--2.6.0及以上写法-->
+    <el-article :article="article">
+        <template v-slot:sub-title>
+            <h5>-插槽的使用</h5>
+        </template>
+        <template v-slot:content>
+            <p>content1</p>
+        </template>
+        <p>main1</p>
+        <template v-slot:content>
+            <p>content2</p>
+        </template>
+        <p>main2</p>
+        <template v-slot:footer="{date}">
+            <p>{{date}}</p>
+        </template>
+    </el-article>
+
+    <!--2.6.0-写法-->
+    <el-article :article="article">
+        <h5 slot="sub-title">-插槽的使用</h5>
+        <template slot="content">
+            <p slot="content">content1</p>
+        </template>
+        <p>main1</p>
+        <template slot="content">
+            <p>content2</p>
+        </template>
+        <p>main2</p>
+        <template slot="footer" slot-scope="{date}">
+            <p>{{date}}</p>
+        </template>
+    </el-article>
+</div>
+
+<script>
+// v-slot:prop 等价于 slot="prop"
+// v-slot:prop="slotProps" 等价于 slot="prop" slot-scope="slotProps"
+// v-slot指令只能用在 template或组件中
+// v-slot指令后面跟prop 若出现多个同类插槽 仅生效最后一个。不添加v-slot指令，都生效（属于默认插槽<slot></slot>）
+// 2.6.0之前的版本 插槽 可以出现多个同类的插槽。插槽可以在component、template、dom使用
+// 如果在dom元素里使用指令prop最好使用kebab-case，大小写识别不出（v-slot识别不了，slot没有影响）
+Vue.component('el-article', {
+    props: ['article'],
+    data() {
+      return {
+          date: new Date()
+      }
+    },
+    template: `
+        <article class="article">
+            <header>
+                <strong>header：</strong>
+                <h1>{{article.title}}</h1>
+                <slot name="sub-title"></slot>
+                <p>作者：{{article.author}}</p>
+                <hr/>
+            </header>
+            <main>
+                <strong>content：</strong>
+                <slot name="content"></slot>
+                <slot></slot>
+                <hr/>
+            </main>
+            <footer>
+                <strong>footer：</strong>
+                <slot name="footer" :date="date"></slot>
+                <hr/>
+            </footer>
+        </article>
+    `
+});
+new Vue({
+    el: '#app',
+    data: {
+        article: {
+            title: 'vue.js 从入门到精通',
+            author: 'Ada'
+        }
+    }
+});
+</script>
+</body>
+</html>
