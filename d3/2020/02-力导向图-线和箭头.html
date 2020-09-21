@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-<h3>力导向图</h3>
+<h3>力导向图-线的间隙用 css stroke-dasharray 属性来控制。stroke-dasharray: 5,5;  表示虚线的每一段实线长度-像素(a)和空白的长度-像素(b)。a为0，b非0 线就看不到啦。</h3>
 <script>
     // 画布大小
     const width = 900;
@@ -70,17 +70,6 @@
         .links(linksData)
         .distance(100);
 
-    // 画线
-    let link = svg.append('g')
-        .attr('class', 'links')
-        .selectAll('line')
-        .data(linksData)
-        .enter()
-        .append('line')
-        .attr('stroke-width', 2)
-        .attr('marker-end', 'url(#arrow)')
-        .style('stroke', '#6b9cde');
-
     //箭头
     var marker=
         svg.append("marker")
@@ -96,6 +85,17 @@
             .append("path")
             .attr("d", "M0,-5L10,0L0,5")//箭头的路径
             .attr('fill','#000000');//箭头颜色
+
+            // 画线
+    let link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(linksData)
+        .enter()
+        .append('line')
+        .attr('stroke-width', 2)
+        .attr('marker-end', 'url(#arrow)')
+        .style('stroke', '#6b9cde');
 
     // 在svg元素中绘制圆圈
     let node = svg.append('g')
